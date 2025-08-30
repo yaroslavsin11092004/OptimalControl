@@ -1,0 +1,17 @@
+{
+	"CoreServer":
+	{
+		"host" : "127.0.0.1",
+		"port" : 45000
+	},
+	"TasksServer":
+	{
+		"host" : "127.0.0.1",
+		"port" : 45001
+	},
+	"AdamServer":
+	{
+		"host" : "127.0.0.1",
+		"port" : 45002
+	}
+}
