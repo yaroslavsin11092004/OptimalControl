@@ -28,6 +28,11 @@ include_directories(
 
 set(SOURCE_EXE 
 	./source/Main.cpp
+	./source/Router.cpp
+	./source/Server.cpp
+	./source/AdamApi.cpp
+	./source/OptContrAlg.cpp
+	./source/FunctionsApi.cpp
 )
 
 add_executable(CoreServer ${SOURCE_EXE})
