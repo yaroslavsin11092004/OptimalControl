@@ -1,8 +1,0 @@
-[
-{
-  "directory": "/home/yaroslavsinyakov/source/OptimalControl/CoreAlgoritm/build",
-  "command": "clang++ -DBOOST_CONTEXT_DYN_LINK -DBOOST_CONTEXT_NO_LIB -DBOOST_URL_DYN_LINK -DBOOST_URL_NO_LIB -I/home/yaroslavsinyakov/source/OptimalControl/CoreAlgoritm/./include -I/home/yaroslavsinyakov/source/OptimalControl/CoreAlgoritm/../lib -isystem /usr/local/include/boost-1_89 -stdlib=libc++ -std=c++23 -o CMakeFiles/CoreServer.dir/source/Main.cpp.o -c /home/yaroslavsinyakov/source/OptimalControl/CoreAlgoritm/source/Main.cpp",
-  "file": "/home/yaroslavsinyakov/source/OptimalControl/CoreAlgoritm/source/Main.cpp",
-  "output": "CMakeFiles/CoreServer.dir/source/Main.cpp.o"
-}
-]
