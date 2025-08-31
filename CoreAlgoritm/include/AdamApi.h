@@ -1,17 +1,19 @@
 #ifndef ADAM_H
 #define ADAM_H
 #include "IncludeFiles.h"
-class AdamApi
+class AdamApi : public std::enable_shared_from_this<AdamApi>
 {
 	private:
 		std::shared_ptr<net::io_context> ioc;
 		std::string host;
-		int port;
+		std::string port;
 		net::thread_pool pool{4};
-		void call_set_global_params(double learning_rate, double epsilon, int epochs);
-		std::vector<double> call_adam(std::vector<double> args, std::vector<double> params);
+		std::optional<net::executor_work_guard<net::io_context::executor_type>> guard;
+		net::awaitable<void> call_set_global_params(double learning_rate, double epsilon, int epochs);
+		net::awaitable<std::vector<double>> call_adam(std::vector<double> args, std::vector<double> params);
 	public:
 		AdamApi(std::reference_wrapper<std::string> config_file);
+		~AdamApi();
 		void set_global_params(double learning_rate, double epsilon, int epochs);
 		std::vector<double> adam(std::vector<double> args, std::vector<double> params);
 };
