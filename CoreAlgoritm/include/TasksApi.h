@@ -12,15 +12,13 @@ class TasksApi : public std::enable_shared_from_this<TasksApi>
 
 		net::awaitable<double> call_equation(int id, double arg, matrix<double> params);
 		net::awaitable<double> call_linked(int id, double arg, matrix<double> params);
-		net::awaitable<int> call_dimension();
 		net::awaitable<double> call_param_s(matrix<double>& x, matrix<double>& u, matrix<double>& optim_u);
 	public:
-		TasksApi(std::reference_wrapper<std::string> conf_file);
+		TasksApi(std::string& conf_file);
 		~TasksApi();
 		
 		std::shared_ptr<std::vector<Equation>> generate_equations(int dim);
 		std::shared_ptr<std::vector<Equation>> generate_linked(int dim);
-		int dimension();
 		double param_s(matrix<double>& x, matrix<double>& u, matrix<double>& optim_u);
 };
 #endif

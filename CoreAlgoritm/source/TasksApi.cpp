@@ -1,7 +1,7 @@
 #include "TasksApi.h"
-TasksApi::TasksApi(std::reference_wrapper<std::string> conf_file)
+TasksApi::TasksApi(std::string& conf_file)
 {
-	std::ifstream file(conf_file.get());
+	std::ifstream file(conf_file);
 	if (file.is_open())
 	{
 		std::string buffer = { std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() };
@@ -157,29 +157,6 @@ std::shared_ptr<std::vector<Equation>> TasksApi::generate_linked(int dim)
 		throw std::runtime_error(e.what());
 	}
 }
-net::awaitable<int> TasksApi::call_dimension()
-{
-	try 
-	{
-		auto resolver = tcp::resolver(co_await net::this_coro::executor);
-		auto socket = tcp::socket(co_await net::this_coro::executor);
-		auto endpoint = co_await resolver.async_resolve(this->host, this->port, net::use_awaitable);
-		co_await net::async_connect(socket, endpoint, net::use_awaitable);
-		Request req{http::verb::post, "/dimension",11};
-		req.set(http::field::content_type, "application/json");
-		req.prepare_payload();
-		co_await http::async_write(socket, req, net::use_awaitable);
-		http::response<http::string_body> resp;
-		beast::flat_buffer buffer;
-		co_await http::async_read(socket, buffer, resp, net::use_awaitable);
-		json resp_json = json::parse(resp.body());
-		co_return resp_json["result"].get<int>();
-	}
-	catch(const std::exception& e)
-	{
-		throw std::runtime_error(e.what());
-	}
-}
 net::awaitable<double> TasksApi::call_param_s(matrix<double>& x, matrix<double>& u, matrix<double>& optim_u)
 {
 	try 
@@ -208,33 +185,6 @@ net::awaitable<double> TasksApi::call_param_s(matrix<double>& x, matrix<double>&
 		co_await http::async_read(socket, buffer, resp, net::use_awaitable);
 		auto resp_json = json::parse(resp.body());
 		co_return resp_json["result"].get<double>();
-	}
-	catch(const std::exception& e)
-	{
-		throw std::runtime_error(e.what());
-	}
-}
-int TasksApi::dimension()
-{
-	try 
-	{
-		std::promise<int> result_promise;
-		auto result_future = result_promise.get_future();
-		net::co_spawn(*this->ioc,
-		[self = shared_from_this(), result_promise = std::move(result_promise)] mutable -> net::awaitable<void>
-		{
-			try 
-			{
-				int result = co_await self->call_dimension();
-				result_promise.set_value(result);
-			}
-			catch(...)
-			{
-				result_promise.set_exception(std::current_exception());
-			}
-		},
-		net::detached);
-		return result_future.get();
 	}
 	catch(const std::exception& e)
 	{
