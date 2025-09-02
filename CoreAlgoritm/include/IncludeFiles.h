@@ -15,6 +15,7 @@
 #include <vector>
 #include <string>
 #include <functional>
+#include <regex>
 namespace net = boost::asio;
 namespace http = boost::beast::http;
 namespace urls = boost::urls;
