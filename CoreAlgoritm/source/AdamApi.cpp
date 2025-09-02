@@ -1,7 +1,7 @@
 #include "AdamApi.h"
 AdamApi::AdamApi(std::string& config_file)
 {
-	std::fstream file(config_file);
+	std::ifstream file(config_file);
 	if (file.is_open())
 	{
 		std::string buffer = { std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() };
@@ -9,13 +9,12 @@ AdamApi::AdamApi(std::string& config_file)
 		json conf_json = json::parse(buffer);
 		try 
 		{
-			auto self = shared_from_this();
-			self->host = conf_json["AdamServer"]["host"].get<std::string>();
-			self->port = conf_json["AdamServer"]["port"].get<std::string>();
-			self->ioc = std::make_shared<net::io_context>();
-			guard.emplace(net::make_work_guard(*self->ioc));
+			this->host = conf_json["AdamServer"]["host"].get<std::string>();
+			this->port = conf_json["AdamServer"]["port"].get<std::string>();
+			this->ioc = std::make_shared<net::io_context>();
+			guard.emplace(net::make_work_guard(*this->ioc));
 			for (int i = 0; i < 4; i++)
-				net::post(self->pool, [self](){self->ioc->run();});
+				net::post(this->pool, [this](){this->ioc->run();});
 		}
 		catch(const std::exception& e)
 		{

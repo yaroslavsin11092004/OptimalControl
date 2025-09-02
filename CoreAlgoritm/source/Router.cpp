@@ -12,7 +12,6 @@ std::optional<urls::url_view> Router::parse_url(std::string_view target)
 std::string Router::route_pattern_to_regex(const std::string& pattern)
 {
 	std::string regex_pattern;
-	regex_pattern.reserve(pattern.size() * 2);
 	bool params = false;
 	for (char c : pattern)
 	{

@@ -12,7 +12,7 @@ TasksApi::TasksApi(std::string& conf_file)
 		this->ioc = std::make_shared<net::io_context>();
 		this->guard.emplace(net::make_work_guard(*this->ioc));
 		for (int i = 0; i < 4; i++)
-			net::post(this->pool, [self = shared_from_this()](){self->ioc->run();});
+			net::post(this->pool, [this](){this->ioc->run();});
 	}
 	else 
 	{
