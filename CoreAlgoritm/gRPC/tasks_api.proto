@@ -1,0 +1,55 @@
+syntax = "proto3";
+package tasks_api;
+
+message CallEquationRequest 
+{
+  int32 id = 1;
+  double arg = 2;
+  repeated double params = 3;
+  int32 size_row = 4;
+  int32 size_col = 5;
+}
+
+message CallEquationResponse 
+{
+  double result = 1;
+}
+
+message CallLinkedRequest
+{
+  int32 id = 1;
+  double arg = 2;
+  repeated double params = 3;
+  int32 size_row = 4;
+  int32 size_col = 5;
+}
+
+message CallLinkedResponse
+{
+  double result = 1;
+}
+
+message CallParamSRequest
+{
+  repeated double x = 1;
+  int32 x_size_row = 2;
+  int32 x_size_col = 3;
+  repeated double u = 4;
+  int32 u_size_row = 5;
+  int32 u_size_col = 6;
+  repeated double optim_u = 7;
+  int32 optim_u_size_row = 8;
+  int32 optim_u_size_col = 9;
+}
+
+message CallParamSResponse
+{
+  double result = 1;
+}
+
+service TasksApiService
+{
+  rpc CallEquation(CallEquationRequest) returns (CallEquationResponse);
+  rpc CallLinked(CallLinkedRequest) returns (CallLinkedResponse);
+  rpc CallParamS(CallParamSRequest) returns (CallParamSResponse);
+}

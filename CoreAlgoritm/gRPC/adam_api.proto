@@ -1,0 +1,29 @@
+syntax = "proto3";
+package adam_api;
+
+message GlobalParamsRequest
+{
+  double learning_rate = 1;
+  double epsilon = 2;
+  double epochs = 3;
+}
+
+message OptimizeRequest 
+{
+  repeated double left_edge = 1;
+  repeated double right_edge = 2;
+  repeated double params = 3;
+}
+
+message OptimizeResponse 
+{
+  repeated double result = 1;
+}
+
+message EmptyResponse {}
+
+service AdamApiService
+{
+  rpc SetGlobalParams(GlobalParamsRequest) returns (EmptyResponse);
+  rpc Optimize(OptimizeRequest) returns (OptimizeResponse);
+}

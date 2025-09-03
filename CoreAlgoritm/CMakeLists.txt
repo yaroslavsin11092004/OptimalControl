@@ -16,33 +16,19 @@ if (NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 	message(WARNING "Not using clang compiler")
 endif()
 
-set(BOOST_ROOT "/usr/local")
-set(BOOST_INCLUDE_DIR "${BOOST_ROOT}/include/boost-1_89")
-set(BOOST_LIB_DIR "${BOOST_ROOT}/lib/")
+set(CMAKE_PREFIX_PATH "/usr/local${CMAKE_PREFIX_PATH}")
+set(CMAKE_LIBRARY_PATH "/usr/local/lib${CMAKE_LIBRARY_PATH}")
+set(CMAKE_INCLUDE_PATH "/usr/local/include${CMAKE_INCLUDE_PATH}")
 
-
-find_library(BOOST_URL_LIB 
-    NAMES boost_url-clang20-mt-d-x64-1_89 boost_url
-    PATHS ${BOOST_LIB_DIR}
-    NO_DEFAULT_PATH
-)
-
-find_library(BOOST_COROUTINE_LIB 
-    NAMES boost_coroutine boost_coroutine-clang20-mt-d-x64-1_89
-    PATHS ${BOOST_LIB_DIR}
-    NO_DEFAULT_PATH
-)
-
-find_library(BOOST_CONTEXT_LIB 
-    NAMES boost_context boost_context-clang20-mt-d-x64-1_89
-    PATHS ${BOOST_LIB_DIR}
-    NO_DEFAULT_PATH
-)
+find_package(absl REQUIRED)
+find_package(Boost 1.89.0 REQUIRED url context)
+find_package(gRPC REQUIRED)
+find_package(Protobuf REQUIRED)
 
 include_directories(
 	./include/
 	../lib
-	${BOOST_INCLUDE_DIR}
+  ./gRPC/
 )
 
 set(SOURCE_EXE 
@@ -52,21 +38,24 @@ set(SOURCE_EXE
 	./source/AdamApi.cpp
 	./source/OptContrAlg.cpp
 	./source/TasksApi.cpp
+  ./gRPC/adam_api.pb.cc
+  ./gRPC/adam_api.grpc.pb.cc
+  ./gRPC/tasks_api.pb.cc
+  ./gRPC/tasks_api.grpc.pb.cc
 )
 
 set(SOURCE_LIB ${CMAKE_CURRENT_SOURCE_DIR}/../release/libMathPlot.so)
+
 add_executable(CoreServer ${SOURCE_EXE})
 
-
-target_link_libraries(CoreServer PRIVATE 
-    ${BOOST_URL_LIB}
-    ${BOOST_COROUTINE_LIB}
-    ${BOOST_CONTEXT_LIB}
-  pthread
-  dl
+target_link_libraries(CoreServer 
 	${SOURCE_LIB}
-)
-target_include_directories(CoreServer PRIVATE
-    ./include/
-    ${BOOST_INCLUDE_DIR}
+  Boost::boost
+  Boost::url
+  absl::strings
+  absl::base 
+  absl::flags
+  gRPC::grpc++
+  gRPC::grpc++_reflection
+  protobuf::libprotobuf
 )
