@@ -5,7 +5,7 @@ message GlobalParamsRequest
 {
   double learning_rate = 1;
   double epsilon = 2;
-  double epochs = 3;
+  int32 epochs = 3;
 }
 
 message OptimizeRequest 

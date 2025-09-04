@@ -165,7 +165,7 @@ const char descriptor_table_protodef_adam_5fapi_2eproto[] ABSL_ATTRIBUTE_SECTION
     protodesc_cold) = {
     "\n\016adam_api.proto\022\010adam_api\"M\n\023GlobalPara"
     "msRequest\022\025\n\rlearning_rate\030\001 \001(\001\022\017\n\007epsi"
-    "lon\030\002 \001(\001\022\016\n\006epochs\030\003 \001(\001\"H\n\017OptimizeReq"
+    "lon\030\002 \001(\001\022\016\n\006epochs\030\003 \001(\005\"H\n\017OptimizeReq"
     "uest\022\021\n\tleft_edge\030\001 \003(\001\022\022\n\nright_edge\030\002 "
     "\003(\001\022\016\n\006params\030\003 \003(\001\"\"\n\020OptimizeResponse\022"
     "\016\n\006result\030\001 \003(\001\"\017\n\rEmptyResponse2\236\001\n\016Ada"
@@ -317,9 +317,9 @@ GlobalParamsRequest::_table_ = {
     // double epsilon = 2;
     {::_pbi::TcParser::FastF64S1,
      {17, 1, 0, PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.epsilon_)}},
-    // double epochs = 3;
-    {::_pbi::TcParser::FastF64S1,
-     {25, 2, 0, PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.epochs_)}},
+    // int32 epochs = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GlobalParamsRequest, _impl_.epochs_), 2>(),
+     {24, 2, 0, PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.epochs_)}},
   }}, {{
     65535, 65535
   }}, {{
@@ -329,9 +329,9 @@ GlobalParamsRequest::_table_ = {
     // double epsilon = 2;
     {PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.epsilon_), _Internal::kHasBitsOffset + 1, 0,
     (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
-    // double epochs = 3;
+    // int32 epochs = 3;
     {PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.epochs_), _Internal::kHasBitsOffset + 2, 0,
-    (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
+    (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
@@ -387,12 +387,12 @@ PROTOBUF_NOINLINE void GlobalParamsRequest::Clear() {
     }
   }
 
-  // double epochs = 3;
+  // int32 epochs = 3;
   if ((this_._impl_._has_bits_[0] & 0x00000004u) != 0) {
-    if (::absl::bit_cast<::uint64_t>(this_._internal_epochs()) != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-          3, this_._internal_epochs(), target);
+    if (this_._internal_epochs() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<3>(
+              stream, this_._internal_epochs(), target);
     }
   }
 
@@ -434,10 +434,11 @@ PROTOBUF_NOINLINE void GlobalParamsRequest::Clear() {
         total_size += 9;
       }
     }
-    // double epochs = 3;
+    // int32 epochs = 3;
     if ((cached_has_bits & 0x00000004u) != 0) {
-      if (::absl::bit_cast<::uint64_t>(this_._internal_epochs()) != 0) {
-        total_size += 9;
+      if (this_._internal_epochs() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_epochs());
       }
     }
   }
@@ -466,7 +467,7 @@ void GlobalParamsRequest::MergeImpl(::google::protobuf::MessageLite& to_msg, con
       }
     }
     if ((cached_has_bits & 0x00000004u) != 0) {
-      if (::absl::bit_cast<::uint64_t>(from._internal_epochs()) != 0) {
+      if (from._internal_epochs() != 0) {
         _this->_impl_.epochs_ = from._impl_.epochs_;
       }
     }

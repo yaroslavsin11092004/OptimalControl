@@ -686,14 +686,14 @@ class GlobalParamsRequest final : public ::google::protobuf::Message
   void _internal_set_epsilon(double value);
 
   public:
-  // double epochs = 3;
+  // int32 epochs = 3;
   void clear_epochs() ;
-  double epochs() const;
-  void set_epochs(double value);
+  ::int32_t epochs() const;
+  void set_epochs(::int32_t value);
 
   private:
-  double _internal_epochs() const;
-  void _internal_set_epochs(double value);
+  ::int32_t _internal_epochs() const;
+  void _internal_set_epochs(::int32_t value);
 
   public:
   // @@protoc_insertion_point(class_scope:adam_api.GlobalParamsRequest)
@@ -724,7 +724,7 @@ class GlobalParamsRequest final : public ::google::protobuf::Message
     ::google::protobuf::internal::CachedSize _cached_size_;
     double learning_rate_;
     double epsilon_;
-    double epochs_;
+    ::int32_t epochs_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -943,26 +943,26 @@ inline void GlobalParamsRequest::_internal_set_epsilon(double value) {
   _impl_.epsilon_ = value;
 }
 
-// double epochs = 3;
+// int32 epochs = 3;
 inline void GlobalParamsRequest::clear_epochs() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.epochs_ = 0;
   _impl_._has_bits_[0] &= ~0x00000004u;
 }
-inline double GlobalParamsRequest::epochs() const {
+inline ::int32_t GlobalParamsRequest::epochs() const {
   // @@protoc_insertion_point(field_get:adam_api.GlobalParamsRequest.epochs)
   return _internal_epochs();
 }
-inline void GlobalParamsRequest::set_epochs(double value) {
+inline void GlobalParamsRequest::set_epochs(::int32_t value) {
   _internal_set_epochs(value);
   _impl_._has_bits_[0] |= 0x00000004u;
   // @@protoc_insertion_point(field_set:adam_api.GlobalParamsRequest.epochs)
 }
-inline double GlobalParamsRequest::_internal_epochs() const {
+inline ::int32_t GlobalParamsRequest::_internal_epochs() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return _impl_.epochs_;
 }
-inline void GlobalParamsRequest::_internal_set_epochs(double value) {
+inline void GlobalParamsRequest::_internal_set_epochs(::int32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.epochs_ = value;
 }

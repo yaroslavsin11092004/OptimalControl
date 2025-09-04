@@ -42,6 +42,8 @@ set(SOURCE_EXE
   ./gRPC/adam_api.grpc.pb.cc
   ./gRPC/tasks_api.pb.cc
   ./gRPC/tasks_api.grpc.pb.cc
+  ./source/AdamApiRpc.cpp
+  ./source/TasksApiRps.cpp
 )
 
 set(SOURCE_LIB ${CMAKE_CURRENT_SOURCE_DIR}/../release/libMathPlot.so)
