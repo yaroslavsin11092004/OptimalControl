@@ -99,11 +99,11 @@ std::shared_ptr<std::vector<Equation>> TasksApi::generate_equations(int dim)
 				std::promise<double> result_promise;
 				auto result_future = result_promise.get_future();
 				net::co_spawn(*self->ioc,
-				[self, i, arg, params = std::move(params), result_promise = std::move(result_promise)]() mutable -> net::awaitable<void>
+				[self, i, arg, params, result_promise = std::move(result_promise)]() mutable -> net::awaitable<void>
 				{
 					try 
 					{
-						double result = co_await self->call_equation(i, arg, std::move(params));
+						double result = co_await self->call_equation(i, arg, params);
 						result_promise.set_value(result);
 					}
 					catch(...)
@@ -134,11 +134,11 @@ std::shared_ptr<std::vector<Equation>> TasksApi::generate_linked(int dim)
 				std::promise<double> result_promise;
 				auto result_future = result_promise.get_future();
 				net::co_spawn(*self->ioc,
-				[self, i, arg, params = std::move(params), result_promise = std::move(result_promise)]() mutable -> net::awaitable<void>
+				[self, i, arg, params, result_promise = std::move(result_promise)]() mutable -> net::awaitable<void>
 				{
 					try 
 					{
-						double result = co_await self->call_linked(i, arg, std::move(params));
+						double result = co_await self->call_linked(i, arg, params);
 						result_promise.set_value(result);
 					}
 					catch(...)

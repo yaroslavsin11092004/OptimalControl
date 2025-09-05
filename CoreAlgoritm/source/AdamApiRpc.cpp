@@ -58,6 +58,7 @@ net::awaitable<void> AdamApiRpc::set_global_param_async(double learning_rate, do
 	state->request.set_learning_rate(learning_rate);
 	state->request.set_epsilon(epsilon);
 	state->request.set_epochs(epochs);
+	std::future<void> result_future = state->promise.get_future();
 	auto* callback = new std::function<void(bool)>([state](bool ok) mutable 
 	{
 		if (ok && state->status.ok())
@@ -67,7 +68,6 @@ net::awaitable<void> AdamApiRpc::set_global_param_async(double learning_rate, do
 	});
 	state->reader = stub->AsyncSetGlobalParams(&state->context, state->request, cq.get());
 	state->reader->Finish(&state->response, &state->status, callback);
-	std::future<void> result_future = state->promise.get_future();
 	co_await net::dispatch(net::make_strand(*ioc),net::use_awaitable);
 	result_future.wait();
 	result_future.get();
@@ -79,6 +79,7 @@ net::awaitable<std::vector<double>> AdamApiRpc::adam_async(std::vector<double>& 
 	for (double val : left_edge) state->request.add_left_edge(val);
 	for (double val : right_edge) state->request.add_right_edge(val);
 	for (double val : params) state->request.add_params(val);
+	auto result_future = state->promise.get_future();
 	auto* callback = new std::function<void(bool)>([state](bool ok) mutable
 	{
 		if (ok && state->status.ok())
@@ -93,7 +94,6 @@ net::awaitable<std::vector<double>> AdamApiRpc::adam_async(std::vector<double>& 
 	});
 	state->reader = stub->AsyncOptimize(&state->context, state->request, cq.get());
 	state->reader->Finish(&state->response, &state->status, callback);
-	auto result_future = state->promise.get_future();
 	co_await net::dispatch(net::make_strand(*ioc),net::use_awaitable);
 	result_future.wait();
 	co_return result_future.get();
