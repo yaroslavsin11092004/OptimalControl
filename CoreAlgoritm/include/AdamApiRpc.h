@@ -41,7 +41,7 @@ class AdamApiRpc : public std::enable_shared_from_this<AdamApiRpc>
 	public:
 		AdamApiRpc(std::string& conf_file);
 		~AdamApiRpc();
-		void set_global_param(double learning_rate, double epsilon, int epochs);
+		void set_global_params(double learning_rate, double epsilon, int epochs);
 		std::vector<double> adam(std::vector<double>& u_left, std::vector<double>& u_right, std::vector<double> params);
 
 };

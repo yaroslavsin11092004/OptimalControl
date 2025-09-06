@@ -1,8 +1,8 @@
 #include "OptContrAlg.h"
 OptimalControl::OptimalControl(std::string& conf_file)
 {
-	this->tasks_api = std::make_shared<TasksApi>(conf_file);
-	this->adam_api = std::make_shared<AdamApi>(conf_file);
+	this->tasks_api = std::make_shared<TasksApiRpc>(conf_file);
+	this->adam_api = std::make_shared<AdamApiRpc>(conf_file);
 }
 void OptimalControl::adam_params(double learning_rate, double epsilon, int epochs)
 {

@@ -16,14 +16,19 @@ if (NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 	message(WARNING "Not using clang compiler")
 endif()
 
-set(BOOST_ROOT "/usr/local/include/boost-1_89/")
-set(BOOST_INCLUDEDIR "${BOOST_ROOT}/include")
-set(BOOST_LIBRARYDIR "${BOOST_ROOT}/lib")
-find_package(Boost 1.89.0 REQUIRED COMPONENTS url context)
+set(CMAKE_PREFIX_PATH "/usr/local${CMAKE_PREFIX_PATH}")
+set(CMAKE_LIBRARY_PATH "/usr/local/lib${CMAKE_LIBRARY_PATH}")
+set(CMAKE_INCLUDE_PATH "/usr/local/include${CMAKE_INCLUDE_PATH}")
 
+
+find_package(absl REQUIRED)
+find_package(Boost 1.89.0 REQUIRED url context)
+find_package(gRPC REQUIRED)
+find_package(Protobuf REQUIRED)
 include_directories(
 	./include/
 	../lib
+	../gRPC
 )
 
 set(SOURCE_EXE 
@@ -31,8 +36,13 @@ set(SOURCE_EXE
 )
 
 add_executable(TasksServer ${SOURCE_EXE})
-
-target_link_libraries(TasksServer PRIVATE 
-	Boost::url
-	Boost::context 
+set(SOURCE_LIB ${CMAKE_CURRENT_SOURCE_DIR}/../release/libMathPlot.so)
+target_link_libraries(TasksServer 
+	${SOURCE_LIB}
+  Boost::boost
+  Boost::url
+  absl::strings
+  gRPC::grpc++
+  gRPC::grpc++_reflection
+   protobuf::libprotobuf
 )

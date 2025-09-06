@@ -98,7 +98,7 @@ net::awaitable<std::vector<double>> AdamApiRpc::adam_async(std::vector<double>& 
 	result_future.wait();
 	co_return result_future.get();
 }
-void AdamApiRpc::set_global_param(double learning_rate, double epsilon, int epochs)
+void AdamApiRpc::set_global_params(double learning_rate, double epsilon, int epochs)
 {
 	try 
 	{

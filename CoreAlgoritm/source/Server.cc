@@ -101,4 +101,32 @@ void HttpServer::init_routes()
 			beast::ostream(resp.body()) << "\"{result\" : \"" << e.what() << "\"}";
 		}
 	});
+	this->router.add_route(http::verb::post, "/successive_approx",
+	[this](Request& req, Response& resp, urls::url_view url)
+	{
+		try 
+		{
+			json req_json = json::parse(req.body());
+			auto x0 = req_json["x0"].get<std::vector<double>>();
+			auto t0 = req_json["t0"].get<double>();
+			auto t1 = req_json["t1"].get<double>();
+			auto t_step = req_json["t_step"].get<double>();
+			auto u_left = req_json["u_left"].get<std::vector<double>>();
+			auto u_right = req_json["u_right"].get<std::vector<double>>();
+			auto delta = req_json["delta"].get<double>();
+			auto result = this->optimal_control_api->successive_approximation(std::move(x0), t0, t1, t_step, std::move(u_left), std::move(u_right), delta);
+			json resp_json;
+			resp_json["optim_path"] = *result.first.store_handle();
+			resp_json["optim_control"] = *result.second.store_handle();
+			resp_json["optim_path_size_row"] = result.first.size_row();
+			resp_json["optim_path_size_col"] = result.first.size_col();
+			resp_json["optim_control_size_row"] = result.second.size_row();
+			resp_json["optim_control_size_col"] = result.second.size_col();
+			beast::ostream(resp.body()) << resp_json.dump();
+		}
+		catch(const std::exception& e)
+		{
+			beast::ostream(resp.body()) << "{\"result\" : \"" << e.what() << "\"}";
+		}
+	});
 }
