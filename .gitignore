@@ -4,5 +4,8 @@ TasksAlgoritm/.cache
 TasksAlgoritm/build
 CoreAlgoritm/compile_commands.json
 TasksAlgoritm/compile_commands.json
+AdamAlgoritm/compile_commands.json
+AdamAlgoritm/build
+AdamAlgoritm/.cache
 release 
 scripts

@@ -24,6 +24,7 @@ find_package(absl REQUIRED)
 find_package(Boost 1.89.0 REQUIRED url context)
 find_package(gRPC REQUIRED)
 find_package(Protobuf REQUIRED)
+find_package(Threads REQUIRED)
 
 include_directories(
 	./include/
