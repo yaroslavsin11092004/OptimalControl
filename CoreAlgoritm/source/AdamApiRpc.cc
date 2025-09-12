@@ -7,7 +7,7 @@ AdamApiRpc::AdamApiRpc(std::string& conf_file)
 		std::string buffer = { std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() };
 		file.close();
 		json conf_data = json::parse(buffer);
-		std::string target = absl::StrCat(conf_data["AdamServer"]["host"].get<std::string>(), ":", conf_data["AdamServer"]["port"].get<std::string>());
+		std::string target = absl::StrCat(conf_data["ProxyServer"]["host"].get<std::string>(), ":", conf_data["ProxyServer"]["port"].get<std::string>());
 		auto channel = grpc::CreateChannel(target, grpc::InsecureChannelCredentials());
 		stub = adam_api::AdamApiService::NewStub(channel);
 		cq = std::make_shared<grpc::CompletionQueue>();

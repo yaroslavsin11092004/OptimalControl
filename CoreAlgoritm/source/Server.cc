@@ -73,6 +73,7 @@ void HttpServer::run()
 	{
 		this->guard->reset();
 		this->ioc->stop();
+		pool.stop();
 	});
 	this->pool.join();
 }

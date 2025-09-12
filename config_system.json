@@ -12,6 +12,11 @@
 	"AdamServer":
 	{
 		"host" : "127.0.0.1",
+		"port" : "45003"
+	},
+	"ProxyServer":
+	{
+		"host" : "127.0.0.1",
 		"port" : "45002"
 	}
 }

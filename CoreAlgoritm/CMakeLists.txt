@@ -16,6 +16,7 @@ if (NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 	message(WARNING "Not using clang compiler")
 endif()
 
+find_package(OpenSSL REQUIRED)
 set(CMAKE_PREFIX_PATH "/usr/local${CMAKE_PREFIX_PATH}")
 set(CMAKE_LIBRARY_PATH "/usr/local/lib${CMAKE_LIBRARY_PATH}")
 set(CMAKE_INCLUDE_PATH "/usr/local/include${CMAKE_INCLUDE_PATH}")
@@ -53,6 +54,7 @@ add_executable(CoreServer ${SOURCE_EXE})
 
 target_link_libraries(CoreServer 
 	${SOURCE_LIB}
+  ${OpenSSL_LIBRARIES}
   Boost::boost
   Boost::url
   absl::strings
