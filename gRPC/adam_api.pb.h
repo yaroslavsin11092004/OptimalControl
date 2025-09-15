@@ -423,47 +423,9 @@ class OptimizeRequest final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kLeftEdgeFieldNumber = 1,
-    kRightEdgeFieldNumber = 2,
-    kParamsFieldNumber = 3,
+    kParamsFieldNumber = 1,
   };
-  // repeated double left_edge = 1;
-  int left_edge_size() const;
-  private:
-  int _internal_left_edge_size() const;
-
-  public:
-  void clear_left_edge() ;
-  double left_edge(int index) const;
-  void set_left_edge(int index, double value);
-  void add_left_edge(double value);
-  const ::google::protobuf::RepeatedField<double>& left_edge() const;
-  ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL mutable_left_edge();
-
-  private:
-  const ::google::protobuf::RepeatedField<double>& _internal_left_edge() const;
-  ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL _internal_mutable_left_edge();
-
-  public:
-  // repeated double right_edge = 2;
-  int right_edge_size() const;
-  private:
-  int _internal_right_edge_size() const;
-
-  public:
-  void clear_right_edge() ;
-  double right_edge(int index) const;
-  void set_right_edge(int index, double value);
-  void add_right_edge(double value);
-  const ::google::protobuf::RepeatedField<double>& right_edge() const;
-  ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL mutable_right_edge();
-
-  private:
-  const ::google::protobuf::RepeatedField<double>& _internal_right_edge() const;
-  ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL _internal_mutable_right_edge();
-
-  public:
-  // repeated double params = 3;
+  // repeated double params = 1;
   int params_size() const;
   private:
   int _internal_params_size() const;
@@ -485,7 +447,7 @@ class OptimizeRequest final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 3,
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
                                    0, 0,
                                    2>
       _table_;
@@ -507,8 +469,6 @@ class OptimizeRequest final : public ::google::protobuf::Message
         const OptimizeRequest& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
-    ::google::protobuf::RepeatedField<double> left_edge_;
-    ::google::protobuf::RepeatedField<double> right_edge_;
     ::google::protobuf::RepeatedField<double> params_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -661,10 +621,47 @@ class GlobalParamsRequest final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
+    kLeftEdgeFieldNumber = 2,
+    kRightEdgeFieldNumber = 3,
     kLearningRateFieldNumber = 1,
-    kEpsilonFieldNumber = 2,
-    kEpochsFieldNumber = 3,
+    kEpochsFieldNumber = 4,
   };
+  // repeated double left_edge = 2;
+  int left_edge_size() const;
+  private:
+  int _internal_left_edge_size() const;
+
+  public:
+  void clear_left_edge() ;
+  double left_edge(int index) const;
+  void set_left_edge(int index, double value);
+  void add_left_edge(double value);
+  const ::google::protobuf::RepeatedField<double>& left_edge() const;
+  ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL mutable_left_edge();
+
+  private:
+  const ::google::protobuf::RepeatedField<double>& _internal_left_edge() const;
+  ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL _internal_mutable_left_edge();
+
+  public:
+  // repeated double right_edge = 3;
+  int right_edge_size() const;
+  private:
+  int _internal_right_edge_size() const;
+
+  public:
+  void clear_right_edge() ;
+  double right_edge(int index) const;
+  void set_right_edge(int index, double value);
+  void add_right_edge(double value);
+  const ::google::protobuf::RepeatedField<double>& right_edge() const;
+  ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL mutable_right_edge();
+
+  private:
+  const ::google::protobuf::RepeatedField<double>& _internal_right_edge() const;
+  ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL _internal_mutable_right_edge();
+
+  public:
   // double learning_rate = 1;
   void clear_learning_rate() ;
   double learning_rate() const;
@@ -675,17 +672,7 @@ class GlobalParamsRequest final : public ::google::protobuf::Message
   void _internal_set_learning_rate(double value);
 
   public:
-  // double epsilon = 2;
-  void clear_epsilon() ;
-  double epsilon() const;
-  void set_epsilon(double value);
-
-  private:
-  double _internal_epsilon() const;
-  void _internal_set_epsilon(double value);
-
-  public:
-  // int32 epochs = 3;
+  // int32 epochs = 4;
   void clear_epochs() ;
   ::int32_t epochs() const;
   void set_epochs(::int32_t value);
@@ -699,7 +686,7 @@ class GlobalParamsRequest final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<2, 3,
+  static const ::google::protobuf::internal::TcParseTable<2, 4,
                                    0, 0,
                                    2>
       _table_;
@@ -721,8 +708,9 @@ class GlobalParamsRequest final : public ::google::protobuf::Message
         const GlobalParamsRequest& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedField<double> left_edge_;
+    ::google::protobuf::RepeatedField<double> right_edge_;
     double learning_rate_;
-    double epsilon_;
     ::int32_t epochs_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
@@ -887,7 +875,7 @@ inline void GlobalParamsRequest::clear_learning_rate() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.learning_rate_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000001U);
+                  0x00000004U);
 }
 inline double GlobalParamsRequest::learning_rate() const {
   // @@protoc_insertion_point(field_get:adam_api.GlobalParamsRequest.learning_rate)
@@ -895,7 +883,7 @@ inline double GlobalParamsRequest::learning_rate() const {
 }
 inline void GlobalParamsRequest::set_learning_rate(double value) {
   _internal_set_learning_rate(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
   // @@protoc_insertion_point(field_set:adam_api.GlobalParamsRequest.learning_rate)
 }
 inline double GlobalParamsRequest::_internal_learning_rate() const {
@@ -907,37 +895,112 @@ inline void GlobalParamsRequest::_internal_set_learning_rate(double value) {
   _impl_.learning_rate_ = value;
 }
 
-// double epsilon = 2;
-inline void GlobalParamsRequest::clear_epsilon() {
+// repeated double left_edge = 2;
+inline int GlobalParamsRequest::_internal_left_edge_size() const {
+  return _internal_left_edge().size();
+}
+inline int GlobalParamsRequest::left_edge_size() const {
+  return _internal_left_edge_size();
+}
+inline void GlobalParamsRequest::clear_left_edge() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.epsilon_ = 0;
-  ClearHasBit(_impl_._has_bits_[0],
-                  0x00000002U);
+  _impl_.left_edge_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000001U);
 }
-inline double GlobalParamsRequest::epsilon() const {
-  // @@protoc_insertion_point(field_get:adam_api.GlobalParamsRequest.epsilon)
-  return _internal_epsilon();
+inline double GlobalParamsRequest::left_edge(int index) const {
+  // @@protoc_insertion_point(field_get:adam_api.GlobalParamsRequest.left_edge)
+  return _internal_left_edge().Get(index);
 }
-inline void GlobalParamsRequest::set_epsilon(double value) {
-  _internal_set_epsilon(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
-  // @@protoc_insertion_point(field_set:adam_api.GlobalParamsRequest.epsilon)
+inline void GlobalParamsRequest::set_left_edge(int index, double value) {
+  _internal_mutable_left_edge()->Set(index, value);
+  // @@protoc_insertion_point(field_set:adam_api.GlobalParamsRequest.left_edge)
 }
-inline double GlobalParamsRequest::_internal_epsilon() const {
+inline void GlobalParamsRequest::add_left_edge(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _internal_mutable_left_edge()->Add(value);
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add:adam_api.GlobalParamsRequest.left_edge)
+}
+inline const ::google::protobuf::RepeatedField<double>& GlobalParamsRequest::left_edge() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:adam_api.GlobalParamsRequest.left_edge)
+  return _internal_left_edge();
+}
+inline ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL GlobalParamsRequest::mutable_left_edge()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_mutable_list:adam_api.GlobalParamsRequest.left_edge)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_left_edge();
+}
+inline const ::google::protobuf::RepeatedField<double>&
+GlobalParamsRequest::_internal_left_edge() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.epsilon_;
+  return _impl_.left_edge_;
 }
-inline void GlobalParamsRequest::_internal_set_epsilon(double value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.epsilon_ = value;
+inline ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL
+GlobalParamsRequest::_internal_mutable_left_edge() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.left_edge_;
 }
 
-// int32 epochs = 3;
+// repeated double right_edge = 3;
+inline int GlobalParamsRequest::_internal_right_edge_size() const {
+  return _internal_right_edge().size();
+}
+inline int GlobalParamsRequest::right_edge_size() const {
+  return _internal_right_edge_size();
+}
+inline void GlobalParamsRequest::clear_right_edge() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.right_edge_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline double GlobalParamsRequest::right_edge(int index) const {
+  // @@protoc_insertion_point(field_get:adam_api.GlobalParamsRequest.right_edge)
+  return _internal_right_edge().Get(index);
+}
+inline void GlobalParamsRequest::set_right_edge(int index, double value) {
+  _internal_mutable_right_edge()->Set(index, value);
+  // @@protoc_insertion_point(field_set:adam_api.GlobalParamsRequest.right_edge)
+}
+inline void GlobalParamsRequest::add_right_edge(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _internal_mutable_right_edge()->Add(value);
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_add:adam_api.GlobalParamsRequest.right_edge)
+}
+inline const ::google::protobuf::RepeatedField<double>& GlobalParamsRequest::right_edge() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:adam_api.GlobalParamsRequest.right_edge)
+  return _internal_right_edge();
+}
+inline ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL GlobalParamsRequest::mutable_right_edge()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_mutable_list:adam_api.GlobalParamsRequest.right_edge)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_right_edge();
+}
+inline const ::google::protobuf::RepeatedField<double>&
+GlobalParamsRequest::_internal_right_edge() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.right_edge_;
+}
+inline ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL
+GlobalParamsRequest::_internal_mutable_right_edge() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.right_edge_;
+}
+
+// int32 epochs = 4;
 inline void GlobalParamsRequest::clear_epochs() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.epochs_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000004U);
+                  0x00000008U);
 }
 inline ::int32_t GlobalParamsRequest::epochs() const {
   // @@protoc_insertion_point(field_get:adam_api.GlobalParamsRequest.epochs)
@@ -945,7 +1008,7 @@ inline ::int32_t GlobalParamsRequest::epochs() const {
 }
 inline void GlobalParamsRequest::set_epochs(::int32_t value) {
   _internal_set_epochs(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
   // @@protoc_insertion_point(field_set:adam_api.GlobalParamsRequest.epochs)
 }
 inline ::int32_t GlobalParamsRequest::_internal_epochs() const {
@@ -961,107 +1024,7 @@ inline void GlobalParamsRequest::_internal_set_epochs(::int32_t value) {
 
 // OptimizeRequest
 
-// repeated double left_edge = 1;
-inline int OptimizeRequest::_internal_left_edge_size() const {
-  return _internal_left_edge().size();
-}
-inline int OptimizeRequest::left_edge_size() const {
-  return _internal_left_edge_size();
-}
-inline void OptimizeRequest::clear_left_edge() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.left_edge_.Clear();
-  ClearHasBitForRepeated(_impl_._has_bits_[0],
-                  0x00000001U);
-}
-inline double OptimizeRequest::left_edge(int index) const {
-  // @@protoc_insertion_point(field_get:adam_api.OptimizeRequest.left_edge)
-  return _internal_left_edge().Get(index);
-}
-inline void OptimizeRequest::set_left_edge(int index, double value) {
-  _internal_mutable_left_edge()->Set(index, value);
-  // @@protoc_insertion_point(field_set:adam_api.OptimizeRequest.left_edge)
-}
-inline void OptimizeRequest::add_left_edge(double value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _internal_mutable_left_edge()->Add(value);
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
-  // @@protoc_insertion_point(field_add:adam_api.OptimizeRequest.left_edge)
-}
-inline const ::google::protobuf::RepeatedField<double>& OptimizeRequest::left_edge() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:adam_api.OptimizeRequest.left_edge)
-  return _internal_left_edge();
-}
-inline ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL OptimizeRequest::mutable_left_edge()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
-  // @@protoc_insertion_point(field_mutable_list:adam_api.OptimizeRequest.left_edge)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_left_edge();
-}
-inline const ::google::protobuf::RepeatedField<double>&
-OptimizeRequest::_internal_left_edge() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.left_edge_;
-}
-inline ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL
-OptimizeRequest::_internal_mutable_left_edge() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.left_edge_;
-}
-
-// repeated double right_edge = 2;
-inline int OptimizeRequest::_internal_right_edge_size() const {
-  return _internal_right_edge().size();
-}
-inline int OptimizeRequest::right_edge_size() const {
-  return _internal_right_edge_size();
-}
-inline void OptimizeRequest::clear_right_edge() {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.right_edge_.Clear();
-  ClearHasBitForRepeated(_impl_._has_bits_[0],
-                  0x00000002U);
-}
-inline double OptimizeRequest::right_edge(int index) const {
-  // @@protoc_insertion_point(field_get:adam_api.OptimizeRequest.right_edge)
-  return _internal_right_edge().Get(index);
-}
-inline void OptimizeRequest::set_right_edge(int index, double value) {
-  _internal_mutable_right_edge()->Set(index, value);
-  // @@protoc_insertion_point(field_set:adam_api.OptimizeRequest.right_edge)
-}
-inline void OptimizeRequest::add_right_edge(double value) {
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  _internal_mutable_right_edge()->Add(value);
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
-  // @@protoc_insertion_point(field_add:adam_api.OptimizeRequest.right_edge)
-}
-inline const ::google::protobuf::RepeatedField<double>& OptimizeRequest::right_edge() const
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  // @@protoc_insertion_point(field_list:adam_api.OptimizeRequest.right_edge)
-  return _internal_right_edge();
-}
-inline ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL OptimizeRequest::mutable_right_edge()
-    ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
-  // @@protoc_insertion_point(field_mutable_list:adam_api.OptimizeRequest.right_edge)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  return _internal_mutable_right_edge();
-}
-inline const ::google::protobuf::RepeatedField<double>&
-OptimizeRequest::_internal_right_edge() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.right_edge_;
-}
-inline ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL
-OptimizeRequest::_internal_mutable_right_edge() {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return &_impl_.right_edge_;
-}
-
-// repeated double params = 3;
+// repeated double params = 1;
 inline int OptimizeRequest::_internal_params_size() const {
   return _internal_params().size();
 }
@@ -1072,7 +1035,7 @@ inline void OptimizeRequest::clear_params() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.params_.Clear();
   ClearHasBitForRepeated(_impl_._has_bits_[0],
-                  0x00000004U);
+                  0x00000001U);
 }
 inline double OptimizeRequest::params(int index) const {
   // @@protoc_insertion_point(field_get:adam_api.OptimizeRequest.params)
@@ -1085,7 +1048,7 @@ inline void OptimizeRequest::set_params(int index, double value) {
 inline void OptimizeRequest::add_params(double value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _internal_mutable_params()->Add(value);
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
   // @@protoc_insertion_point(field_add:adam_api.OptimizeRequest.params)
 }
 inline const ::google::protobuf::RepeatedField<double>& OptimizeRequest::params() const
@@ -1095,7 +1058,7 @@ inline const ::google::protobuf::RepeatedField<double>& OptimizeRequest::params(
 }
 inline ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL OptimizeRequest::mutable_params()
     ABSL_ATTRIBUTE_LIFETIME_BOUND {
-  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000004U);
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
   // @@protoc_insertion_point(field_mutable_list:adam_api.OptimizeRequest.params)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   return _internal_mutable_params();

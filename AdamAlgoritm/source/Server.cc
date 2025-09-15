@@ -105,15 +105,17 @@ HttpServer::HttpServer(std::string& conf_file)
 			json conf_json = json::parse(buffer);
 			host = conf_json["AdamServer"]["host"].get<std::string>();
 			port = conf_json["AdamServer"]["port"].get<std::string>();
+			int thread_num = conf_json["AdamServer"]["worker_threads"].get<int>();
 			ioc = std::make_shared<net::io_context>();
 			guard.emplace(net::make_work_guard(*ioc));
 			socket = std::make_shared<tcp::socket>(*ioc);
 			auto address = net::ip::make_address(host);
 			auto ep = tcp::endpoint(address, std::stoi(port.c_str()));
 			acceptor.emplace(tcp::acceptor(*ioc, ep));
+			pool = std::make_unique<net::thread_pool>(thread_num);
 			adam = std::make_shared<Adam>();
-			for (int i = 0; i < 4; i++)
-				net::post(pool, [this](){ioc->run();});
+			for (int i = 0; i < thread_num; i++)
+				net::post(*pool, [this](){ioc->run();});
 		}
 		catch(const std::exception& e)
 		{
@@ -136,9 +138,9 @@ void HttpServer::run()
 	{
 		guard->reset();
 		ioc->stop();
-		pool.stop();
+		pool->stop();
 	});
-	pool.join();
+	pool->join();
 }
 void HttpServer::set_hamilton_function(Hamilton value)
 {

@@ -36,7 +36,7 @@ class TasksApiRpc : public std::enable_shared_from_this<TasksApiRpc>
 		};
 	private:
 		std::unique_ptr<tasks_api::TasksApiService::Stub> stub;
-		net::thread_pool pool{4};
+		std::unique_ptr<net::thread_pool> pool;
 		std::shared_ptr<net::io_context> ioc;
 		std::optional<net::executor_work_guard<net::io_context::executor_type>> guard;
 		std::thread cq_thread;

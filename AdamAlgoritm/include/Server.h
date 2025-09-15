@@ -25,7 +25,7 @@ class HttpServer
 		std::string port;
 		std::shared_ptr<net::io_context> ioc;
 		std::optional<net::executor_work_guard<net::io_context::executor_type>> guard;
-		net::thread_pool pool{4};
+		std::unique_ptr<net::thread_pool> pool;
 		std::optional<tcp::acceptor> acceptor;
 		std::shared_ptr<tcp::socket> socket;
 		Router router;

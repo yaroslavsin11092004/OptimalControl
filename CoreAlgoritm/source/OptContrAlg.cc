@@ -4,9 +4,9 @@ OptimalControl::OptimalControl(std::string& conf_file)
 	this->tasks_api = std::make_shared<TasksApiRpc>(conf_file);
 	this->adam_api = std::make_shared<AdamApiRpc>(conf_file);
 }
-void OptimalControl::adam_params(double learning_rate, double epsilon, int epochs)
+void OptimalControl::adam_params(double learning_rate, std::vector<double> u_left, std::vector<double> u_right, int epochs)
 {
-	this->adam_api->set_global_params(learning_rate, epsilon, epochs);
+	this->adam_api->set_global_params(learning_rate,std::move(u_left), std::move(u_right), epochs);
 }
 double OptimalControl::col_of_matrix_norm(auto acceptor, size_t dim)
 {
@@ -26,7 +26,7 @@ double OptimalControl::matrix_metrics(matrix<double>& val1, matrix<double>& val2
 	}
 	return ans;
 }
-std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximation(std::vector<double> x0, double t0, double t1,double t_step, std::vector<double> u_left, std::vector<double> u_right, double delta)
+std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximation(std::vector<double> x0, double t0, double t1,double t_step, double delta, std::vector<double> u0)
 {
 	std::vector<double> t_grid;
 	double cur_t = t0;
@@ -35,12 +35,11 @@ std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximati
 		t_grid.push_back(cur_t);
 		cur_t += t_step;
 	}
-	matrix<double> cur_u(t_grid.size(), u_left.size());
+	matrix<double> cur_u(t_grid.size(), u0.size());
 	cur_u.set_column(0, std::move(t_grid));
-	for (size_t i = 0; i < u_left.size(); i++)
+	for (size_t i = 0; i < u0.size(); i++)
 	{
-		double ui_start = (u_left[i] + u_right[i]) / 2.0;
-		std::vector<double> ui(ui_start, cur_u.size_row());
+		std::vector<double> ui(u0[i], cur_u.size_row());
 		cur_u.set_column(i + 1, std::move(ui));
 	}
 	matrix<double> last_u(cur_u.size_row(), cur_u.size_col());
@@ -135,7 +134,7 @@ std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximati
 				params.push_back(back_task_resolve(i,k + 1));
 			for (size_t k = 0; k < linked_task_resolve.size_col() - 1; k++)
 				params.push_back(linked_task_resolve(i,k + 1));
-			auto optim_ui = this->adam_api->adam(u_left, u_right, std::move(params));
+			auto optim_ui = this->adam_api->adam(std::move(params));
 			optim_u(linked_task_resolve.size_row() - 1 - i, 0) = linked_task_resolve(i,0);
 			for (size_t k = 0; k < optim_ui.size(); k++)
 				optim_u(linked_task_resolve.size_row() - 1 - i, k + 1) = optim_ui[k];

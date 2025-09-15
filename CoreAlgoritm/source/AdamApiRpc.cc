@@ -8,13 +8,15 @@ AdamApiRpc::AdamApiRpc(std::string& conf_file)
 		file.close();
 		json conf_data = json::parse(buffer);
 		std::string target = absl::StrCat(conf_data["ProxyServer"]["host"].get<std::string>(), ":", conf_data["ProxyServer"]["port"].get<std::string>());
+		int num_thread = conf_data["CoreServer"]["adam_api_worker_threads"].get<int>();
+		pool = std::make_unique<net::thread_pool>(num_thread);
 		auto channel = grpc::CreateChannel(target, grpc::InsecureChannelCredentials());
 		stub = adam_api::AdamApiService::NewStub(channel);
 		cq = std::make_shared<grpc::CompletionQueue>();
 		ioc = std::make_shared<net::io_context>();
 		guard.emplace(net::make_work_guard(*ioc));
-		for (int i = 0; i < 4; i++)
-			net::post(pool, [this](){ioc->run();});
+		for (int i = 0; i < num_thread; i++)
+			net::post(*pool, [this](){ioc->run();});
 		cq_thread = std::thread([this]{run_completion_queue();});
 	}
 	else 
@@ -31,8 +33,8 @@ AdamApiRpc::~AdamApiRpc()
 		cq_thread.join();
 	guard.reset();
 	ioc->stop();
-	pool.stop();
-	pool.join();
+	pool->stop();
+	pool->join();
 }
 void AdamApiRpc::run_completion_queue()
 {
@@ -52,12 +54,13 @@ void AdamApiRpc::run_completion_queue()
 			break;
 	}
 }
-net::awaitable<void> AdamApiRpc::set_global_param_async(double learning_rate, double epsilon, int epochs)
+net::awaitable<void> AdamApiRpc::set_global_param_async(double learning_rate, std::vector<double> u_left, std::vector<double> u_right, int epochs)
 {
 	auto state = std::make_shared<AsyncCallStateParams>();
 	state->request.set_learning_rate(learning_rate);
-	state->request.set_epsilon(epsilon);
 	state->request.set_epochs(epochs);
+	for (auto& i : u_left) state->request.add_left_edge(i);
+	for (auto& i : u_right) state->request.add_right_edge(i);
 	std::future<void> result_future = state->promise.get_future();
 	auto* callback = new std::function<void(bool)>([state](bool ok) mutable 
 	{
@@ -73,11 +76,9 @@ net::awaitable<void> AdamApiRpc::set_global_param_async(double learning_rate, do
 	result_future.get();
 	co_return;
 }
-net::awaitable<std::vector<double>> AdamApiRpc::adam_async(std::vector<double>& left_edge, std::vector<double>& right_edge, std::vector<double> params)
+net::awaitable<std::vector<double>> AdamApiRpc::adam_async(std::vector<double> params)
 {
 	auto state = std::make_shared<AsyncCallStateAdam>();
-	for (double val : left_edge) state->request.add_left_edge(val);
-	for (double val : right_edge) state->request.add_right_edge(val);
 	for (double val : params) state->request.add_params(val);
 	auto result_future = state->promise.get_future();
 	auto* callback = new std::function<void(bool)>([state](bool ok) mutable
@@ -98,18 +99,18 @@ net::awaitable<std::vector<double>> AdamApiRpc::adam_async(std::vector<double>& 
 	result_future.wait();
 	co_return result_future.get();
 }
-void AdamApiRpc::set_global_params(double learning_rate, double epsilon, int epochs)
+void AdamApiRpc::set_global_params(double learning_rate, std::vector<double> u_left, std::vector<double> u_right, int epochs)
 {
 	try 
 	{
 		std::promise<void> result_promise;
 		auto result_future = result_promise.get_future();
 		net::co_spawn(*ioc,
-		[self = shared_from_this(), result_promise = std::move(result_promise), learning_rate, epsilon, epochs]() mutable -> net::awaitable<void>
+		[self = shared_from_this(), result_promise = std::move(result_promise), learning_rate, u_left = std::move(u_left), u_right = std::move(u_right), epochs]() mutable -> net::awaitable<void>
 		{
 			try 
 			{
-				co_await self->set_global_param_async(learning_rate, epsilon,epochs);
+				co_await self->set_global_param_async(learning_rate, std::move(u_left), std::move(u_right),epochs);
 				result_promise.set_value();
 			}
 			catch(...)
@@ -125,18 +126,18 @@ void AdamApiRpc::set_global_params(double learning_rate, double epsilon, int epo
 		throw std::runtime_error(e.what());
 	}
 }
-std::vector<double> AdamApiRpc::adam(std::vector<double>& left_edge, std::vector<double>& right_edge, std::vector<double> params)
+std::vector<double> AdamApiRpc::adam(std::vector<double> params)
 {
 	try 
 	{
 		std::promise<std::vector<double>> result_promise;
 		auto result_future = result_promise.get_future();
 		net::co_spawn(*ioc, 
-		[self = shared_from_this(), result_promise = std::move(result_promise), left_edge, right_edge, params = std::move(params)]() mutable -> net::awaitable<void>
+		[self = shared_from_this(), result_promise = std::move(result_promise),params = std::move(params)]() mutable -> net::awaitable<void>
 		{
 			try 
 			{
-				auto result = co_await self->adam_async(left_edge, right_edge, std::move(params));
+				auto result = co_await self->adam_async(std::move(params));
 				result_promise.set_value(std::move(result));
 			}
 			catch(...)

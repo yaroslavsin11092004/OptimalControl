@@ -27,7 +27,7 @@ class AdamApiRpc : public std::enable_shared_from_this<AdamApiRpc>
 		};
 	private:
 		std::unique_ptr<adam_api::AdamApiService::Stub> stub;
-		net::thread_pool pool{4};
+		std::unique_ptr<net::thread_pool> pool;
 		std::optional<net::executor_work_guard<net::io_context::executor_type>> guard;
 		std::shared_ptr<net::io_context> ioc;
 		std::thread cq_thread;
@@ -36,13 +36,13 @@ class AdamApiRpc : public std::enable_shared_from_this<AdamApiRpc>
 		
 		void run_completion_queue();
 
-		net::awaitable<void> set_global_param_async(double learning_rate, double epsilon, int epochs);
-		net::awaitable<std::vector<double>> adam_async(std::vector<double>& u_left, std::vector<double>& u_right, std::vector<double> params);
+		net::awaitable<void> set_global_param_async(double learning_rate, std::vector<double> u_left, std::vector<double> u_right, int epochs);
+		net::awaitable<std::vector<double>> adam_async(std::vector<double> params);
 	public:
 		AdamApiRpc(std::string& conf_file);
 		~AdamApiRpc();
-		void set_global_params(double learning_rate, double epsilon, int epochs);
-		std::vector<double> adam(std::vector<double>& u_left, std::vector<double>& u_right, std::vector<double> params);
+		void set_global_params(double learning_rate, std::vector<double> u_left, std::vector<double> u_right, int epochs);
+		std::vector<double> adam(std::vector<double> params);
 
 };
 #endif

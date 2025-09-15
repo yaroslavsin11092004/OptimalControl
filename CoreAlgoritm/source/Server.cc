@@ -49,10 +49,14 @@ HttpServer::HttpServer(std::string& conf_file)
 		json conf_json = json::parse(data);
 		this->host = conf_json["CoreServer"]["host"].get<std::string>();
 		this->port = conf_json["CoreServer"]["port"].get<std::string>();
+		int num_thread = conf_json["CoreServer"]["worker_threads"].get<int>();
+		pool = std::make_unique<net::thread_pool>(num_thread);
 		net::ip::address ip_address = net::ip::make_address(this->host);
 		tcp::endpoint ep(ip_address, std::stoi(this->port.c_str()));
 		this->acceptor.emplace(tcp::acceptor(*this->ioc, ep));
 		this->optimal_control_api = std::make_shared<OptimalControl>(conf_file);
+		for (int i = 0; i < num_thread; i++)
+			net::post(*this->pool, [this](){ this->ioc->run(); });
 	}
 	else 
 	{
@@ -65,17 +69,15 @@ void HttpServer::run()
 	std::cout << "Server running at http://" + this->host + ":" + this->port << std::endl;
 	init_routes();
 	do_accept();
-	for (int i = 0; i < 4; i++)
-		net::post(this->pool, [this](){ this->ioc->run(); });
 	net::signal_set signals(*this->ioc, SIGINT, SIGTERM);
 	signals.async_wait(
 	[&](auto, auto)
 	{
 		this->guard->reset();
 		this->ioc->stop();
-		pool.stop();
+		pool->stop();
 	});
-	this->pool.join();
+	this->pool->join();
 }
 void HttpServer::do_accept() {
 	acceptor->async_accept(*this->socket, [this](beast::error_code ec) {
@@ -94,7 +96,9 @@ void HttpServer::init_routes()
 		try 
 		{
 			json req_json = json::parse(req.body());
-			this->optimal_control_api->adam_params(req_json["learning_rate"].get<double>(), req_json["epsilon"].get<double>(), req_json["epochs"].get<int>());
+			auto left_edge = req_json["left_edge"].get<std::vector<double>>();
+			auto right_edge = req_json["right_edge"].get<std::vector<double>>();
+			this->optimal_control_api->adam_params(req_json["learning_rate"].get<double>(), std::move(left_edge), std::move(right_edge), req_json["epochs"].get<int>());
 			beast::ostream(resp.body()) << "{\"result\" : \"success\"}";
 		}
 		catch(const std::exception& e)
@@ -112,10 +116,9 @@ void HttpServer::init_routes()
 			auto t0 = req_json["t0"].get<double>();
 			auto t1 = req_json["t1"].get<double>();
 			auto t_step = req_json["t_step"].get<double>();
-			auto u_left = req_json["u_left"].get<std::vector<double>>();
-			auto u_right = req_json["u_right"].get<std::vector<double>>();
 			auto delta = req_json["delta"].get<double>();
-			auto result = this->optimal_control_api->successive_approximation(std::move(x0), t0, t1, t_step, std::move(u_left), std::move(u_right), delta);
+			auto u0 = req_json["u0"].get<std::vector<double>>();
+			auto result = this->optimal_control_api->successive_approximation(std::move(x0), t0, t1, t_step, delta, std::move(u0));
 			json resp_json;
 			resp_json["optim_path"] = *result.first.store_handle();
 			resp_json["optim_control"] = *result.second.store_handle();

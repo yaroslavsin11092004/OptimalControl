@@ -8,13 +8,15 @@ TasksApiRpc::TasksApiRpc(std::string& conf_file)
 		file.close();
 		json conf_data = json::parse(buffer);
 		std::string target = absl::StrCat(conf_data["TasksServer"]["host"].get<std::string>(), ":", conf_data["TasksServer"]["port"].get<std::string>());
+		int thread_num = conf_data["CoreServer"]["tasks_api_worker_threads"].get<int>();
+		pool = std::make_unique<net::thread_pool>(thread_num);
 		std::shared_ptr<grpc::Channel> channel = grpc::CreateChannel(std::move(target), grpc::InsecureChannelCredentials());
 		stub = tasks_api::TasksApiService::NewStub(channel);
 		cq = std::make_shared<grpc::CompletionQueue>();
 		ioc = std::make_shared<net::io_context>();
 		guard.emplace(net::make_work_guard(*ioc));
-		for (int i = 0; i < 4; i++)
-			net::post(pool, [this]{ioc->run();});
+		for (int i = 0; i < thread_num; i++)
+			net::post(*pool, [this]{ioc->run();});
 		cq_thread = std::thread([this]{run_completion_queue();});
 	}
 	else 
@@ -31,8 +33,8 @@ TasksApiRpc::~TasksApiRpc()
 		cq_thread.join();
 	guard->reset();
 	ioc->stop();
-	pool.stop();
-	pool.join();
+	pool->stop();
+	pool->join();
 }
 void TasksApiRpc::run_completion_queue()
 {

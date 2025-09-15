@@ -54,8 +54,6 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 inline constexpr OptimizeRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
-        left_edge_{},
-        right_edge_{},
         params_{} {}
 
 template <typename>
@@ -81,8 +79,9 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 inline constexpr GlobalParamsRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
+        left_edge_{},
+        right_edge_{},
         learning_rate_{0},
-        epsilon_{0},
         epochs_{0} {}
 
 template <typename>
@@ -132,22 +131,20 @@ const ::uint32_t
         protodesc_cold) = {
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::adam_api::GlobalParamsRequest, _impl_._has_bits_),
-        6, // hasbit index offset
+        7, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::adam_api::GlobalParamsRequest, _impl_.learning_rate_),
-        PROTOBUF_FIELD_OFFSET(::adam_api::GlobalParamsRequest, _impl_.epsilon_),
+        PROTOBUF_FIELD_OFFSET(::adam_api::GlobalParamsRequest, _impl_.left_edge_),
+        PROTOBUF_FIELD_OFFSET(::adam_api::GlobalParamsRequest, _impl_.right_edge_),
         PROTOBUF_FIELD_OFFSET(::adam_api::GlobalParamsRequest, _impl_.epochs_),
+        2,
         0,
         1,
-        2,
+        3,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::adam_api::OptimizeRequest, _impl_._has_bits_),
-        6, // hasbit index offset
-        PROTOBUF_FIELD_OFFSET(::adam_api::OptimizeRequest, _impl_.left_edge_),
-        PROTOBUF_FIELD_OFFSET(::adam_api::OptimizeRequest, _impl_.right_edge_),
+        4, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::adam_api::OptimizeRequest, _impl_.params_),
         0,
-        1,
-        2,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::adam_api::OptimizeResponse, _impl_._has_bits_),
         4, // hasbit index offset
@@ -159,9 +156,9 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::adam_api::GlobalParamsRequest)},
-        {9, sizeof(::adam_api::OptimizeRequest)},
-        {18, sizeof(::adam_api::OptimizeResponse)},
-        {23, sizeof(::adam_api::EmptyResponse)},
+        {11, sizeof(::adam_api::OptimizeRequest)},
+        {16, sizeof(::adam_api::OptimizeResponse)},
+        {21, sizeof(::adam_api::EmptyResponse)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::adam_api::_GlobalParamsRequest_default_instance_._instance,
@@ -171,23 +168,22 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 };
 const char descriptor_table_protodef_adam_5fapi_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\016adam_api.proto\022\010adam_api\"M\n\023GlobalPara"
-    "msRequest\022\025\n\rlearning_rate\030\001 \001(\001\022\017\n\007epsi"
-    "lon\030\002 \001(\001\022\016\n\006epochs\030\003 \001(\005\"H\n\017OptimizeReq"
-    "uest\022\021\n\tleft_edge\030\001 \003(\001\022\022\n\nright_edge\030\002 "
-    "\003(\001\022\016\n\006params\030\003 \003(\001\"\"\n\020OptimizeResponse\022"
-    "\016\n\006result\030\001 \003(\001\"\017\n\rEmptyResponse2\236\001\n\016Ada"
-    "mApiService\022I\n\017SetGlobalParams\022\035.adam_ap"
-    "i.GlobalParamsRequest\032\027.adam_api.EmptyRe"
-    "sponse\022A\n\010Optimize\022\031.adam_api.OptimizeRe"
-    "quest\032\032.adam_api.OptimizeResponseb\006proto"
-    "3"
+    "\n\016adam_api.proto\022\010adam_api\"c\n\023GlobalPara"
+    "msRequest\022\025\n\rlearning_rate\030\001 \001(\001\022\021\n\tleft"
+    "_edge\030\002 \003(\001\022\022\n\nright_edge\030\003 \003(\001\022\016\n\006epoch"
+    "s\030\004 \001(\005\"!\n\017OptimizeRequest\022\016\n\006params\030\001 \003"
+    "(\001\"\"\n\020OptimizeResponse\022\016\n\006result\030\001 \003(\001\"\017"
+    "\n\rEmptyResponse2\236\001\n\016AdamApiService\022I\n\017Se"
+    "tGlobalParams\022\035.adam_api.GlobalParamsReq"
+    "uest\032\027.adam_api.EmptyResponse\022A\n\010Optimiz"
+    "e\022\031.adam_api.OptimizeRequest\032\032.adam_api."
+    "OptimizeResponseb\006proto3"
 };
 static ::absl::once_flag descriptor_table_adam_5fapi_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_adam_5fapi_2eproto = {
     false,
     false,
-    401,
+    384,
     descriptor_table_protodef_adam_5fapi_2eproto,
     "adam_api.proto",
     &descriptor_table_adam_5fapi_2eproto_once,
@@ -220,21 +216,44 @@ GlobalParamsRequest::GlobalParamsRequest(::google::protobuf::Arena* PROTOBUF_NUL
   SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:adam_api.GlobalParamsRequest)
 }
+PROTOBUF_NDEBUG_INLINE GlobalParamsRequest::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::adam_api::GlobalParamsRequest& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        left_edge_{visibility, arena, from.left_edge_},
+        right_edge_{visibility, arena, from.right_edge_} {}
+
 GlobalParamsRequest::GlobalParamsRequest(
-    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const GlobalParamsRequest& from)
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const GlobalParamsRequest& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(arena, GlobalParamsRequest_class_data_.base()),
+    : ::google::protobuf::Message(arena, GlobalParamsRequest_class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(arena),
+    : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(from._impl_) {
+  GlobalParamsRequest* const _this = this;
+  (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char*>(&_impl_) +
+               offsetof(Impl_, learning_rate_),
+           reinterpret_cast<const char*>(&from._impl_) +
+               offsetof(Impl_, learning_rate_),
+           offsetof(Impl_, epochs_) -
+               offsetof(Impl_, learning_rate_) +
+               sizeof(Impl_::epochs_));
+
+  // @@protoc_insertion_point(copy_constructor:adam_api.GlobalParamsRequest)
 }
 PROTOBUF_NDEBUG_INLINE GlobalParamsRequest::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
-      : _cached_size_{0} {}
+      : _cached_size_{0},
+        left_edge_{visibility, arena},
+        right_edge_{visibility, arena} {}
 
 inline void GlobalParamsRequest::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
@@ -265,8 +284,24 @@ inline void* PROTOBUF_NONNULL GlobalParamsRequest::PlacementNew_(
   return ::new (mem) GlobalParamsRequest(arena);
 }
 constexpr auto GlobalParamsRequest::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(GlobalParamsRequest),
-                                            alignof(GlobalParamsRequest));
+  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.left_edge_) +
+          decltype(GlobalParamsRequest::_impl_.left_edge_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.right_edge_) +
+          decltype(GlobalParamsRequest::_impl_.right_edge_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+  });
+  if (arena_bits.has_value()) {
+    return ::google::protobuf::internal::MessageCreator::ZeroInit(
+        sizeof(GlobalParamsRequest), alignof(GlobalParamsRequest), *arena_bits);
+  } else {
+    return ::google::protobuf::internal::MessageCreator(&GlobalParamsRequest::PlacementNew_,
+                                 sizeof(GlobalParamsRequest),
+                                 alignof(GlobalParamsRequest));
+  }
 }
 constexpr auto GlobalParamsRequest::InternalGenerateClassData_() {
   return ::google::protobuf::internal::ClassDataFull{
@@ -302,16 +337,16 @@ GlobalParamsRequest::GetClassData() const {
   return GlobalParamsRequest_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 0, 2>
+const ::_pbi::TcParseTable<2, 4, 0, 0, 2>
 GlobalParamsRequest::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_._has_bits_),
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    4, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
+    4,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     GlobalParamsRequest_class_data_.base(),
@@ -321,25 +356,33 @@ GlobalParamsRequest::_table_ = {
     ::_pbi::TcParser::GetTable<::adam_api::GlobalParamsRequest>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // int32 epochs = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GlobalParamsRequest, _impl_.epochs_), 3>(),
+     {32, 3, 0,
+      PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.epochs_)}},
     // double learning_rate = 1;
     {::_pbi::TcParser::FastF64S1,
-     {9, 0, 0, PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.learning_rate_)}},
-    // double epsilon = 2;
-    {::_pbi::TcParser::FastF64S1,
-     {17, 1, 0, PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.epsilon_)}},
-    // int32 epochs = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(GlobalParamsRequest, _impl_.epochs_), 2>(),
-     {24, 2, 0, PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.epochs_)}},
+     {9, 2, 0,
+      PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.learning_rate_)}},
+    // repeated double left_edge = 2;
+    {::_pbi::TcParser::FastF64P1,
+     {18, 0, 0,
+      PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.left_edge_)}},
+    // repeated double right_edge = 3;
+    {::_pbi::TcParser::FastF64P1,
+     {26, 1, 0,
+      PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.right_edge_)}},
   }}, {{
     65535, 65535
   }}, {{
     // double learning_rate = 1;
-    {PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.learning_rate_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
-    // double epsilon = 2;
-    {PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.epsilon_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
-    // int32 epochs = 3;
-    {PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.epochs_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    {PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.learning_rate_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
+    // repeated double left_edge = 2;
+    {PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.left_edge_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kPackedDouble)},
+    // repeated double right_edge = 3;
+    {PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.right_edge_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcRepeated | ::_fl::kPackedDouble)},
+    // int32 epochs = 4;
+    {PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.epochs_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
@@ -353,7 +396,15 @@ PROTOBUF_NOINLINE void GlobalParamsRequest::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      _impl_.left_edge_.Clear();
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      _impl_.right_edge_.Clear();
+    }
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x0000000cU)) {
     ::memset(&_impl_.learning_rate_, 0, static_cast<::size_t>(
         reinterpret_cast<char*>(&_impl_.epochs_) -
         reinterpret_cast<char*>(&_impl_.learning_rate_)) + sizeof(_impl_.epochs_));
@@ -382,7 +433,7 @@ PROTOBUF_NOINLINE void GlobalParamsRequest::Clear() {
 
   cached_has_bits = this_._impl_._has_bits_[0];
   // double learning_rate = 1;
-  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
     if (::absl::bit_cast<::uint64_t>(this_._internal_learning_rate()) != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteDoubleToArray(
@@ -390,20 +441,25 @@ PROTOBUF_NOINLINE void GlobalParamsRequest::Clear() {
     }
   }
 
-  // double epsilon = 2;
-  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-    if (::absl::bit_cast<::uint64_t>(this_._internal_epsilon()) != 0) {
-      target = stream->EnsureSpace(target);
-      target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-          2, this_._internal_epsilon(), target);
+  // repeated double left_edge = 2;
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+    if (this_._internal_left_edge_size() > 0) {
+      target = stream->WriteFixedPacked(2, this_._internal_left_edge(), target);
     }
   }
 
-  // int32 epochs = 3;
-  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+  // repeated double right_edge = 3;
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+    if (this_._internal_right_edge_size() > 0) {
+      target = stream->WriteFixedPacked(3, this_._internal_right_edge(), target);
+    }
+  }
+
+  // int32 epochs = 4;
+  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
     if (this_._internal_epochs() != 0) {
       target =
-          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<3>(
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<4>(
               stream, this_._internal_epochs(), target);
     }
   }
@@ -433,21 +489,35 @@ PROTOBUF_NOINLINE void GlobalParamsRequest::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+    // repeated double left_edge = 2;
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      ::size_t data_size = ::size_t{8} *
+          ::_pbi::FromIntSize(this_._internal_left_edge_size());
+      ::size_t tag_size = data_size == 0
+          ? 0
+          : 1 + ::_pbi::WireFormatLite::Int32Size(
+                              static_cast<::int32_t>(data_size));
+      total_size += tag_size + data_size;
+    }
+    // repeated double right_edge = 3;
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      ::size_t data_size = ::size_t{8} *
+          ::_pbi::FromIntSize(this_._internal_right_edge_size());
+      ::size_t tag_size = data_size == 0
+          ? 0
+          : 1 + ::_pbi::WireFormatLite::Int32Size(
+                              static_cast<::int32_t>(data_size));
+      total_size += tag_size + data_size;
+    }
     // double learning_rate = 1;
-    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (::absl::bit_cast<::uint64_t>(this_._internal_learning_rate()) != 0) {
         total_size += 9;
       }
     }
-    // double epsilon = 2;
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-      if (::absl::bit_cast<::uint64_t>(this_._internal_epsilon()) != 0) {
-        total_size += 9;
-      }
-    }
-    // int32 epochs = 3;
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    // int32 epochs = 4;
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       if (this_._internal_epochs() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_epochs());
@@ -472,18 +542,19 @@ void GlobalParamsRequest::MergeImpl(::google::protobuf::MessageLite& to_msg,
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      _this->_internal_mutable_left_edge()->MergeFrom(from._internal_left_edge());
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      _this->_internal_mutable_right_edge()->MergeFrom(from._internal_right_edge());
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (::absl::bit_cast<::uint64_t>(from._internal_learning_rate()) != 0) {
         _this->_impl_.learning_rate_ = from._impl_.learning_rate_;
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
-      if (::absl::bit_cast<::uint64_t>(from._internal_epsilon()) != 0) {
-        _this->_impl_.epsilon_ = from._impl_.epsilon_;
-      }
-    }
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       if (from._internal_epochs() != 0) {
         _this->_impl_.epochs_ = from._impl_.epochs_;
       }
@@ -506,6 +577,8 @@ void GlobalParamsRequest::InternalSwap(GlobalParamsRequest* PROTOBUF_RESTRICT PR
   using ::std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  _impl_.left_edge_.InternalSwap(&other->_impl_.left_edge_);
+  _impl_.right_edge_.InternalSwap(&other->_impl_.right_edge_);
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(GlobalParamsRequest, _impl_.epochs_)
       + sizeof(GlobalParamsRequest::_impl_.epochs_)
@@ -542,8 +615,6 @@ PROTOBUF_NDEBUG_INLINE OptimizeRequest::Impl_::Impl_(
     [[maybe_unused]] const ::adam_api::OptimizeRequest& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
-        left_edge_{visibility, arena, from.left_edge_},
-        right_edge_{visibility, arena, from.right_edge_},
         params_{visibility, arena, from.params_} {}
 
 OptimizeRequest::OptimizeRequest(
@@ -566,8 +637,6 @@ PROTOBUF_NDEBUG_INLINE OptimizeRequest::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : _cached_size_{0},
-        left_edge_{visibility, arena},
-        right_edge_{visibility, arena},
         params_{visibility, arena} {}
 
 inline void OptimizeRequest::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
@@ -594,14 +663,6 @@ inline void* PROTOBUF_NONNULL OptimizeRequest::PlacementNew_(
 }
 constexpr auto OptimizeRequest::InternalNewImpl_() {
   constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
-      PROTOBUF_FIELD_OFFSET(OptimizeRequest, _impl_.left_edge_) +
-          decltype(OptimizeRequest::_impl_.left_edge_)::
-              InternalGetArenaOffset(
-                  ::google::protobuf::Message::internal_visibility()),
-      PROTOBUF_FIELD_OFFSET(OptimizeRequest, _impl_.right_edge_) +
-          decltype(OptimizeRequest::_impl_.right_edge_)::
-              InternalGetArenaOffset(
-                  ::google::protobuf::Message::internal_visibility()),
       PROTOBUF_FIELD_OFFSET(OptimizeRequest, _impl_.params_) +
           decltype(OptimizeRequest::_impl_.params_)::
               InternalGetArenaOffset(
@@ -650,16 +711,16 @@ OptimizeRequest::GetClassData() const {
   return OptimizeRequest_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 0, 2>
+const ::_pbi::TcParseTable<0, 1, 0, 0, 2>
 OptimizeRequest::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(OptimizeRequest, _impl_._has_bits_),
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    1, 0,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967294,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
+    1,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     OptimizeRequest_class_data_.base(),
@@ -669,25 +730,15 @@ OptimizeRequest::_table_ = {
     ::_pbi::TcParser::GetTable<::adam_api::OptimizeRequest>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
-    // repeated double left_edge = 1;
+    // repeated double params = 1;
     {::_pbi::TcParser::FastF64P1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(OptimizeRequest, _impl_.left_edge_)}},
-    // repeated double right_edge = 2;
-    {::_pbi::TcParser::FastF64P1,
-     {18, 1, 0, PROTOBUF_FIELD_OFFSET(OptimizeRequest, _impl_.right_edge_)}},
-    // repeated double params = 3;
-    {::_pbi::TcParser::FastF64P1,
-     {26, 2, 0, PROTOBUF_FIELD_OFFSET(OptimizeRequest, _impl_.params_)}},
+     {10, 0, 0,
+      PROTOBUF_FIELD_OFFSET(OptimizeRequest, _impl_.params_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // repeated double left_edge = 1;
-    {PROTOBUF_FIELD_OFFSET(OptimizeRequest, _impl_.left_edge_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kPackedDouble)},
-    // repeated double right_edge = 2;
-    {PROTOBUF_FIELD_OFFSET(OptimizeRequest, _impl_.right_edge_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcRepeated | ::_fl::kPackedDouble)},
-    // repeated double params = 3;
-    {PROTOBUF_FIELD_OFFSET(OptimizeRequest, _impl_.params_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcRepeated | ::_fl::kPackedDouble)},
+    // repeated double params = 1;
+    {PROTOBUF_FIELD_OFFSET(OptimizeRequest, _impl_.params_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kPackedDouble)},
   }},
   // no aux_entries
   {{
@@ -701,16 +752,8 @@ PROTOBUF_NOINLINE void OptimizeRequest::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      _impl_.left_edge_.Clear();
-    }
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
-      _impl_.right_edge_.Clear();
-    }
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
-      _impl_.params_.Clear();
-    }
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+    _impl_.params_.Clear();
   }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
@@ -735,24 +778,10 @@ PROTOBUF_NOINLINE void OptimizeRequest::Clear() {
   (void)cached_has_bits;
 
   cached_has_bits = this_._impl_._has_bits_[0];
-  // repeated double left_edge = 1;
+  // repeated double params = 1;
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-    if (this_._internal_left_edge_size() > 0) {
-      target = stream->WriteFixedPacked(1, this_._internal_left_edge(), target);
-    }
-  }
-
-  // repeated double right_edge = 2;
-  if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
-    if (this_._internal_right_edge_size() > 0) {
-      target = stream->WriteFixedPacked(2, this_._internal_right_edge(), target);
-    }
-  }
-
-  // repeated double params = 3;
-  if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
     if (this_._internal_params_size() > 0) {
-      target = stream->WriteFixedPacked(3, this_._internal_params(), target);
+      target = stream->WriteFixedPacked(1, this_._internal_params(), target);
     }
   }
 
@@ -780,30 +809,10 @@ PROTOBUF_NOINLINE void OptimizeRequest::Clear() {
   (void)cached_has_bits;
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
-  cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    // repeated double left_edge = 1;
+   {
+    // repeated double params = 1;
+    cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      ::size_t data_size = ::size_t{8} *
-          ::_pbi::FromIntSize(this_._internal_left_edge_size());
-      ::size_t tag_size = data_size == 0
-          ? 0
-          : 1 + ::_pbi::WireFormatLite::Int32Size(
-                              static_cast<::int32_t>(data_size));
-      total_size += tag_size + data_size;
-    }
-    // repeated double right_edge = 2;
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
-      ::size_t data_size = ::size_t{8} *
-          ::_pbi::FromIntSize(this_._internal_right_edge_size());
-      ::size_t tag_size = data_size == 0
-          ? 0
-          : 1 + ::_pbi::WireFormatLite::Int32Size(
-                              static_cast<::int32_t>(data_size));
-      total_size += tag_size + data_size;
-    }
-    // repeated double params = 3;
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
       ::size_t data_size = ::size_t{8} *
           ::_pbi::FromIntSize(this_._internal_params_size());
       ::size_t tag_size = data_size == 0
@@ -831,16 +840,8 @@ void OptimizeRequest::MergeImpl(::google::protobuf::MessageLite& to_msg,
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
-      _this->_internal_mutable_left_edge()->MergeFrom(from._internal_left_edge());
-    }
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
-      _this->_internal_mutable_right_edge()->MergeFrom(from._internal_right_edge());
-    }
-    if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
-      _this->_internal_mutable_params()->MergeFrom(from._internal_params());
-    }
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+    _this->_internal_mutable_params()->MergeFrom(from._internal_params());
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
@@ -859,8 +860,6 @@ void OptimizeRequest::InternalSwap(OptimizeRequest* PROTOBUF_RESTRICT PROTOBUF_N
   using ::std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
-  _impl_.left_edge_.InternalSwap(&other->_impl_.left_edge_);
-  _impl_.right_edge_.InternalSwap(&other->_impl_.right_edge_);
   _impl_.params_.InternalSwap(&other->_impl_.params_);
 }
 
@@ -1009,7 +1008,8 @@ OptimizeResponse::_table_ = {
   }, {{
     // repeated double result = 1;
     {::_pbi::TcParser::FastF64P1,
-     {10, 0, 0, PROTOBUF_FIELD_OFFSET(OptimizeResponse, _impl_.result_)}},
+     {10, 0, 0,
+      PROTOBUF_FIELD_OFFSET(OptimizeResponse, _impl_.result_)}},
   }}, {{
     65535, 65535
   }}, {{
