@@ -38,7 +38,6 @@ set(SOURCE_EXE
 	./source/Router.cc
 	./source/Server.cc
 	./source/OptContrAlg.cc
-	./source/TasksApi.cc
   ../gRPC/adam_api.pb.cc
   ../gRPC/adam_api.grpc.pb.cc
   ../gRPC/tasks_api.pb.cc
