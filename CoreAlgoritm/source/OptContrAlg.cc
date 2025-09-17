@@ -17,14 +17,13 @@ double OptimalControl::col_of_matrix_norm(auto acceptor, size_t dim)
 }
 double OptimalControl::matrix_metrics(matrix<double>& val1, matrix<double>& val2)
 {
-	double ans = -1.0;
+	std::vector<double> rep;
 	for (size_t i = 0; i < val1.size_col() - 1; i++)
 	{
-		double cur_metrics = abs(col_of_matrix_norm(val1.make_column_acceptor(i + 1), val1.size_row()) - col_of_matrix_norm(val2.make_column_acceptor(i+ 1), val2.size_row()));
-		if (ans < cur_metrics)
-			ans = cur_metrics;
+		for (size_t j = 0; j < val1.size_row(); j++)
+			rep.push_back(abs(val1(j,i + 1) - val2(j, i+ 1)));
 	}
-	return ans;
+	return std::accumulate(rep.begin(), rep.end(),0);
 }
 std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximation(std::vector<double> x0, double t0, double t1,double t_step, double delta, std::vector<double> u0)
 {
@@ -35,19 +34,19 @@ std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximati
 		t_grid.push_back(cur_t);
 		cur_t += t_step;
 	}
-	matrix<double> cur_u(t_grid.size(), u0.size());
+	matrix<double> cur_u(t_grid.size(), u0.size() + 1);
 	cur_u.set_column(0, std::move(t_grid));
 	for (size_t i = 0; i < u0.size(); i++)
 	{
-		std::vector<double> ui(u0[i], cur_u.size_row());
+		std::vector<double> ui(cur_u.size_row(),u0[i]);
 		cur_u.set_column(i + 1, std::move(ui));
 	}
 	matrix<double> last_u(cur_u.size_row(), cur_u.size_col());
 	auto equations = this->tasks_api->generate_equations(x0.size());
 	auto linked_equations = this->tasks_api->generate_linked(x0.size());
 	auto start_value = std::make_shared<std::vector<double>>();
-	std::copy(x0.begin(), x0.end(), start_value->begin());
-	while(matrix_metrics(cur_u, last_u) > delta)
+	for (auto val : x0) start_value->push_back(val);
+	do
 	{
 		last_u = cur_u;
 		std::vector<std::pair<size_t,size_t>> forward_task_param_idx;
@@ -126,7 +125,7 @@ std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximati
 		linked_task.u0 = start_value;
 		auto linked_task_resolve = runge_kutt(std::ref(linked_task));
 		matrix<double> optim_u(cur_u.size_row(), cur_u.size_col());
-		for (size_t i = linked_task_resolve.size_row() - 1; i >= 0; i--)
+		for (size_t i = linked_task_resolve.size_row() - 1; i >= 1; i--)
 		{
 			std::vector<double> params;
 			params.push_back(linked_task_resolve(i,0));
@@ -173,33 +172,27 @@ std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximati
 			for (size_t j = 0; j < last_u.size_row(); j++)
 				cur_u(j,i + 1) = last_u(j,i + 1) + s * (optim_u(j, i + 1) - last_u(j, i + 1));
 		}
-	}
-	std::vector<interpol_param> optim_x_task_param;
-	std::vector<std::pair<size_t,size_t>> optim_x_task_param_idx;
-	for (size_t i = 0; i < cur_u.size_col() - 1; i++)
-	{
-		matrix<double> ui(cur_u.size_row(), 2);
-		ui.set_column(0,cur_u.make_column_acceptor(0));
-		ui.set_column(1, cur_u.make_column_acceptor(i + 1));
-		auto ratios = spline_interpolation(ui);
-		interpol_param ip;
-		ip.mesh = std::move(ui);
-		ip.ratios = std::move(ratios);
-		ip.dir = true;
-		optim_x_task_param.push_back(std::move(ip));
-		optim_x_task_param_idx.push_back(std::make_pair(i,1));
-	}
-	rk_params optim_x_task;
-	optim_x_task.equations = equations;
-	optim_x_task.dim_var = 2;
-	optim_x_task.index_var = 0;
-	optim_x_task.step = t_step;
-	optim_x_task.u0 = std::make_shared<std::vector<double>>(std::move(x0));
-	optim_x_task.dir = true;
-	optim_x_task.param_func = std::make_shared<std::vector<interpol_param>>(std::move(optim_x_task_param));
-	optim_x_task_param_idx = std::move(optim_x_task_param_idx);
-	optim_x_task.t0 = t0;
-	optim_x_task.t1 = t1;
-	auto optim_x_task_resolve = runge_kutt(std::ref(optim_x_task));
-	return std::make_pair(std::move(optim_x_task_resolve), std::move(cur_u));
+		if (matrix_metrics(cur_u,last_u) < delta) 
+		{
+			std::vector<interpol_param> optim_x_task_param;
+			std::vector<std::pair<size_t,size_t>> optim_x_task_param_idx;
+			for (size_t i = 0; i < cur_u.size_col() - 1; i++)
+			{
+				matrix<double> ui(cur_u.size_row(), 2);
+				ui.set_column(0,cur_u.make_column_acceptor(0));
+				ui.set_column(1, cur_u.make_column_acceptor(i + 1));
+				auto ratios = spline_interpolation(ui);
+				interpol_param ip;
+				ip.mesh = std::move(ui);
+				ip.ratios = std::move(ratios);
+				ip.dir = true;
+				optim_x_task_param.push_back(std::move(ip));
+				optim_x_task_param_idx.push_back(std::make_pair(i,1));
+			}
+			opt_x_task.param_func = std::make_shared<std::vector<interpol_param>>(std::move(optim_x_task_param));
+			opt_x_task.param_func_indeces = std::move(optim_x_task_param_idx);
+			auto optim_x_task_resolve = runge_kutt(std::ref(opt_x_task));
+			return std::make_pair(std::move(optim_x_task_resolve), std::move(cur_u));
+		}
+	} while(true);
 }

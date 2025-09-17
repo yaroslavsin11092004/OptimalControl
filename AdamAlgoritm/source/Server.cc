@@ -88,6 +88,7 @@ void HttpServer::init_routes()
 		}
 		catch(const std::exception& e)
 		{
+			std::cerr << "Error of optimize adam::" << e.what() << std::endl;
 			resp.result(http::status::bad_request);
 			beast::ostream(resp.body()) << "{\"result\" : \"" << e.what() << "\"}";
 		}

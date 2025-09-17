@@ -16,33 +16,39 @@ if (NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 	message(WARNING "Not using clang compiler")
 endif()
 
+find_package(OpenSSL REQUIRED)
+
 set(CMAKE_PREFIX_PATH "/usr/local${CMAKE_PREFIX_PATH}")
 set(CMAKE_LIBRARY_PATH "/usr/local/lib${CMAKE_LIBRARY_PATH}")
 set(CMAKE_INCLUDE_PATH "/usr/local/include${CMAKE_INCLUDE_PATH}")
 
 
 find_package(absl REQUIRED)
-find_package(Boost 1.89.0 REQUIRED url context)
 find_package(gRPC REQUIRED)
 find_package(Protobuf REQUIRED)
-include_directories(
-	./include/
-	../lib
-	../gRPC
-)
 
 set(SOURCE_EXE 
-	./source/Main.cpp
+	./source/Main.cc
+  ./source/Tasks.cc
+  ./source/TasksService.cc
+  ../gRPC/tasks_api.pb.cc
+  ../gRPC/tasks_api.grpc.pb.cc
 )
 
 add_executable(TasksServer ${SOURCE_EXE})
 set(SOURCE_LIB ${CMAKE_CURRENT_SOURCE_DIR}/../release/libMathPlot.so)
-target_link_libraries(TasksServer 
+target_include_directories(TasksServer PRIVATE 
+  ./include 
+  ../lib 
+  ../gRPC 
+  ${GRPC_INCLUDE_DURS}
+  ${PROTOBUF_INCLUDE_DIRS}
+)
+target_link_libraries(TasksServer PRIVATE
 	${SOURCE_LIB}
-  Boost::boost
-  Boost::url
+  ${OpenSSL_LIBRARIES}
   absl::strings
   gRPC::grpc++
   gRPC::grpc++_reflection
-   protobuf::libprotobuf
+  protobuf::libprotobuf
 )

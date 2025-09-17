@@ -69,12 +69,6 @@ void AdamService::OptimizeCallData::proceed(bool ok)
 			}
 			case PROCESS:
 			{
-				if (context.IsCancelled())
-				{
-					status = FINISH;
-					writer.FinishWithError(grpc::Status::CANCELLED, this);
-					break;
-				}
 				std::vector<double> params(request.params().begin(), request.params().end());
 				auto res = api->adam(std::move(params));
 				for (auto& i : res) response.add_result(i);
