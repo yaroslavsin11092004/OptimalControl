@@ -26,7 +26,7 @@ class CoreApi
   Future<void> fetchSetAdamParams(double learningRate, List<double> leftEdge, List<double> rightEdge, int epochs) async 
   {
     final response = await http.post( 
-      Uri.parse('$_endpointPref/set_params'),
+      Uri.parse('$_endpointPref/set_adam_params'),
       headers: {
         'Content-Type' : 'application/json'
       },
@@ -68,5 +68,13 @@ class CoreApi
       print('Request successive approx failed');
       return {}; 
     }
+  }
+  List<double> parseStringArray(String buffer) 
+  {
+    List<String> splitBuffer = buffer.split(',');
+    List<double> result = [];
+    for (int i = 0; i < splitBuffer.length; i++)
+      result.add(double.parse(splitBuffer[i]));
+    return result;
   }
 }
