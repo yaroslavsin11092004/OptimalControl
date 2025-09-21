@@ -33,6 +33,7 @@ set(SOURCE_EXE
   ./source/TasksService.cc
   ../gRPC/tasks_api.pb.cc
   ../gRPC/tasks_api.grpc.pb.cc
+  ./source/GoldenRatio.cc
 )
 
 add_executable(TasksServer ${SOURCE_EXE})

@@ -167,6 +167,7 @@ std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximati
 		opt_x_task.equations = equations;
 		auto opt_x_task_resolve = runge_kutt(std::ref(opt_x_task));
 		double s = this->tasks_api->param_s(opt_x_task_resolve, last_u, optim_u);
+		std::cerr << s << std::endl;
 		for (size_t i = 0; i < last_u.size_col() - 1; i++)
 		{
 			for (size_t j = 0; j < last_u.size_row(); j++)

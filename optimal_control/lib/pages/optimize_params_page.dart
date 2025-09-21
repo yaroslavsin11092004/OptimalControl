@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:optimal_control/services/core_api.dart';
 import '../store.dart';
 class OptimizeParamsPage extends StatefulWidget 
 {
@@ -14,6 +15,7 @@ class _StateOptimizeParamsPage extends State<OptimizeParamsPage>
   String rightEdge = '';
   String epochs = '';
   String delta = '';
+  CoreApi api = coreApi;
   void _showErrorMessage(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -23,6 +25,18 @@ class _StateOptimizeParamsPage extends State<OptimizeParamsPage>
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
+    );
+  }
+  void _showSuccessMessage(BuildContext context, String message) 
+  {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar( 
+        content: Text(message),
+        backgroundColor: Colors.green,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds:3),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+      )
     );
   }
   @override 
@@ -125,35 +139,16 @@ class _StateOptimizeParamsPage extends State<OptimizeParamsPage>
                 onChanged: (value) { epochs = value; }
               )
             ),
-            SizedBox( 
-              width: 300,
-              height: 70,
-              child: TextField( 
-                decoration: InputDecoration( 
-                  labelText: 'Точность',
-                  hintText: 'Введите погрешность',
-                  enabledBorder: OutlineInputBorder( 
-                    borderSide: BorderSide(color: Colors.lightBlueAccent),
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  focusedBorder: OutlineInputBorder( 
-                    borderSide: BorderSide(color: Colors.lightBlue, width: 2),
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  border: OutlineInputBorder()
-                ),
-                onChanged: (value) { delta = value; }
-              )
-            ),
             Padding( 
               padding: EdgeInsets.only(left: 100),
               child: ElevatedButton.icon( 
                 onPressed: () async { 
                   try 
                   {
-                    List<double> leftEdgeStore = coreApi.parseStringArray(leftEdge);
-                    List<double> rightEdgeStore = coreApi.parseStringArray(rightEdge);
-                    await coreApi.fetchSetAdamParams(double.parse(learningRate), leftEdgeStore, rightEdgeStore, int.parse(epochs));
+                    List<double> leftEdgeStore = api.parseStringArray(leftEdge);
+                    List<double> rightEdgeStore = api.parseStringArray(rightEdge);
+                    await api.fetchSetAdamParams(double.parse(learningRate), leftEdgeStore, rightEdgeStore, int.parse(epochs));
+                    _showSuccessMessage(context, 'Параметры успешно применены');
                   }
                   catch(e)
                   {

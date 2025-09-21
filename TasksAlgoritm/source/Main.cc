@@ -17,7 +17,7 @@ int main()
 		server->add_equation(
 		[](double t, matrix<double> params) -> double 
 		{
-			return params(1,0) + pow(params(0,1),2);
+			return params(1,0) + std::pow(params(0,1),2);
 		});
 		server->add_equation(
 		[](double t, matrix<double> params) -> double 
@@ -40,8 +40,9 @@ int main()
 			auto functional = [](double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) -> double 
 			{
 				matrix<double> grid(x.size_row(),2);
+				grid.set_column(0, x.make_column_acceptor(0));
 				for (int i = 0; i < x.size_row(); i++)
-					grid(i,1) = std::pow((s * (optim_u(i,1) - u(i,1)) + u(i,1)),2) + x(i,1);
+					grid(i,1) = std::pow((s * (optim_u(i,1) - u(i,1)) + u(i,1)),2) + x(i,2);
 				return SimpsonIntegral(grid);
 			};
 			GoldenRatio optimizer(functional, std::move(x), std::move(u), std::move(optim_u));

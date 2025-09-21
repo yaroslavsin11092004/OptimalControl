@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:optimal_control/services/core_api.dart';
 import '../store.dart';
 class TasksParamsPage extends StatefulWidget 
 {
@@ -15,6 +16,7 @@ class _TasksParamsPageState extends State<TasksParamsPage>
   String u0 = '';
   String x0 = '';
   String delta = '';
+  CoreApi api = coreApi;
   void _showErrorMessage(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -184,9 +186,9 @@ class _TasksParamsPageState extends State<TasksParamsPage>
                 onPressed: () async { 
                   try 
                   {
-                    List<double> x0Data = coreApi.parseStringArray(x0);
-                    List<double> u0Data = coreApi.parseStringArray(u0);
-                    Map<String, dynamic> request_result = await coreApi.fetchSuccesiveApprox(double.parse(t0), double.parse(t1), double.parse(tStep), u0Data, x0Data, double.parse(delta));
+                    List<double> x0Data = api.parseStringArray(x0);
+                    List<double> u0Data = api.parseStringArray(u0);
+                    Map<String, dynamic> request_result = await api.fetchSuccesiveApprox(double.parse(t0), double.parse(t1), double.parse(tStep), u0Data, x0Data, double.parse(delta));
                     storePath = (request_result['optim_path'] as List).cast<double>().toList();
                     storeControl = (request_result['optim_control'] as List).cast<double>().toList();
                     sizeRowPath = request_result['optim_path_size_row'] as int;

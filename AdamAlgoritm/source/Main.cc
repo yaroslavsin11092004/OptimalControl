@@ -5,7 +5,7 @@ int main()
 {
 	Hamilton func = [](vector<torch::Tensor> args, vector<torch::Tensor> params) -> torch::Tensor 
 	{
-		return params[2] * (params[1] + torch::pow(args[0],2)) + params[3] * args[0];
+		return params[3] * (params[2] + torch::pow(args[0],2)) + params[4] * args[0];
 	};
 	try 
 	{

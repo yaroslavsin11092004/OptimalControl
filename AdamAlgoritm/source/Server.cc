@@ -83,6 +83,8 @@ void HttpServer::init_routes()
 			std::vector<double> params = req_json["params"].get<std::vector<double>>();
 			adam->set_params(std::move(params));
 			auto result = adam->optimize();
+			for (auto& i : result) std::cerr << i << " ";
+			std::cerr << std::endl;
 			json resp_json;
 			resp_json["result"] = std::move(result);
 			beast::ostream(resp.body()) << resp_json.dump();
