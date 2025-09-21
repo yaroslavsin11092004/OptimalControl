@@ -13,6 +13,7 @@
 #include <functional>
 #include <thread>
 #include <signal.h>
+#include <math.h>
 using Equation = std::function<double(double, matrix<double>)>;
 using ParamS = std::function<double(matrix<double>, matrix<double>, matrix<double>)>;
 using json = nlohmann::json;

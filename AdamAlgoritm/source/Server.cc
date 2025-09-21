@@ -59,6 +59,8 @@ void HttpServer::init_routes()
 			std::vector<double> left_edge = req_json["left_edge"].get<std::vector<double>>();
 			std::vector<double> right_edge = req_json["right_edge"].get<std::vector<double>>();
 			matrix<double> edges(left_edge.size(), 2);
+			edges.set_column(0, std::move(left_edge));
+			edges.set_column(1, std::move(right_edge));
 			adam->set_edges(std::move(edges));
 			adam->set_epochs(req_json["epochs"].get<int>());
 			adam->set_learning_rate(req_json["learning_rate"].get<double>());

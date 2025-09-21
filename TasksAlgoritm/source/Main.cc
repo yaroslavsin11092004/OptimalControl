@@ -1,4 +1,5 @@
 #include "TasksService.h"
+#include "GoldenRatio.h"
 using namespace std;
 atomic<bool> stop_requested{false};
 void handle_signal(int signal)
@@ -36,18 +37,15 @@ int main()
 		server->set_param_s( 
 		[](matrix<double> x, matrix<double> u, matrix<double> optim_u) -> double 
 		{
-			matrix<double> num(u.size_row(), 2);
-			matrix<double> denum(u.size_row(),2);
-			num.set_column(0, u.make_column_acceptor(0));
-			denum.set_column(0, u.make_column_acceptor(0));
-			for (size_t i = 0; i < u.size_row(); i++)
+			auto functional = [](double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) -> double 
 			{
-				num(i,1) = u(i,1) * (optim_u(i,1) - u(i,1));
-				denum(i,1) = pow((optim_u(i,1) - u(i,1)),2);
-			}
-			auto val_num = SimpsonIntegral(num);
-			auto val_denum = SimpsonIntegral(denum);
-			return -1 * (val_num / val_denum);
+				matrix<double> grid(x.size_row(),2);
+				for (int i = 0; i < x.size_row(); i++)
+					grid(i,1) = std::pow((s * (optim_u(i,1) - u(i,1)) + u(i,1)),2) + x(i,1);
+				return SimpsonIntegral(grid);
+			};
+			GoldenRatio optimizer(functional, std::move(x), std::move(u), std::move(optim_u));
+			return optimizer.minimum(0,1);
 		});
 		server->run();
 		while(!stop_requested)
