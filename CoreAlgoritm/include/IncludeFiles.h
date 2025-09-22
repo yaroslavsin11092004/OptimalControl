@@ -8,6 +8,7 @@
 #include <boost/beast/http.hpp>
 #include <MathPlot/RungeKutt.h>
 #include <MathPlot/interpolation.h>
+#include <MathPlot/MathAnalys.h>
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <cstddef>

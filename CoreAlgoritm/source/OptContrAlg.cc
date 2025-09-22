@@ -8,22 +8,20 @@ void OptimalControl::adam_params(double learning_rate, std::vector<double> u_lef
 {
 	this->adam_api->set_global_params(learning_rate,std::move(u_left), std::move(u_right), epochs);
 }
-double OptimalControl::col_of_matrix_norm(auto acceptor, size_t dim)
-{
-	double sum = 0;
-	for (size_t i = 0; i < dim; i++)
-		sum += pow(acceptor(i),2);
-	return sqrt(sum);
-}
 double OptimalControl::matrix_metrics(matrix<double>& val1, matrix<double>& val2)
 {
 	std::vector<double> rep;
-	for (size_t i = 0; i < val1.size_col() - 1; i++)
+	for (int i = 0; i < val1.size_row(); i++)
 	{
-		for (size_t j = 0; j < val1.size_row(); j++)
-			rep.push_back(abs(val1(j,i + 1) - val2(j, i+ 1)));
+		double sum = 0;
+		for (int j = 1; j < val1.size_col(); j++)
+			sum += std::abs(val1(i,j) - val2(i,j));
+		rep.push_back(sum);
 	}
-	return std::accumulate(rep.begin(), rep.end(),0);
+	matrix<double> mesh(val1.size_row(), 2);
+	mesh.set_column(0, val1.make_column_acceptor(0));
+	mesh.set_column(1, std::move(rep));
+	return SimpsonIntegral(mesh);
 }
 std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximation(std::vector<double> x0, double t0, double t1,double t_step, double delta, std::vector<double> u0)
 {
