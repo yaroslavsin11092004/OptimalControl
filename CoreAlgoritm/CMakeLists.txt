@@ -48,9 +48,9 @@ set(SOURCE_EXE
 
 set(SOURCE_LIB ${CMAKE_CURRENT_SOURCE_DIR}/../release/libMathPlot.so)
 
-add_executable(CoreServer ${SOURCE_EXE})
+add_executable(CoreServer.rl ${SOURCE_EXE})
 
-target_link_libraries(CoreServer 
+target_link_libraries(CoreServer.rl 
 	${SOURCE_LIB}
   ${OpenSSL_LIBRARIES}
   Boost::boost

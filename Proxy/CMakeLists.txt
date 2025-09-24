@@ -35,8 +35,8 @@ set(SOURCE_EXE
 	${CMAKE_SOURCE_DIR}/../gRPC/adam_api.pb.cc
 )
 
-add_executable(ProxyServer ${SOURCE_EXE})
-target_include_directories(ProxyServer PRIVATE 
+add_executable(ProxyServer.rl ${SOURCE_EXE})
+target_include_directories(ProxyServer.rl PRIVATE 
 	./include 
 	../gRPC 
 	../lib
@@ -45,7 +45,7 @@ target_include_directories(ProxyServer PRIVATE
 	${BOOST_INCLUDE_DIRS}
 )
 
-target_link_libraries(ProxyServer PRIVATE 
+target_link_libraries(ProxyServer.rl PRIVATE 
 	${OpenSSL_LIBRARIES}
   Boost::boost
   Boost::url

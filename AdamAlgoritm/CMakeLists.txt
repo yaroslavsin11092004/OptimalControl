@@ -33,16 +33,16 @@ set(SOURCE_EXE
 	${CMAKE_SOURCE_DIR}/source/Server.cc
 )
 
-add_executable(AdamServer ${SOURCE_EXE})
+add_executable(AdamServer.rl ${SOURCE_EXE})
 
-target_include_directories(AdamServer PRIVATE 
+target_include_directories(AdamServer.rl PRIVATE 
 	${BOOST_INCLUDE_DIRS}
 	${TORCH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/include 
 	${CMAKE_SOURCE_DIR}/../lib
 )
 
-target_link_libraries(AdamServer PRIVATE 
+target_link_libraries(AdamServer.rl PRIVATE 
 	Boost::boost
 	Boost::url
 	${TORCH_LIBRARIES}

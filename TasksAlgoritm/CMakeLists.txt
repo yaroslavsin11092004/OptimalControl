@@ -36,16 +36,16 @@ set(SOURCE_EXE
   ./source/GoldenRatio.cc
 )
 
-add_executable(TasksServer ${SOURCE_EXE})
+add_executable(TasksServer.rl ${SOURCE_EXE})
 set(SOURCE_LIB ${CMAKE_CURRENT_SOURCE_DIR}/../release/libMathPlot.so)
-target_include_directories(TasksServer PRIVATE 
+target_include_directories(TasksServer.rl PRIVATE 
   ./include 
   ../lib 
   ../gRPC 
   ${GRPC_INCLUDE_DURS}
   ${PROTOBUF_INCLUDE_DIRS}
 )
-target_link_libraries(TasksServer PRIVATE
+target_link_libraries(TasksServer.rl PRIVATE
 	${SOURCE_LIB}
   ${OpenSSL_LIBRARIES}
   absl::strings
