@@ -1,6 +1,6 @@
 function clear_bin_files() 
 {
-	find -type f ! -name "*.so" ! -name "*.rl" -delete 
+	find -type f ! -name "*.so" ! -name "*.rl" ! -name "config_system.json" ! -name "task.json" -delete 
 	rm -rf CMakeFiles
 	rm -rf .cmake
 }

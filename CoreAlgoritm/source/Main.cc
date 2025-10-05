@@ -2,7 +2,7 @@
 using namespace std;
 int main()
 {
-	string conf_file = "/home/yaroslavsinyakov/source/OptimalControl/config_system.json";
+	string conf_file = "./release/config_system.json";
 	try 
 	{
 		HttpServer server(conf_file);

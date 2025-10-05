@@ -10,5 +10,6 @@ AdamAlgoritm/.cache
 Proxy/.cache 
 Proxy/build 
 Proxy/compile_commands.json
-release 
 scripts
+release/*.rl 
+release/*.so

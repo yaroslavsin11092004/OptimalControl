@@ -10,7 +10,7 @@ int main()
 {
 	try 
 	{
-		std::string conf_file = "/home/yaroslavsinyakov/source/OptimalControl/config_system.json";
+		std::string conf_file = "./release/config_system.json";
 		std::signal(SIGINT, handle_signal);
 		std::unique_ptr<AdamService> server = std::make_unique<AdamService>(conf_file);
 		server->run();

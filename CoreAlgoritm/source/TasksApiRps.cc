@@ -132,7 +132,7 @@ std::shared_ptr<std::vector<Equation>> TasksApiRpc::generate_equations(int dim)
 		for (int i = 0; i < dim; i++)
 		{
 			result->push_back(
-			[self = shared_from_this(), i](double arg, matrix<double> params)
+			FunctionWrapper<double(double,matrix<double>)>{[self = shared_from_this(), i](double arg, matrix<double> params)
 			{
 				std::promise<double> result_promise;
 				auto result_future = result_promise.get_future();
@@ -151,7 +151,7 @@ std::shared_ptr<std::vector<Equation>> TasksApiRpc::generate_equations(int dim)
 				},
 				net::detached);
 				return result_future.get();
-			});
+			}});
 		}
 		return result;
 	}
@@ -168,7 +168,7 @@ std::shared_ptr<std::vector<Equation>> TasksApiRpc::generate_linked(int dim)
 		for (int i = 0; i < dim; i++)
 		{
 			result->push_back(
-			[self = shared_from_this(),i](double arg, matrix<double> params) 
+			FunctionWrapper<double(double, matrix<double>)>{[self = shared_from_this(),i](double arg, matrix<double> params) 
 			{
 				std::promise<double> result_promise;
 				auto result_future = result_promise.get_future();
@@ -187,7 +187,7 @@ std::shared_ptr<std::vector<Equation>> TasksApiRpc::generate_linked(int dim)
 				},
 				net::detached);
 				return result_future.get();
-			});
+			}});
 		}
 		return result;
 	}

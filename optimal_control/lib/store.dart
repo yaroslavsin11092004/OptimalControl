@@ -1,5 +1,5 @@
 import './services/core_api.dart';
-CoreApi coreApi = CoreApi('/home/yaroslavsinyakov/source/OptimalControl/config_system.json');
+CoreApi coreApi = CoreApi('/home/yaroslavsinyakov/source/OptimalControl/release/config_system.json');
 List<double> storePath = [];
 List<double> storeControl = [];
 int sizeRowPath = 0;

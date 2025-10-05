@@ -5,11 +5,11 @@ int main()
 {
 	Hamilton func = [](vector<torch::Tensor> args, vector<torch::Tensor> params) -> torch::Tensor 
 	{
-		return params[3] * (params[2] + torch::pow(args[0],2)) + params[4] * args[0];
+		return params[2] * (params[1] + torch::pow(args[0],2)) + params[3] * args[0];
 	};
 	try 
 	{
-		string conf_path = "/home/yaroslavsinyakov/source/OptimalControl/config_system.json";
+		string conf_path = "./release/config_system.json";
 		HttpServer server(conf_path);
 		server.set_hamilton_function(func);
 		server.run();

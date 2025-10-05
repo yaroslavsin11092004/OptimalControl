@@ -26,5 +26,5 @@ using tcp = net::ip::tcp;
 using Request = http::request<http::string_body>;
 using Response = http::response<http::dynamic_body>;
 using Handler = std::function<void(Request&, Response&, urls::url_view)>;
-using Equation = std::function<double(double, matrix<double>)>;
+using Equation = FunctionWrapper<double(double, matrix<double>)>;
 #endif

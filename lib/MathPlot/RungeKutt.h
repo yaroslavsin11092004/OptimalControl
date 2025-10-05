@@ -3,11 +3,11 @@
 #include "interpolation.h"
 #include "matrix.h"
 #include <optional>
-#include <functional>
+#include "function_wrapper.h"
 #include <memory>
 struct rk_params
 {
-	std::shared_ptr<std::vector<std::function<double(double,matrix<double>)>>> equations = nullptr;
+	std::shared_ptr<std::vector<FunctionWrapper<double(double,matrix<double>)>>> equations = nullptr;
 	std::shared_ptr<std::vector<interpol_param>> param_func = nullptr;
 	std::vector<std::pair<size_t,size_t>> param_func_indeces;
 	double t0 = 0.0;

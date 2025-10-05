@@ -3,6 +3,9 @@
 #include <grpcpp/grpcpp.h>
 #include "tasks_api.grpc.pb.h"
 #include <MathPlot/MathAnalys.h>
+#include <stack>
+#include <string.h>
+#include <MathPlot/function_wrapper.h>
 #include <nlohmann/json.hpp>
 #include <iostream>
 #include <fstream>
@@ -14,7 +17,7 @@
 #include <thread>
 #include <signal.h>
 #include <math.h>
-using Equation = std::function<double(double, matrix<double>)>;
+using Equation = FunctionWrapper<double(double, matrix<double>)>;
 using ParamS = std::function<double(matrix<double>, matrix<double>, matrix<double>)>;
 using json = nlohmann::json;
 #endif

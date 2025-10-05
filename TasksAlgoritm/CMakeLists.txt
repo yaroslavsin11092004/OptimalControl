@@ -34,6 +34,9 @@ set(SOURCE_EXE
   ../gRPC/tasks_api.pb.cc
   ../gRPC/tasks_api.grpc.pb.cc
   ./source/GoldenRatio.cc
+  ./source/Tokenizer.cc
+  ./source/EquationsBuilder.cc
+  ./source/FunctionalBuilder.cc
 )
 
 add_executable(TasksServer.rl ${SOURCE_EXE})
@@ -49,6 +52,7 @@ target_link_libraries(TasksServer.rl PRIVATE
 	${SOURCE_LIB}
   ${OpenSSL_LIBRARIES}
   absl::strings
+  absl::flat_hash_map
   gRPC::grpc++
   gRPC::grpc++_reflection
   protobuf::libprotobuf
