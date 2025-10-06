@@ -26,11 +26,14 @@ set(CMAKE_PREFIX_PATH "/usr/local${CMAKE_PREFIX_PATH}")
 set(CMAKE_INCLUDE_PATH "/usr/local/include${CMAKE_INCLUDE_PATH}")
 set(CMAKE_LIBRARY_PATH "/usr/local/lib${CMAKE_LIBRARY_PATH}")
 find_package(Boost 1.89.0 REQUIRED url context)
+find_package(absl REQUIRED)
 set(SOURCE_EXE 
 	${CMAKE_SOURCE_DIR}/source/Main.cc
 	${CMAKE_SOURCE_DIR}/source/Adam.cc 
 	${CMAKE_SOURCE_DIR}/source/Router.cc 
 	${CMAKE_SOURCE_DIR}/source/Server.cc
+	${CMAKE_SOURCE_DIR}/source/Tokenizer.cc 
+	${CMAKE_SOURCE_DIR}/source/HamiltonBuilder.cc
 )
 
 add_executable(AdamServer.rl ${SOURCE_EXE})
@@ -45,5 +48,6 @@ target_include_directories(AdamServer.rl PRIVATE
 target_link_libraries(AdamServer.rl PRIVATE 
 	Boost::boost
 	Boost::url
+	absl::flat_hash_map
 	${TORCH_LIBRARIES}
 )

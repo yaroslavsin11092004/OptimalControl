@@ -109,7 +109,7 @@ std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximati
 			linked_task_param_idx.push_back(std::make_pair(i, 1));
 		}
 		std::transform(start_value->begin(), start_value->end(), start_value->begin(), [](double x){return 0.0;});
-		(*start_value)[0] = -1.0;
+		(*start_value)[0] = 0.0;
 		rk_params linked_task;
 		linked_task.equations = linked_equations;
 		linked_task.t0 = t1;

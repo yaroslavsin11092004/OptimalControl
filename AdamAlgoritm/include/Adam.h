@@ -1,7 +1,7 @@
 #ifndef OPTIMIZE_H
 #define OPTIMIZE_H
 #include "IncludeFiles.h"
-using Hamilton = std::function<torch::Tensor(std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params)>;
+using Hamilton = FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params)>;
 class Adam
 {
 	private:

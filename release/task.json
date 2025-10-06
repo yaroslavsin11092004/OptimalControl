@@ -5,6 +5,6 @@
 	"LinkedEquations": [
 		"1.0"
 	],
-	"HamiltonFunction" : "(((0 - 1.0) * (x1 + (u1 ^ 2))) + (psi1 * x1))",
+	"HamiltonFunction" : "(((0 - 1.0) * (x1 + (u1 ^ 2))) + (psi1 * u1))",
 	"Functional" :  "((u1 ^ 2) + x1)"
 }

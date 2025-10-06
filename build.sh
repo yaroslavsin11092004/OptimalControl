@@ -7,7 +7,7 @@ function clear_bin_files()
 function build() 
 {
 	cmake -DCMAKE_CXX_COMPILER=clang++ $1
-	make -j${nproc} 
+	make -j${11}
 	clear_bin_files
 }
 if [ -d "release" ]; then

@@ -5,7 +5,10 @@
 #include <iostream>
 #include <memory>
 #include <functional>
+#include <stack>
 #include <MathPlot/matrix.h>
+#include <MathPlot/function_wrapper.h>
+#include <absl/container/flat_hash_map.h>
 #include <fstream>
 #include <regex>
 #include <nlohmann/json.hpp>
