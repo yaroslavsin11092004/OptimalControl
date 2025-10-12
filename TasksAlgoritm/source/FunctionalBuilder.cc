@@ -7,48 +7,42 @@ bool FunctionalBuilder::is_number(std::string& token) {
 	return true;
 }
 FunctionalBuilder::FunctionalBuilder() {
-	store.insert_or_assign("x1", FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
-	[](int idx, double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) { return x(idx,1); }});
-	store.insert_or_assign("x2", FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
-	[](int idx, double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) { return x(idx,2); }});
-	store.insert_or_assign("x3", FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
-	[](int idx, double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) { return x(idx,3); }});
-	store.insert_or_assign("x4", FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
-	[](int idx, double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) { return x(idx,4); }});
-	store.insert_or_assign("x5", FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
-	[](int idx, double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) { return x(idx,5); }});
-	store.insert_or_assign("x6", FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
-	[](int idx, double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) { return x(idx,6); }});
-	store.insert_or_assign("u1", FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
-	[](int idx, double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) { return s * (optim_u(idx,1) - u(idx,1)) + u(idx,1); }});
-	store.insert_or_assign("u2", FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
-	[](int idx, double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) { return s * (optim_u(idx,2) - u(idx,2)) + u(idx,2); }});
-	store.insert_or_assign("u3", FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
-	[](int idx, double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) { return s * (optim_u(idx,3) - u(idx,3)) + u(idx,3); }});
-	store.insert_or_assign("u4", FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
-	[](int idx, double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) { return s * (optim_u(idx,4) - u(idx,4)) + u(idx,4); }});
-	store.insert_or_assign("u5", FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
-	[](int idx, double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) { return s * (optim_u(idx,5) - u(idx,5)) + u(idx,5); }});
-	store.insert_or_assign("u6", FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
-	[](int idx, double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) { return s * (optim_u(idx,6) - u(idx,6)) + u(idx,6); }});
-	store.insert_or_assign("t", FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
-	[](int idx, double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) { return x(idx, 0); }});
+	store.insert_or_assign("x1", FunctionWrapper<FunctionalSignature>{ [](auto idx, auto, auto x, auto, auto) { return x(idx,1); }});
+	store.insert_or_assign("x2", FunctionWrapper<FunctionalSignature>{ [](auto idx, auto, auto x, auto, auto) { return x(idx,2); }});
+	store.insert_or_assign("x3", FunctionWrapper<FunctionalSignature>{ [](auto idx, auto, auto x, auto, auto) { return x(idx,3); }});
+	store.insert_or_assign("x4", FunctionWrapper<FunctionalSignature>{ [](auto idx, auto, auto x, auto, auto) { return x(idx,4); }});
+	store.insert_or_assign("x5", FunctionWrapper<FunctionalSignature>{ [](auto idx, auto, auto x, auto, auto) { return x(idx,5); }});
+	store.insert_or_assign("x6", FunctionWrapper<FunctionalSignature>{ [](auto idx, auto, auto x, auto, auto) { return x(idx,6); }});
+	store.insert_or_assign("u1", FunctionWrapper<FunctionalSignature>{ 
+	[](auto idx, auto s, auto, auto u, auto optim_u) { return s * (optim_u(idx,1) - u(idx,1)) + u(idx,1); }});
+	store.insert_or_assign("u2", FunctionWrapper<FunctionalSignature>{
+	[](auto idx, auto s, auto, auto u, auto optim_u) { return s * (optim_u(idx,2) - u(idx,2)) + u(idx,2); }});
+	store.insert_or_assign("u3", FunctionWrapper<FunctionalSignature>{
+	[](auto idx, auto s, auto, auto u, auto optim_u) { return s * (optim_u(idx,3) - u(idx,3)) + u(idx,3); }});
+	store.insert_or_assign("u4", FunctionWrapper<FunctionalSignature>{
+	[](auto idx, auto s, auto, auto u, auto optim_u) { return s * (optim_u(idx,4) - u(idx,4)) + u(idx,4); }});
+	store.insert_or_assign("u5", FunctionWrapper<FunctionalSignature>{
+	[](auto idx, auto s, auto, auto u, auto optim_u) { return s * (optim_u(idx,5) - u(idx,5)) + u(idx,5); }});
+	store.insert_or_assign("u6", FunctionWrapper<FunctionalSignature>{
+	[](auto idx, auto s, auto, auto u, auto optim_u) { return s * (optim_u(idx,6) - u(idx,6)) + u(idx,6); }});
+	store.insert_or_assign("t", FunctionWrapper<FunctionalSignature>{ [](auto idx, auto, auto x, auto, auto) { return x(idx, 0); }});
 }
-FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)> FunctionalBuilder::build(const char* input) {
-	tokenizer.set_input_ptr(input);
+FunctionWrapper<FunctionalBuilder::FunctionalSignature> FunctionalBuilder::build(std::string& input) {
+	std::string tr_input = transform_expression(input);
+	tokenizer.set_input_ptr(tr_input.c_str());
 	auto tokens = tokenizer.tokenize();
 	std::stack<std::string> operators;
-	std::stack<FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>> operands;
+	std::stack<FunctionWrapper<FunctionalSignature>> operands;
 	for (auto& t : tokens) {
 		if (t == "(") continue;
 		else if (t == "+" || t == "-" || t == "/" || t == "*" || t == "sin" || t == "cos" || t == "^")
 			operators.push(std::move(t));
 		else if (is_number(t)){
 			double val = std::stod(t.c_str());
-			operands.push(FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
-			[val](int idx, double s, matrix<double>& x, matrix<double>& u, matrix<double>& optim_u) { return val; }});
+			operands.push(FunctionWrapper<FunctionalSignature>{ [val](auto, auto, auto, auto, auto) { return val; }});
 		}
 		else if (t == ")") {
+			if (operators.empty() || operands.empty()) continue;
 			auto op = operators.top();
 			operators.pop();
 			if (op == "+") {

@@ -47,9 +47,31 @@ message CallParamSResponse
   double result = 1;
 }
 
+message CallTaskRequest
+{
+  repeated string equation = 1;
+  repeated string linked = 2;
+  string functional = 3;
+}
+message CallFunctionalRequest 
+{
+  repeated double x = 1;
+  int32 x_size_row = 2;
+  int32 x_size_col = 3;
+  repeated double u = 4;
+  int32 u_size_row = 5;
+  int32 u_size_col = 6;
+}
+message CallFunctionalResponse
+{
+  double result = 1;
+}
+message CallTaskResponse {}
 service TasksApiService
 {
   rpc CallEquation(CallEquationRequest) returns (CallEquationResponse);
   rpc CallLinked(CallLinkedRequest) returns (CallLinkedResponse);
   rpc CallParamS(CallParamSRequest) returns (CallParamSResponse);
+  rpc CallTask(CallTaskRequest) returns (CallTaskResponse);
+  rpc CallFunctional(CallFunctionalRequest) returns (CallFunctionalResponse);
 }

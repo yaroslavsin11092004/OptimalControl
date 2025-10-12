@@ -20,6 +20,7 @@
 #include "google/protobuf/io/coded_stream.h"
 #include "google/protobuf/arena.h"
 #include "google/protobuf/arenastring.h"
+#include "google/protobuf/generated_message_bases.h"
 #include "google/protobuf/generated_message_tctable_decl.h"
 #include "google/protobuf/generated_message_util.h"
 #include "google/protobuf/metadata_lite.h"
@@ -61,6 +62,14 @@ class CallEquationResponse;
 struct CallEquationResponseDefaultTypeInternal;
 extern CallEquationResponseDefaultTypeInternal _CallEquationResponse_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull CallEquationResponse_class_data_;
+class CallFunctionalRequest;
+struct CallFunctionalRequestDefaultTypeInternal;
+extern CallFunctionalRequestDefaultTypeInternal _CallFunctionalRequest_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull CallFunctionalRequest_class_data_;
+class CallFunctionalResponse;
+struct CallFunctionalResponseDefaultTypeInternal;
+extern CallFunctionalResponseDefaultTypeInternal _CallFunctionalResponse_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull CallFunctionalResponse_class_data_;
 class CallLinkedRequest;
 struct CallLinkedRequestDefaultTypeInternal;
 extern CallLinkedRequestDefaultTypeInternal _CallLinkedRequest_default_instance_;
@@ -77,6 +86,14 @@ class CallParamSResponse;
 struct CallParamSResponseDefaultTypeInternal;
 extern CallParamSResponseDefaultTypeInternal _CallParamSResponse_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull CallParamSResponse_class_data_;
+class CallTaskRequest;
+struct CallTaskRequestDefaultTypeInternal;
+extern CallTaskRequestDefaultTypeInternal _CallTaskRequest_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull CallTaskRequest_class_data_;
+class CallTaskResponse;
+struct CallTaskResponseDefaultTypeInternal;
+extern CallTaskResponseDefaultTypeInternal _CallTaskResponse_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull CallTaskResponse_class_data_;
 }  // namespace tasks_api
 namespace google {
 namespace protobuf {
@@ -88,6 +105,383 @@ namespace tasks_api {
 // ===================================================================
 
 
+// -------------------------------------------------------------------
+
+class CallTaskResponse final : public ::google::protobuf::internal::ZeroFieldsBase
+/* @@protoc_insertion_point(class_definition:tasks_api.CallTaskResponse) */ {
+ public:
+  inline CallTaskResponse() : CallTaskResponse(nullptr) {}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(CallTaskResponse* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CallTaskResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CallTaskResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline CallTaskResponse(const CallTaskResponse& from) : CallTaskResponse(nullptr, from) {}
+  inline CallTaskResponse(CallTaskResponse&& from) noexcept
+      : CallTaskResponse(nullptr, ::std::move(from)) {}
+  inline CallTaskResponse& operator=(const CallTaskResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CallTaskResponse& operator=(CallTaskResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CallTaskResponse& default_instance() {
+    return *reinterpret_cast<const CallTaskResponse*>(
+        &_CallTaskResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 9;
+  friend void swap(CallTaskResponse& a, CallTaskResponse& b) { a.Swap(&b); }
+  inline void Swap(CallTaskResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CallTaskResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CallTaskResponse* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::internal::ZeroFieldsBase::DefaultConstruct<CallTaskResponse>(arena);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::CopyFrom;
+  inline void CopyFrom(const CallTaskResponse& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::CopyImpl(*this, from);
+  }
+  using ::google::protobuf::internal::ZeroFieldsBase::MergeFrom;
+  void MergeFrom(const CallTaskResponse& from) {
+    ::google::protobuf::internal::ZeroFieldsBase::MergeImpl(*this, from);
+  }
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "tasks_api.CallTaskResponse"; }
+
+  explicit CallTaskResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  CallTaskResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const CallTaskResponse& from);
+  CallTaskResponse(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, CallTaskResponse&& from) noexcept
+      : CallTaskResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  // @@protoc_insertion_point(class_scope:tasks_api.CallTaskResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 0,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  friend struct ::TableStruct_tasks_5fapi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull CallTaskResponse_class_data_;
+// -------------------------------------------------------------------
+
+class CallTaskRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:tasks_api.CallTaskRequest) */ {
+ public:
+  inline CallTaskRequest() : CallTaskRequest(nullptr) {}
+  ~CallTaskRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(CallTaskRequest* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CallTaskRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CallTaskRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline CallTaskRequest(const CallTaskRequest& from) : CallTaskRequest(nullptr, from) {}
+  inline CallTaskRequest(CallTaskRequest&& from) noexcept
+      : CallTaskRequest(nullptr, ::std::move(from)) {}
+  inline CallTaskRequest& operator=(const CallTaskRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CallTaskRequest& operator=(CallTaskRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CallTaskRequest& default_instance() {
+    return *reinterpret_cast<const CallTaskRequest*>(
+        &_CallTaskRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 6;
+  friend void swap(CallTaskRequest& a, CallTaskRequest& b) { a.Swap(&b); }
+  inline void Swap(CallTaskRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CallTaskRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CallTaskRequest* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CallTaskRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CallTaskRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CallTaskRequest& from) { CallTaskRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CallTaskRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "tasks_api.CallTaskRequest"; }
+
+  explicit CallTaskRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  CallTaskRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const CallTaskRequest& from);
+  CallTaskRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, CallTaskRequest&& from) noexcept
+      : CallTaskRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kEquationFieldNumber = 1,
+    kLinkedFieldNumber = 2,
+    kFunctionalFieldNumber = 3,
+  };
+  // repeated string equation = 1;
+  int equation_size() const;
+  private:
+  int _internal_equation_size() const;
+
+  public:
+  void clear_equation() ;
+  const ::std::string& equation(int index) const;
+  ::std::string* PROTOBUF_NONNULL mutable_equation(int index);
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_equation(int index, Arg_&& value, Args_... args);
+  ::std::string* PROTOBUF_NONNULL add_equation();
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void add_equation(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<::std::string>& equation() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL mutable_equation();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::std::string>& _internal_equation() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_equation();
+
+  public:
+  // repeated string linked = 2;
+  int linked_size() const;
+  private:
+  int _internal_linked_size() const;
+
+  public:
+  void clear_linked() ;
+  const ::std::string& linked(int index) const;
+  ::std::string* PROTOBUF_NONNULL mutable_linked(int index);
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_linked(int index, Arg_&& value, Args_... args);
+  ::std::string* PROTOBUF_NONNULL add_linked();
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void add_linked(Arg_&& value, Args_... args);
+  const ::google::protobuf::RepeatedPtrField<::std::string>& linked() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL mutable_linked();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::std::string>& _internal_linked() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_linked();
+
+  public:
+  // string functional = 3;
+  void clear_functional() ;
+  const ::std::string& functional() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_functional(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_functional();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_functional();
+  void set_allocated_functional(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_functional() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_functional(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_functional();
+
+  public:
+  // @@protoc_insertion_point(class_scope:tasks_api.CallTaskRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
+                                   0, 58,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const CallTaskRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField<::std::string> equation_;
+    ::google::protobuf::RepeatedPtrField<::std::string> linked_;
+    ::google::protobuf::internal::ArenaStringPtr functional_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_tasks_5fapi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull CallTaskRequest_class_data_;
 // -------------------------------------------------------------------
 
 class CallParamSResponse final : public ::google::protobuf::Message
@@ -1024,6 +1418,462 @@ class CallLinkedRequest final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull CallLinkedRequest_class_data_;
+// -------------------------------------------------------------------
+
+class CallFunctionalResponse final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:tasks_api.CallFunctionalResponse) */ {
+ public:
+  inline CallFunctionalResponse() : CallFunctionalResponse(nullptr) {}
+  ~CallFunctionalResponse() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(CallFunctionalResponse* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CallFunctionalResponse));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CallFunctionalResponse(::google::protobuf::internal::ConstantInitialized);
+
+  inline CallFunctionalResponse(const CallFunctionalResponse& from) : CallFunctionalResponse(nullptr, from) {}
+  inline CallFunctionalResponse(CallFunctionalResponse&& from) noexcept
+      : CallFunctionalResponse(nullptr, ::std::move(from)) {}
+  inline CallFunctionalResponse& operator=(const CallFunctionalResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CallFunctionalResponse& operator=(CallFunctionalResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CallFunctionalResponse& default_instance() {
+    return *reinterpret_cast<const CallFunctionalResponse*>(
+        &_CallFunctionalResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 8;
+  friend void swap(CallFunctionalResponse& a, CallFunctionalResponse& b) { a.Swap(&b); }
+  inline void Swap(CallFunctionalResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CallFunctionalResponse* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CallFunctionalResponse* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CallFunctionalResponse>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CallFunctionalResponse& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CallFunctionalResponse& from) { CallFunctionalResponse::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CallFunctionalResponse* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "tasks_api.CallFunctionalResponse"; }
+
+  explicit CallFunctionalResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  CallFunctionalResponse(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const CallFunctionalResponse& from);
+  CallFunctionalResponse(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, CallFunctionalResponse&& from) noexcept
+      : CallFunctionalResponse(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kResultFieldNumber = 1,
+  };
+  // double result = 1;
+  void clear_result() ;
+  double result() const;
+  void set_result(double value);
+
+  private:
+  double _internal_result() const;
+  void _internal_set_result(double value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:tasks_api.CallFunctionalResponse)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<0, 1,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const CallFunctionalResponse& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    double result_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_tasks_5fapi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull CallFunctionalResponse_class_data_;
+// -------------------------------------------------------------------
+
+class CallFunctionalRequest final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:tasks_api.CallFunctionalRequest) */ {
+ public:
+  inline CallFunctionalRequest() : CallFunctionalRequest(nullptr) {}
+  ~CallFunctionalRequest() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(CallFunctionalRequest* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(CallFunctionalRequest));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR CallFunctionalRequest(::google::protobuf::internal::ConstantInitialized);
+
+  inline CallFunctionalRequest(const CallFunctionalRequest& from) : CallFunctionalRequest(nullptr, from) {}
+  inline CallFunctionalRequest(CallFunctionalRequest&& from) noexcept
+      : CallFunctionalRequest(nullptr, ::std::move(from)) {}
+  inline CallFunctionalRequest& operator=(const CallFunctionalRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline CallFunctionalRequest& operator=(CallFunctionalRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const CallFunctionalRequest& default_instance() {
+    return *reinterpret_cast<const CallFunctionalRequest*>(
+        &_CallFunctionalRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 7;
+  friend void swap(CallFunctionalRequest& a, CallFunctionalRequest& b) { a.Swap(&b); }
+  inline void Swap(CallFunctionalRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(CallFunctionalRequest* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  CallFunctionalRequest* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<CallFunctionalRequest>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const CallFunctionalRequest& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const CallFunctionalRequest& from) { CallFunctionalRequest::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(CallFunctionalRequest* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "tasks_api.CallFunctionalRequest"; }
+
+  explicit CallFunctionalRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  CallFunctionalRequest(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const CallFunctionalRequest& from);
+  CallFunctionalRequest(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, CallFunctionalRequest&& from) noexcept
+      : CallFunctionalRequest(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kXFieldNumber = 1,
+    kUFieldNumber = 4,
+    kXSizeRowFieldNumber = 2,
+    kXSizeColFieldNumber = 3,
+    kUSizeRowFieldNumber = 5,
+    kUSizeColFieldNumber = 6,
+  };
+  // repeated double x = 1;
+  int x_size() const;
+  private:
+  int _internal_x_size() const;
+
+  public:
+  void clear_x() ;
+  double x(int index) const;
+  void set_x(int index, double value);
+  void add_x(double value);
+  const ::google::protobuf::RepeatedField<double>& x() const;
+  ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL mutable_x();
+
+  private:
+  const ::google::protobuf::RepeatedField<double>& _internal_x() const;
+  ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL _internal_mutable_x();
+
+  public:
+  // repeated double u = 4;
+  int u_size() const;
+  private:
+  int _internal_u_size() const;
+
+  public:
+  void clear_u() ;
+  double u(int index) const;
+  void set_u(int index, double value);
+  void add_u(double value);
+  const ::google::protobuf::RepeatedField<double>& u() const;
+  ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL mutable_u();
+
+  private:
+  const ::google::protobuf::RepeatedField<double>& _internal_u() const;
+  ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL _internal_mutable_u();
+
+  public:
+  // int32 x_size_row = 2;
+  void clear_x_size_row() ;
+  ::int32_t x_size_row() const;
+  void set_x_size_row(::int32_t value);
+
+  private:
+  ::int32_t _internal_x_size_row() const;
+  void _internal_set_x_size_row(::int32_t value);
+
+  public:
+  // int32 x_size_col = 3;
+  void clear_x_size_col() ;
+  ::int32_t x_size_col() const;
+  void set_x_size_col(::int32_t value);
+
+  private:
+  ::int32_t _internal_x_size_col() const;
+  void _internal_set_x_size_col(::int32_t value);
+
+  public:
+  // int32 u_size_row = 5;
+  void clear_u_size_row() ;
+  ::int32_t u_size_row() const;
+  void set_u_size_row(::int32_t value);
+
+  private:
+  ::int32_t _internal_u_size_row() const;
+  void _internal_set_u_size_row(::int32_t value);
+
+  public:
+  // int32 u_size_col = 6;
+  void clear_u_size_col() ;
+  ::int32_t u_size_col() const;
+  void set_u_size_col(::int32_t value);
+
+  private:
+  ::int32_t _internal_u_size_col() const;
+  void _internal_set_u_size_col(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:tasks_api.CallFunctionalRequest)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<3, 6,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const CallFunctionalRequest& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedField<double> x_;
+    ::google::protobuf::RepeatedField<double> u_;
+    ::int32_t x_size_row_;
+    ::int32_t x_size_col_;
+    ::int32_t u_size_row_;
+    ::int32_t u_size_col_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_tasks_5fapi_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull CallFunctionalRequest_class_data_;
 // -------------------------------------------------------------------
 
 class CallEquationResponse final : public ::google::protobuf::Message
@@ -2171,6 +3021,450 @@ inline void CallParamSResponse::_internal_set_result(double value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.result_ = value;
 }
+
+// -------------------------------------------------------------------
+
+// CallTaskRequest
+
+// repeated string equation = 1;
+inline int CallTaskRequest::_internal_equation_size() const {
+  return _internal_equation().size();
+}
+inline int CallTaskRequest::equation_size() const {
+  return _internal_equation_size();
+}
+inline void CallTaskRequest::clear_equation() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.equation_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::std::string* PROTOBUF_NONNULL CallTaskRequest::add_equation()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::std::string* _s = _internal_mutable_equation()->Add();
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add_mutable:tasks_api.CallTaskRequest.equation)
+  return _s;
+}
+inline const ::std::string& CallTaskRequest::equation(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:tasks_api.CallTaskRequest.equation)
+  return _internal_equation().Get(index);
+}
+inline ::std::string* PROTOBUF_NONNULL CallTaskRequest::mutable_equation(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:tasks_api.CallTaskRequest.equation)
+  return _internal_mutable_equation()->Mutable(index);
+}
+template <typename Arg_, typename... Args_>
+inline void CallTaskRequest::set_equation(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(*_internal_mutable_equation()->Mutable(index), ::std::forward<Arg_>(value),
+                        args... );
+  // @@protoc_insertion_point(field_set:tasks_api.CallTaskRequest.equation)
+}
+template <typename Arg_, typename... Args_>
+inline void CallTaskRequest::add_equation(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_equation(),
+                               ::std::forward<Arg_>(value),
+                               args... );
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add:tasks_api.CallTaskRequest.equation)
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>& CallTaskRequest::equation()
+    const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:tasks_api.CallTaskRequest.equation)
+  return _internal_equation();
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+CallTaskRequest::mutable_equation() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_mutable_list:tasks_api.CallTaskRequest.equation)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_equation();
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>&
+CallTaskRequest::_internal_equation() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.equation_;
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+CallTaskRequest::_internal_mutable_equation() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.equation_;
+}
+
+// repeated string linked = 2;
+inline int CallTaskRequest::_internal_linked_size() const {
+  return _internal_linked().size();
+}
+inline int CallTaskRequest::linked_size() const {
+  return _internal_linked_size();
+}
+inline void CallTaskRequest::clear_linked() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.linked_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline ::std::string* PROTOBUF_NONNULL CallTaskRequest::add_linked()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::std::string* _s = _internal_mutable_linked()->Add();
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_add_mutable:tasks_api.CallTaskRequest.linked)
+  return _s;
+}
+inline const ::std::string& CallTaskRequest::linked(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:tasks_api.CallTaskRequest.linked)
+  return _internal_linked().Get(index);
+}
+inline ::std::string* PROTOBUF_NONNULL CallTaskRequest::mutable_linked(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:tasks_api.CallTaskRequest.linked)
+  return _internal_mutable_linked()->Mutable(index);
+}
+template <typename Arg_, typename... Args_>
+inline void CallTaskRequest::set_linked(int index, Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::AssignToString(*_internal_mutable_linked()->Mutable(index), ::std::forward<Arg_>(value),
+                        args... );
+  // @@protoc_insertion_point(field_set:tasks_api.CallTaskRequest.linked)
+}
+template <typename Arg_, typename... Args_>
+inline void CallTaskRequest::add_linked(Arg_&& value, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::google::protobuf::internal::AddToRepeatedPtrField(*_internal_mutable_linked(),
+                               ::std::forward<Arg_>(value),
+                               args... );
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_add:tasks_api.CallTaskRequest.linked)
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>& CallTaskRequest::linked()
+    const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:tasks_api.CallTaskRequest.linked)
+  return _internal_linked();
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+CallTaskRequest::mutable_linked() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_mutable_list:tasks_api.CallTaskRequest.linked)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_linked();
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>&
+CallTaskRequest::_internal_linked() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.linked_;
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL
+CallTaskRequest::_internal_mutable_linked() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.linked_;
+}
+
+// string functional = 3;
+inline void CallTaskRequest::clear_functional() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.functional_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline const ::std::string& CallTaskRequest::functional() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:tasks_api.CallTaskRequest.functional)
+  return _internal_functional();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void CallTaskRequest::set_functional(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  _impl_.functional_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:tasks_api.CallTaskRequest.functional)
+}
+inline ::std::string* PROTOBUF_NONNULL CallTaskRequest::mutable_functional()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  ::std::string* _s = _internal_mutable_functional();
+  // @@protoc_insertion_point(field_mutable:tasks_api.CallTaskRequest.functional)
+  return _s;
+}
+inline const ::std::string& CallTaskRequest::_internal_functional() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.functional_.Get();
+}
+inline void CallTaskRequest::_internal_set_functional(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.functional_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL CallTaskRequest::_internal_mutable_functional() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.functional_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE CallTaskRequest::release_functional() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:tasks_api.CallTaskRequest.functional)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000004U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  auto* released = _impl_.functional_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.functional_.Set("", GetArena());
+  }
+  return released;
+}
+inline void CallTaskRequest::set_allocated_functional(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000004U);
+  }
+  _impl_.functional_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.functional_.IsDefault()) {
+    _impl_.functional_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:tasks_api.CallTaskRequest.functional)
+}
+
+// -------------------------------------------------------------------
+
+// CallFunctionalRequest
+
+// repeated double x = 1;
+inline int CallFunctionalRequest::_internal_x_size() const {
+  return _internal_x().size();
+}
+inline int CallFunctionalRequest::x_size() const {
+  return _internal_x_size();
+}
+inline void CallFunctionalRequest::clear_x() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.x_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline double CallFunctionalRequest::x(int index) const {
+  // @@protoc_insertion_point(field_get:tasks_api.CallFunctionalRequest.x)
+  return _internal_x().Get(index);
+}
+inline void CallFunctionalRequest::set_x(int index, double value) {
+  _internal_mutable_x()->Set(index, value);
+  // @@protoc_insertion_point(field_set:tasks_api.CallFunctionalRequest.x)
+}
+inline void CallFunctionalRequest::add_x(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _internal_mutable_x()->Add(value);
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add:tasks_api.CallFunctionalRequest.x)
+}
+inline const ::google::protobuf::RepeatedField<double>& CallFunctionalRequest::x() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:tasks_api.CallFunctionalRequest.x)
+  return _internal_x();
+}
+inline ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL CallFunctionalRequest::mutable_x()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_mutable_list:tasks_api.CallFunctionalRequest.x)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_x();
+}
+inline const ::google::protobuf::RepeatedField<double>&
+CallFunctionalRequest::_internal_x() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.x_;
+}
+inline ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL
+CallFunctionalRequest::_internal_mutable_x() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.x_;
+}
+
+// int32 x_size_row = 2;
+inline void CallFunctionalRequest::clear_x_size_row() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.x_size_row_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline ::int32_t CallFunctionalRequest::x_size_row() const {
+  // @@protoc_insertion_point(field_get:tasks_api.CallFunctionalRequest.x_size_row)
+  return _internal_x_size_row();
+}
+inline void CallFunctionalRequest::set_x_size_row(::int32_t value) {
+  _internal_set_x_size_row(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:tasks_api.CallFunctionalRequest.x_size_row)
+}
+inline ::int32_t CallFunctionalRequest::_internal_x_size_row() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.x_size_row_;
+}
+inline void CallFunctionalRequest::_internal_set_x_size_row(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.x_size_row_ = value;
+}
+
+// int32 x_size_col = 3;
+inline void CallFunctionalRequest::clear_x_size_col() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.x_size_col_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000008U);
+}
+inline ::int32_t CallFunctionalRequest::x_size_col() const {
+  // @@protoc_insertion_point(field_get:tasks_api.CallFunctionalRequest.x_size_col)
+  return _internal_x_size_col();
+}
+inline void CallFunctionalRequest::set_x_size_col(::int32_t value) {
+  _internal_set_x_size_col(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000008U);
+  // @@protoc_insertion_point(field_set:tasks_api.CallFunctionalRequest.x_size_col)
+}
+inline ::int32_t CallFunctionalRequest::_internal_x_size_col() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.x_size_col_;
+}
+inline void CallFunctionalRequest::_internal_set_x_size_col(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.x_size_col_ = value;
+}
+
+// repeated double u = 4;
+inline int CallFunctionalRequest::_internal_u_size() const {
+  return _internal_u().size();
+}
+inline int CallFunctionalRequest::u_size() const {
+  return _internal_u_size();
+}
+inline void CallFunctionalRequest::clear_u() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.u_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline double CallFunctionalRequest::u(int index) const {
+  // @@protoc_insertion_point(field_get:tasks_api.CallFunctionalRequest.u)
+  return _internal_u().Get(index);
+}
+inline void CallFunctionalRequest::set_u(int index, double value) {
+  _internal_mutable_u()->Set(index, value);
+  // @@protoc_insertion_point(field_set:tasks_api.CallFunctionalRequest.u)
+}
+inline void CallFunctionalRequest::add_u(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _internal_mutable_u()->Add(value);
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_add:tasks_api.CallFunctionalRequest.u)
+}
+inline const ::google::protobuf::RepeatedField<double>& CallFunctionalRequest::u() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:tasks_api.CallFunctionalRequest.u)
+  return _internal_u();
+}
+inline ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL CallFunctionalRequest::mutable_u()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_mutable_list:tasks_api.CallFunctionalRequest.u)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_u();
+}
+inline const ::google::protobuf::RepeatedField<double>&
+CallFunctionalRequest::_internal_u() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.u_;
+}
+inline ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL
+CallFunctionalRequest::_internal_mutable_u() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.u_;
+}
+
+// int32 u_size_row = 5;
+inline void CallFunctionalRequest::clear_u_size_row() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.u_size_row_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000010U);
+}
+inline ::int32_t CallFunctionalRequest::u_size_row() const {
+  // @@protoc_insertion_point(field_get:tasks_api.CallFunctionalRequest.u_size_row)
+  return _internal_u_size_row();
+}
+inline void CallFunctionalRequest::set_u_size_row(::int32_t value) {
+  _internal_set_u_size_row(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000010U);
+  // @@protoc_insertion_point(field_set:tasks_api.CallFunctionalRequest.u_size_row)
+}
+inline ::int32_t CallFunctionalRequest::_internal_u_size_row() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.u_size_row_;
+}
+inline void CallFunctionalRequest::_internal_set_u_size_row(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.u_size_row_ = value;
+}
+
+// int32 u_size_col = 6;
+inline void CallFunctionalRequest::clear_u_size_col() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.u_size_col_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000020U);
+}
+inline ::int32_t CallFunctionalRequest::u_size_col() const {
+  // @@protoc_insertion_point(field_get:tasks_api.CallFunctionalRequest.u_size_col)
+  return _internal_u_size_col();
+}
+inline void CallFunctionalRequest::set_u_size_col(::int32_t value) {
+  _internal_set_u_size_col(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  // @@protoc_insertion_point(field_set:tasks_api.CallFunctionalRequest.u_size_col)
+}
+inline ::int32_t CallFunctionalRequest::_internal_u_size_col() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.u_size_col_;
+}
+inline void CallFunctionalRequest::_internal_set_u_size_col(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.u_size_col_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// CallFunctionalResponse
+
+// double result = 1;
+inline void CallFunctionalResponse::clear_result() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline double CallFunctionalResponse::result() const {
+  // @@protoc_insertion_point(field_get:tasks_api.CallFunctionalResponse.result)
+  return _internal_result();
+}
+inline void CallFunctionalResponse::set_result(double value) {
+  _internal_set_result(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_set:tasks_api.CallFunctionalResponse.result)
+}
+inline double CallFunctionalResponse::_internal_result() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.result_;
+}
+inline void CallFunctionalResponse::_internal_set_result(double value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.result_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// CallTaskResponse
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop

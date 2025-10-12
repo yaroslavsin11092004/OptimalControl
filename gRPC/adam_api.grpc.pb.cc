@@ -25,6 +25,7 @@ namespace adam_api {
 static const char* AdamApiService_method_names[] = {
   "/adam_api.AdamApiService/SetGlobalParams",
   "/adam_api.AdamApiService/Optimize",
+  "/adam_api.AdamApiService/Hamilton",
 };
 
 std::unique_ptr< AdamApiService::Stub> AdamApiService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -36,6 +37,7 @@ std::unique_ptr< AdamApiService::Stub> AdamApiService::NewStub(const std::shared
 AdamApiService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
   : channel_(channel), rpcmethod_SetGlobalParams_(AdamApiService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_Optimize_(AdamApiService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_Hamilton_(AdamApiService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status AdamApiService::Stub::SetGlobalParams(::grpc::ClientContext* context, const ::adam_api::GlobalParamsRequest& request, ::adam_api::EmptyResponse* response) {
@@ -84,6 +86,29 @@ void AdamApiService::Stub::async::Optimize(::grpc::ClientContext* context, const
   return result;
 }
 
+::grpc::Status AdamApiService::Stub::Hamilton(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest& request, ::adam_api::EmptyResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::adam_api::HamiltonRequest, ::adam_api::EmptyResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_Hamilton_, context, request, response);
+}
+
+void AdamApiService::Stub::async::Hamilton(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest* request, ::adam_api::EmptyResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::adam_api::HamiltonRequest, ::adam_api::EmptyResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Hamilton_, context, request, response, std::move(f));
+}
+
+void AdamApiService::Stub::async::Hamilton(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest* request, ::adam_api::EmptyResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_Hamilton_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::adam_api::EmptyResponse>* AdamApiService::Stub::PrepareAsyncHamiltonRaw(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::adam_api::EmptyResponse, ::adam_api::HamiltonRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_Hamilton_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::adam_api::EmptyResponse>* AdamApiService::Stub::AsyncHamiltonRaw(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncHamiltonRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 AdamApiService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       AdamApiService_method_names[0],
@@ -105,6 +130,16 @@ AdamApiService::Service::Service() {
              ::adam_api::OptimizeResponse* resp) {
                return service->Optimize(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      AdamApiService_method_names[2],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< AdamApiService::Service, ::adam_api::HamiltonRequest, ::adam_api::EmptyResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](AdamApiService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::adam_api::HamiltonRequest* req,
+             ::adam_api::EmptyResponse* resp) {
+               return service->Hamilton(ctx, req, resp);
+             }, this)));
 }
 
 AdamApiService::Service::~Service() {
@@ -118,6 +153,13 @@ AdamApiService::Service::~Service() {
 }
 
 ::grpc::Status AdamApiService::Service::Optimize(::grpc::ServerContext* context, const ::adam_api::OptimizeRequest* request, ::adam_api::OptimizeResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status AdamApiService::Service::Hamilton(::grpc::ServerContext* context, const ::adam_api::HamiltonRequest* request, ::adam_api::EmptyResponse* response) {
   (void) context;
   (void) request;
   (void) response;

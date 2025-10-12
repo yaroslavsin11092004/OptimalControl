@@ -7,40 +7,42 @@ bool EquationBuilder::is_number(std::string& token) {
 	return true;
 }
 EquationBuilder::EquationBuilder() {
-	store.insert_or_assign("x1", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(0,0); }});
-	store.insert_or_assign("x2", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(1,0); }});
-	store.insert_or_assign("x3", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(2,0); }});
-	store.insert_or_assign("x4", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(3,0); }});
-	store.insert_or_assign("x5", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(4,0); }});
-	store.insert_or_assign("x6", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(5,0); }});
-	store.insert_or_assign("u1", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(0,1); }});
-	store.insert_or_assign("u2", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(1,1); }});
-	store.insert_or_assign("u3", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(2,1); }});
-	store.insert_or_assign("u4", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(3,1); }});
-	store.insert_or_assign("u5", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(4,1); }});
-	store.insert_or_assign("u6", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(5,1); }});
-	store.insert_or_assign("psi1", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(0,2); }});
-	store.insert_or_assign("psi2", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(1,2); }});
-	store.insert_or_assign("psi3", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(2,2); }});
-	store.insert_or_assign("psi4", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(3,2); }});
-	store.insert_or_assign("psi5", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(4,2); }});
-	store.insert_or_assign("psi6", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return params(5,2); }});
-	store.insert_or_assign("t", FunctionWrapper<double(double, matrix<double>)>{[](double t, matrix<double> params) { return t; }});
+	store.insert_or_assign("x1", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(0,0); }});
+	store.insert_or_assign("x2", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(1,0); }});
+	store.insert_or_assign("x3", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(2,0); }});
+	store.insert_or_assign("x4", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(3,0); }});
+	store.insert_or_assign("x5", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(4,0); }});
+	store.insert_or_assign("x6", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(5,0); }});
+	store.insert_or_assign("u1", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(0,1); }});
+	store.insert_or_assign("u2", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(1,1); }});
+	store.insert_or_assign("u3", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(2,1); }});
+	store.insert_or_assign("u4", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(3,1); }});
+	store.insert_or_assign("u5", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(4,1); }});
+	store.insert_or_assign("u6", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(5,1); }});
+	store.insert_or_assign("psi1", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(0,2); }});
+	store.insert_or_assign("psi2", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(1,2); }});
+	store.insert_or_assign("psi3", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(2,2); }});
+	store.insert_or_assign("psi4", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(3,2); }});
+	store.insert_or_assign("psi5", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(4,2); }});
+	store.insert_or_assign("psi6", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(5,2); }});
+	store.insert_or_assign("t", FunctionWrapper<EquationSignature>{[](auto t, auto) { return t; }});
 }
-FunctionWrapper<double(double, matrix<double>)> EquationBuilder::build(const char* input) {
-	tokenizer.set_input_ptr(input);
+FunctionWrapper<EquationBuilder::EquationSignature> EquationBuilder::build(std::string& input) {
+	std::string tr_input = transform_expression(input);
+	tokenizer.set_input_ptr(tr_input.c_str());
 	auto tokens = tokenizer.tokenize();
 	std::stack<std::string> operators;
-	std::stack<FunctionWrapper<double(double, matrix<double>)>> operands;
+	std::stack<FunctionWrapper<EquationSignature>> operands;
 	for (auto& t : tokens) {
 		if (t == "(") continue;
 		else if (t == "*" || t == "+" || t == "-" || t == "/" || t == "^" || t == "sin" || t == "cos")
 			operators.push(std::move(t));
 		else if (is_number(t)) {
 			double val = std::stod(t.c_str());
-			operands.push(FunctionWrapper<double(double, matrix<double>)>{[val](double t, matrix<double> params) { return val; }});
+			operands.push(FunctionWrapper<EquationSignature>{[val](auto, auto) { return val; }});
 		}
 		else if (t == ")") {
+			if (operators.empty() || operands.empty()) continue;
 			auto op = operators.top();
 			operators.pop();
 			if (op == "+") {

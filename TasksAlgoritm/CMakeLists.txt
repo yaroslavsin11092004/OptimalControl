@@ -37,6 +37,7 @@ set(SOURCE_EXE
   ./source/Tokenizer.cc
   ./source/EquationsBuilder.cc
   ./source/FunctionalBuilder.cc
+  ./source/FuncCalcBuilder.cc
 )
 
 add_executable(TasksServer.rl ${SOURCE_EXE})

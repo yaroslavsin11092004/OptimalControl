@@ -1,4 +1,5 @@
 #include "OptContrAlg.h"
+#include <cmath>
 OptimalControl::OptimalControl(std::string& conf_file)
 {
 	this->tasks_api = std::make_shared<TasksApiRpc>(conf_file);
@@ -21,13 +22,13 @@ double OptimalControl::matrix_metrics(matrix<double>& val1, matrix<double>& val2
 	matrix<double> mesh(val1.size_row(), 2);
 	mesh.set_column(0, val1.make_column_acceptor(0));
 	mesh.set_column(1, std::move(rep));
-	return SimpsonIntegral(mesh);
+	return TrapezeIntegral(mesh);
 }
 std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximation(std::vector<double> x0, double t0, double t1,double t_step, double delta, std::vector<double> u0)
 {
 	std::vector<double> t_grid;
 	double cur_t = t0;
-	while(cur_t < t1 + t_step)
+	while(cur_t <= t1 + t_step)
 	{
 		t_grid.push_back(cur_t);
 		cur_t += t_step;
@@ -74,32 +75,18 @@ std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximati
 		forward_task.t1 = t1;
 		forward_task.u0 = start_value;
 		auto forward_task_resolve = runge_kutt(std::ref(forward_task));
-		for (size_t i = 0; i < forward_task_resolve.size_col() - 1; i++)
-			(*start_value)[i] = forward_task_resolve(forward_task_resolve.size_row() - 1, i + 1);
-		rk_params back_task;
-		back_task.t0 = t1;
-		back_task.t1 = t0;
-		back_task.step = t_step;
-		back_task.param_func = forward_task_param;
-		back_task.param_func_indeces = forward_task_param_idx;
-		back_task.u0 = start_value;
-		back_task.index_var = 0;
-		back_task.dim_var = 2;
-		back_task.equations = equations;
-		back_task.dir = false;
-		auto back_task_resolve = runge_kutt(std::ref(back_task));
 		std::vector<interpol_param> linked_task_param;
 		std::vector<std::pair<size_t,size_t>> linked_task_param_idx;
-		for (size_t i = 0; i < back_task_resolve.size_col() - 1; i++)
+		for (size_t i = 0; i < forward_task_resolve.size_col() - 1; i++)
 		{
-			matrix<double> cur_x(back_task_resolve.size_row(), 2);
-			cur_x.set_column(0, back_task_resolve.make_column_acceptor(0));
-			cur_x.set_column(1, back_task_resolve.make_column_acceptor(i + 1));
+			matrix<double> cur_x(forward_task_resolve.size_row(), 2);
+			cur_x.set_column(0, forward_task_resolve.make_column_acceptor(0));
+			cur_x.set_column(1, forward_task_resolve.make_column_acceptor(i + 1));
 			auto ratios = spline_interpolation(cur_x);
 			interpol_param ip;
 			ip.mesh = std::move(cur_x);
 			ip.ratios = std::move(ratios);
-			ip.dir = false;
+			ip.dir = true;
 			linked_task_param.push_back(std::move(ip));
 			linked_task_param_idx.push_back(std::make_pair(i, 0));
 		}
@@ -109,7 +96,6 @@ std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximati
 			linked_task_param_idx.push_back(std::make_pair(i, 1));
 		}
 		std::transform(start_value->begin(), start_value->end(), start_value->begin(), [](double x){return 0.0;});
-		(*start_value)[0] = 0.0;
 		rk_params linked_task;
 		linked_task.equations = linked_equations;
 		linked_task.t0 = t1;
@@ -127,14 +113,15 @@ std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximati
 		{
 			std::vector<double> params;
 			params.push_back(linked_task_resolve(i,0));
-			for (size_t k = 0; k < back_task_resolve.size_col() - 1; k++)
-				params.push_back(back_task_resolve(i,k + 1));
+			for (size_t k = 0; k < forward_task_resolve.size_col() - 1; k++)
+				params.push_back(forward_task_resolve(linked_task_resolve.size_row() - 1 - i,k + 1));
 			for (size_t k = 0; k < linked_task_resolve.size_col() - 1; k++)
 				params.push_back(linked_task_resolve(i,k + 1));
 			auto optim_ui = this->adam_api->adam(std::move(params));
 			optim_u(linked_task_resolve.size_row() - 1 - i, 0) = linked_task_resolve(i,0);
-			for (size_t k = 0; k < optim_ui.size(); k++)
+			for (size_t k = 0; k < optim_ui.size(); k++){
 				optim_u(linked_task_resolve.size_row() - 1 - i, k + 1) = optim_ui[k];
+			}
 		}
 		std::vector<interpol_param> opt_x_task_params;
 		std::vector<std::pair<size_t,size_t>> opt_x_task_params_idx;
@@ -191,6 +178,7 @@ std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximati
 			opt_x_task.param_func = std::make_shared<std::vector<interpol_param>>(std::move(optim_x_task_param));
 			opt_x_task.param_func_indeces = std::move(optim_x_task_param_idx);
 			auto optim_x_task_resolve = runge_kutt(std::ref(opt_x_task));
+			std::cerr << cur_u << std::endl;
 			return std::make_pair(std::move(optim_x_task_resolve), std::move(cur_u));
 		}
 	} while(true);

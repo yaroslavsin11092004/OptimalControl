@@ -26,6 +26,8 @@ static const char* TasksApiService_method_names[] = {
   "/tasks_api.TasksApiService/CallEquation",
   "/tasks_api.TasksApiService/CallLinked",
   "/tasks_api.TasksApiService/CallParamS",
+  "/tasks_api.TasksApiService/CallTask",
+  "/tasks_api.TasksApiService/CallFunctional",
 };
 
 std::unique_ptr< TasksApiService::Stub> TasksApiService::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -38,6 +40,8 @@ TasksApiService::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& ch
   : channel_(channel), rpcmethod_CallEquation_(TasksApiService_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_CallLinked_(TasksApiService_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   , rpcmethod_CallParamS_(TasksApiService_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CallTask_(TasksApiService_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_CallFunctional_(TasksApiService_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
 
 ::grpc::Status TasksApiService::Stub::CallEquation(::grpc::ClientContext* context, const ::tasks_api::CallEquationRequest& request, ::tasks_api::CallEquationResponse* response) {
@@ -109,6 +113,52 @@ void TasksApiService::Stub::async::CallParamS(::grpc::ClientContext* context, co
   return result;
 }
 
+::grpc::Status TasksApiService::Stub::CallTask(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest& request, ::tasks_api::CallTaskResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::tasks_api::CallTaskRequest, ::tasks_api::CallTaskResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CallTask_, context, request, response);
+}
+
+void TasksApiService::Stub::async::CallTask(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest* request, ::tasks_api::CallTaskResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::tasks_api::CallTaskRequest, ::tasks_api::CallTaskResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CallTask_, context, request, response, std::move(f));
+}
+
+void TasksApiService::Stub::async::CallTask(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest* request, ::tasks_api::CallTaskResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CallTask_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::tasks_api::CallTaskResponse>* TasksApiService::Stub::PrepareAsyncCallTaskRaw(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::tasks_api::CallTaskResponse, ::tasks_api::CallTaskRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CallTask_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::tasks_api::CallTaskResponse>* TasksApiService::Stub::AsyncCallTaskRaw(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCallTaskRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::Status TasksApiService::Stub::CallFunctional(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest& request, ::tasks_api::CallFunctionalResponse* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::tasks_api::CallFunctionalRequest, ::tasks_api::CallFunctionalResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_CallFunctional_, context, request, response);
+}
+
+void TasksApiService::Stub::async::CallFunctional(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest* request, ::tasks_api::CallFunctionalResponse* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::tasks_api::CallFunctionalRequest, ::tasks_api::CallFunctionalResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CallFunctional_, context, request, response, std::move(f));
+}
+
+void TasksApiService::Stub::async::CallFunctional(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest* request, ::tasks_api::CallFunctionalResponse* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_CallFunctional_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::tasks_api::CallFunctionalResponse>* TasksApiService::Stub::PrepareAsyncCallFunctionalRaw(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::tasks_api::CallFunctionalResponse, ::tasks_api::CallFunctionalRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_CallFunctional_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::tasks_api::CallFunctionalResponse>* TasksApiService::Stub::AsyncCallFunctionalRaw(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncCallFunctionalRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
 TasksApiService::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       TasksApiService_method_names[0],
@@ -140,6 +190,26 @@ TasksApiService::Service::Service() {
              ::tasks_api::CallParamSResponse* resp) {
                return service->CallParamS(ctx, req, resp);
              }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      TasksApiService_method_names[3],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< TasksApiService::Service, ::tasks_api::CallTaskRequest, ::tasks_api::CallTaskResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](TasksApiService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::tasks_api::CallTaskRequest* req,
+             ::tasks_api::CallTaskResponse* resp) {
+               return service->CallTask(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      TasksApiService_method_names[4],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< TasksApiService::Service, ::tasks_api::CallFunctionalRequest, ::tasks_api::CallFunctionalResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](TasksApiService::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::tasks_api::CallFunctionalRequest* req,
+             ::tasks_api::CallFunctionalResponse* resp) {
+               return service->CallFunctional(ctx, req, resp);
+             }, this)));
 }
 
 TasksApiService::Service::~Service() {
@@ -160,6 +230,20 @@ TasksApiService::Service::~Service() {
 }
 
 ::grpc::Status TasksApiService::Service::CallParamS(::grpc::ServerContext* context, const ::tasks_api::CallParamSRequest* request, ::tasks_api::CallParamSResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status TasksApiService::Service::CallTask(::grpc::ServerContext* context, const ::tasks_api::CallTaskRequest* request, ::tasks_api::CallTaskResponse* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status TasksApiService::Service::CallFunctional(::grpc::ServerContext* context, const ::tasks_api::CallFunctionalRequest* request, ::tasks_api::CallFunctionalResponse* response) {
   (void) context;
   (void) request;
   (void) response;

@@ -1,50 +1,38 @@
 #include "TasksService.h"
-#include <grpc/grpc.h>
-#include <grpcpp/security/server_credentials.h>
 TasksService::EquationCallData::EquationCallData(tasks_api::TasksApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<Tasks> api):
-	TasksService::CallData(service, cq, api), writer(&context)
-{
-	proceed(true);
-}
+	TasksService::CallData(service, cq, api), writer(&context) { proceed(true);}
 void TasksService::EquationCallData::proceed(bool ok)
 {
-	if (!ok)
-	{
+	if (!ok) {
 		delete this;
 		return;
 	}
-	try 
-	{
-		switch(status)
-		{
-			case CREATE:
-			{
-				status = PROCESS;
-				service->RequestCallEquation(&context, &request, &writer,cq,cq,this);
-				break;
-			}
-			case PROCESS:
-			{
-				status = FINISH;
-				std::vector<double> params_store(request.params().begin(), request.params().end());
-				matrix<double> params(request.size_row(), request.size_col());
-				*params.store_handle() = std::move(params_store);
-				double result = api->calc_equation(request.id(), request.arg(), std::move(params));
-				response.set_result(result);
-				writer.Finish(response, grpc::Status::OK, this);
-				std::cout << "Call Equation Request successful!" << std::endl;
-				break;
-			}
-			case FINISH:
-			{
-				new EquationCallData(service,cq, api);
-				delete this;
-				break;
-			}
+	try {
+		switch(status){
+			case CREATE: {
+											status = PROCESS;
+											service->RequestCallEquation(&context, &request, &writer,cq,cq,this);
+											break;
+										}
+			case PROCESS:{
+											status = FINISH;
+											std::vector<double> params_store(request.params().begin(), request.params().end());
+											matrix<double> params(request.size_row(), request.size_col());
+											*params.store_handle() = std::move(params_store);
+											double result = api->calc_equation(request.id(), request.arg(), std::move(params));
+											response.set_result(result);
+											writer.Finish(response, grpc::Status::OK, this);
+											std::cout << "Call Equation Request successful!" << std::endl;
+											break;
+									 }
+			case FINISH: {
+											new EquationCallData(service,cq, api);
+											delete this;
+											break;
+									 }
 		}
 	}
-	catch(const std::exception& e)
-	{
+	catch(const std::exception& e) {
 		status = FINISH;
 		std::cerr << "Error in EquationCallData: " << e.what() << std::endl;
 		writer.FinishWithError(grpc::Status(grpc::INTERNAL, e.what()), this);
@@ -52,50 +40,83 @@ void TasksService::EquationCallData::proceed(bool ok)
 		delete this;
 	}
 }
-TasksService::LinkedCallData::LinkedCallData(tasks_api::TasksApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<Tasks> api):
-	TasksService::CallData(service, cq, api), writer(&context)
-{
-	proceed(true);
-}
-void TasksService::LinkedCallData::proceed(bool ok)
-{
-	if (!ok)
-	{
+TasksService::TaskCallData::TaskCallData(tasks_api::TasksApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<Tasks> api):
+	CallData(service, cq, api), writer(&context) { proceed(true); }
+void TasksService::TaskCallData::proceed(bool ok) {
+	if (!ok) {
 		delete this;
 		return;
 	}
-	try 
-	{
-		switch(status)
-		{
-			case CREATE:
-			{
-				status = PROCESS;
-				service->RequestCallLinked(&context, &request, &writer, cq, cq, this);
-				break;
-			}
-			case PROCESS:
-			{
-				status = FINISH;
-				std::vector<double> params_store(request.params().begin(), request.params().end());
-				matrix<double> params(request.size_row(),request.size_col());
-				*params.store_handle() = std::move(params_store);
-				double result = api->calc_linked(request.id(), request.arg(), std::move(params));
-				response.set_result(result);
-				writer.Finish(response, grpc::Status::OK, this);
-				std::cout << "Call Linked Request successful!" << std::endl;
-				break;
-			}
-			case FINISH:
-			{
-				new LinkedCallData(service, cq, api);
-				delete this;
-				break;
-			}
+	try {
+		switch(status) {
+			case CREATE: {
+										 status = PROCESS;
+										 service->RequestCallTask(&context, &request, &writer, cq,cq,this);
+										 break;
+									 }
+			case PROCESS: {
+											status = FINISH;
+											std::vector<std::string> equations(request.equation().begin(), request.equation().end());
+											std::vector<std::string> linked(request.linked().begin(), request.linked().end());
+											std::string functional(request.functional().begin(), request.functional().end());
+											api->clear_task();
+											api->add_equations(std::move(equations));
+											api->add_linked(std::move(linked));
+											api->set_param_s(functional);
+											api->add_functional(functional);
+											writer.Finish(response, grpc::Status::OK, this);
+											std::cout << "Set task request successful!" << std::endl;
+											break;
+										}
+			case FINISH: {
+										 new TaskCallData(service, cq, api);
+										 delete this;
+										 break;
+									 }
 		}
 	}
-	catch(const std::exception& e)
-	{
+	catch(const std::exception& e) {
+		status = FINISH;
+		std::cerr << "Error of set task request!" << std::endl;
+		writer.FinishWithError(grpc::Status(grpc::INTERNAL, e.what()), this);
+		new TaskCallData(service, cq, api);
+		delete this;
+	}
+}
+TasksService::LinkedCallData::LinkedCallData(tasks_api::TasksApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<Tasks> api):
+	TasksService::CallData(service, cq, api), writer(&context) { proceed(true);}
+void TasksService::LinkedCallData::proceed(bool ok)
+{
+	if (!ok) {
+		delete this;
+		return;
+	}
+	try  {
+		switch(status){
+			case CREATE: {
+										status = PROCESS;
+										service->RequestCallLinked(&context, &request, &writer, cq, cq, this);
+										break;
+										}
+			case PROCESS: {
+											status = FINISH;
+											std::vector<double> params_store(request.params().begin(), request.params().end());
+											matrix<double> params(request.size_row(),request.size_col());
+											*params.store_handle() = std::move(params_store);
+											double result = api->calc_linked(request.id(), request.arg(), std::move(params));
+											response.set_result(result);
+											writer.Finish(response, grpc::Status::OK, this);
+											std::cout << "Call Linked Request successful!" << std::endl;
+											break;
+										}
+			case FINISH: {
+									 	new LinkedCallData(service, cq, api);
+										delete this;
+										break;
+										}
+		}
+	}
+	catch(const std::exception& e) {
 		status = FINISH;
 		std::cerr << "Error in LinkedCallData: " << e.what() << std::endl;
 		writer.FinishWithError(grpc::Status(grpc::INTERNAL, e.what()), this);
@@ -103,11 +124,49 @@ void TasksService::LinkedCallData::proceed(bool ok)
 		delete this;
 	}
 }
-TasksService::ParamSCallData::ParamSCallData(tasks_api::TasksApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<Tasks> api):
-	TasksService::CallData(service, cq, api), writer(&context)
-{
-	proceed(true);
+TasksService::FunctionalCallData::FunctionalCallData(tasks_api::TasksApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<Tasks> api) : TasksService::CallData(service, cq, api), writer(&context) { proceed(true); }
+void TasksService::FunctionalCallData::proceed(bool ok) {
+	if (!ok) {
+		delete this;
+		return;
+	}
+	try {
+		switch(status) {
+			case CREATE: {
+										 status = PROCESS;
+										 service->RequestCallFunctional(&context, &request, &writer,cq,cq,this);
+										 break;
+									 }
+			case PROCESS: {
+											status = FINISH;
+											std::vector<double> x_store(request.x().begin(), request.x().end());
+											std::vector<double> u_store(request.u().begin(), request.u().end());
+											matrix<double> x(request.x_size_row(), request.x_size_col());
+											matrix<double> u(request.u_size_row(), request.u_size_col());
+											*x.store_handle() = std::move(x_store);
+											*u.store_handle() = std::move(u_store);
+											double result = api->calc_functional(std::move(x), std::move(u));
+											response.set_result(result);
+											writer.Finish(response, grpc::Status::OK, this);
+											std::cout << "Call functional request successful!" << std::endl;
+											break;
+										}
+			case FINISH: {
+										 new FunctionalCallData(service, cq, api);
+										 delete this;
+										 break;
+									 }
+		}
+	}
+	catch(const std::exception& e) {
+		status = FINISH;
+		std::cerr << "Functional call request failed!" << std::endl;
+		writer.FinishWithError(grpc::Status(grpc::INTERNAL, e.what()), this);
+		new FunctionalCallData(service, cq, api);
+		delete this;
+	}
 }
+TasksService::ParamSCallData::ParamSCallData(tasks_api::TasksApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<Tasks> api): TasksService::CallData(service, cq, api), writer(&context) { proceed(true); }
 void TasksService::ParamSCallData::proceed(bool ok)
 {
 	if (!ok)
@@ -179,6 +238,8 @@ void TasksService::run()
 		new EquationCallData(&service, cq.get(), api);
 		new LinkedCallData(&service, cq.get(), api);
 		new ParamSCallData(&service, cq.get(), api);
+		new TaskCallData(&service, cq.get(), api);
+		new FunctionalCallData(&service, cq.get(), api);
 	}
 	for (int i = 0; i < thread_num; i++)
 		worker_thread.emplace_back(std::thread([this]{handle_rpcs();}));
@@ -237,16 +298,4 @@ TasksService::TasksService(std::string& conf_file)
 	{
 		throw std::runtime_error(e.what());
 	}
-}
-void TasksService::add_equation(Equation value)
-{
-	api->add_equation(std::move(value));
-}
-void TasksService::add_linked(Equation value)
-{
-	api->add_linked(std::move(value));
-}
-void TasksService::set_param_s(ParamS value)
-{
-	api->set_param_s(std::move(value));
 }

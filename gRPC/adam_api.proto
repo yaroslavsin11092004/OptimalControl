@@ -21,8 +21,13 @@ message OptimizeResponse
 
 message EmptyResponse {}
 
+message HamiltonRequest
+{
+  string hamilton = 1;
+}
 service AdamApiService
 {
   rpc SetGlobalParams(GlobalParamsRequest) returns (EmptyResponse);
   rpc Optimize(OptimizeRequest) returns (OptimizeResponse);
+  rpc Hamilton(HamiltonRequest) returns (EmptyResponse);
 }

@@ -50,6 +50,13 @@ class AdamApiService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::adam_api::OptimizeResponse>> PrepareAsyncOptimize(::grpc::ClientContext* context, const ::adam_api::OptimizeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::adam_api::OptimizeResponse>>(PrepareAsyncOptimizeRaw(context, request, cq));
     }
+    virtual ::grpc::Status Hamilton(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest& request, ::adam_api::EmptyResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::adam_api::EmptyResponse>> AsyncHamilton(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::adam_api::EmptyResponse>>(AsyncHamiltonRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::adam_api::EmptyResponse>> PrepareAsyncHamilton(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::adam_api::EmptyResponse>>(PrepareAsyncHamiltonRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -57,6 +64,8 @@ class AdamApiService final {
       virtual void SetGlobalParams(::grpc::ClientContext* context, const ::adam_api::GlobalParamsRequest* request, ::adam_api::EmptyResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void Optimize(::grpc::ClientContext* context, const ::adam_api::OptimizeRequest* request, ::adam_api::OptimizeResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void Optimize(::grpc::ClientContext* context, const ::adam_api::OptimizeRequest* request, ::adam_api::OptimizeResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void Hamilton(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest* request, ::adam_api::EmptyResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void Hamilton(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest* request, ::adam_api::EmptyResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -66,6 +75,8 @@ class AdamApiService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::adam_api::EmptyResponse>* PrepareAsyncSetGlobalParamsRaw(::grpc::ClientContext* context, const ::adam_api::GlobalParamsRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::adam_api::OptimizeResponse>* AsyncOptimizeRaw(::grpc::ClientContext* context, const ::adam_api::OptimizeRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::adam_api::OptimizeResponse>* PrepareAsyncOptimizeRaw(::grpc::ClientContext* context, const ::adam_api::OptimizeRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::adam_api::EmptyResponse>* AsyncHamiltonRaw(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::adam_api::EmptyResponse>* PrepareAsyncHamiltonRaw(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -84,6 +95,13 @@ class AdamApiService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::adam_api::OptimizeResponse>> PrepareAsyncOptimize(::grpc::ClientContext* context, const ::adam_api::OptimizeRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::adam_api::OptimizeResponse>>(PrepareAsyncOptimizeRaw(context, request, cq));
     }
+    ::grpc::Status Hamilton(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest& request, ::adam_api::EmptyResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::adam_api::EmptyResponse>> AsyncHamilton(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::adam_api::EmptyResponse>>(AsyncHamiltonRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::adam_api::EmptyResponse>> PrepareAsyncHamilton(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::adam_api::EmptyResponse>>(PrepareAsyncHamiltonRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -91,6 +109,8 @@ class AdamApiService final {
       void SetGlobalParams(::grpc::ClientContext* context, const ::adam_api::GlobalParamsRequest* request, ::adam_api::EmptyResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void Optimize(::grpc::ClientContext* context, const ::adam_api::OptimizeRequest* request, ::adam_api::OptimizeResponse* response, std::function<void(::grpc::Status)>) override;
       void Optimize(::grpc::ClientContext* context, const ::adam_api::OptimizeRequest* request, ::adam_api::OptimizeResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void Hamilton(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest* request, ::adam_api::EmptyResponse* response, std::function<void(::grpc::Status)>) override;
+      void Hamilton(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest* request, ::adam_api::EmptyResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -106,8 +126,11 @@ class AdamApiService final {
     ::grpc::ClientAsyncResponseReader< ::adam_api::EmptyResponse>* PrepareAsyncSetGlobalParamsRaw(::grpc::ClientContext* context, const ::adam_api::GlobalParamsRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::adam_api::OptimizeResponse>* AsyncOptimizeRaw(::grpc::ClientContext* context, const ::adam_api::OptimizeRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::adam_api::OptimizeResponse>* PrepareAsyncOptimizeRaw(::grpc::ClientContext* context, const ::adam_api::OptimizeRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::adam_api::EmptyResponse>* AsyncHamiltonRaw(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::adam_api::EmptyResponse>* PrepareAsyncHamiltonRaw(::grpc::ClientContext* context, const ::adam_api::HamiltonRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_SetGlobalParams_;
     const ::grpc::internal::RpcMethod rpcmethod_Optimize_;
+    const ::grpc::internal::RpcMethod rpcmethod_Hamilton_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -117,6 +140,7 @@ class AdamApiService final {
     virtual ~Service();
     virtual ::grpc::Status SetGlobalParams(::grpc::ServerContext* context, const ::adam_api::GlobalParamsRequest* request, ::adam_api::EmptyResponse* response);
     virtual ::grpc::Status Optimize(::grpc::ServerContext* context, const ::adam_api::OptimizeRequest* request, ::adam_api::OptimizeResponse* response);
+    virtual ::grpc::Status Hamilton(::grpc::ServerContext* context, const ::adam_api::HamiltonRequest* request, ::adam_api::EmptyResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_SetGlobalParams : public BaseClass {
@@ -158,7 +182,27 @@ class AdamApiService final {
       ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_SetGlobalParams<WithAsyncMethod_Optimize<Service > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_Hamilton : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_Hamilton() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_Hamilton() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Hamilton(::grpc::ServerContext* /*context*/, const ::adam_api::HamiltonRequest* /*request*/, ::adam_api::EmptyResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestHamilton(::grpc::ServerContext* context, ::adam_api::HamiltonRequest* request, ::grpc::ServerAsyncResponseWriter< ::adam_api::EmptyResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_SetGlobalParams<WithAsyncMethod_Optimize<WithAsyncMethod_Hamilton<Service > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_SetGlobalParams : public BaseClass {
    private:
@@ -213,7 +257,34 @@ class AdamApiService final {
     virtual ::grpc::ServerUnaryReactor* Optimize(
       ::grpc::CallbackServerContext* /*context*/, const ::adam_api::OptimizeRequest* /*request*/, ::adam_api::OptimizeResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_SetGlobalParams<WithCallbackMethod_Optimize<Service > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_Hamilton : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_Hamilton() {
+      ::grpc::Service::MarkMethodCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::adam_api::HamiltonRequest, ::adam_api::EmptyResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::adam_api::HamiltonRequest* request, ::adam_api::EmptyResponse* response) { return this->Hamilton(context, request, response); }));}
+    void SetMessageAllocatorFor_Hamilton(
+        ::grpc::MessageAllocator< ::adam_api::HamiltonRequest, ::adam_api::EmptyResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::adam_api::HamiltonRequest, ::adam_api::EmptyResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_Hamilton() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Hamilton(::grpc::ServerContext* /*context*/, const ::adam_api::HamiltonRequest* /*request*/, ::adam_api::EmptyResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* Hamilton(
+      ::grpc::CallbackServerContext* /*context*/, const ::adam_api::HamiltonRequest* /*request*/, ::adam_api::EmptyResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_SetGlobalParams<WithCallbackMethod_Optimize<WithCallbackMethod_Hamilton<Service > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_SetGlobalParams : public BaseClass {
@@ -245,6 +316,23 @@ class AdamApiService final {
     }
     // disable synchronous version of this method
     ::grpc::Status Optimize(::grpc::ServerContext* /*context*/, const ::adam_api::OptimizeRequest* /*request*/, ::adam_api::OptimizeResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_Hamilton : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_Hamilton() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_Hamilton() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Hamilton(::grpc::ServerContext* /*context*/, const ::adam_api::HamiltonRequest* /*request*/, ::adam_api::EmptyResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -290,6 +378,26 @@ class AdamApiService final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_Hamilton : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_Hamilton() {
+      ::grpc::Service::MarkMethodRaw(2);
+    }
+    ~WithRawMethod_Hamilton() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Hamilton(::grpc::ServerContext* /*context*/, const ::adam_api::HamiltonRequest* /*request*/, ::adam_api::EmptyResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestHamilton(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawCallbackMethod_SetGlobalParams : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
@@ -331,6 +439,28 @@ class AdamApiService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* Optimize(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_Hamilton : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_Hamilton() {
+      ::grpc::Service::MarkMethodRawCallback(2,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->Hamilton(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_Hamilton() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Hamilton(::grpc::ServerContext* /*context*/, const ::adam_api::HamiltonRequest* /*request*/, ::adam_api::EmptyResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* Hamilton(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -387,9 +517,36 @@ class AdamApiService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedOptimize(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::adam_api::OptimizeRequest,::adam_api::OptimizeResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_SetGlobalParams<WithStreamedUnaryMethod_Optimize<Service > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_Hamilton : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_Hamilton() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::adam_api::HamiltonRequest, ::adam_api::EmptyResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::adam_api::HamiltonRequest, ::adam_api::EmptyResponse>* streamer) {
+                       return this->StreamedHamilton(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_Hamilton() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status Hamilton(::grpc::ServerContext* /*context*/, const ::adam_api::HamiltonRequest* /*request*/, ::adam_api::EmptyResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedHamilton(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::adam_api::HamiltonRequest,::adam_api::EmptyResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_SetGlobalParams<WithStreamedUnaryMethod_Optimize<WithStreamedUnaryMethod_Hamilton<Service > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_SetGlobalParams<WithStreamedUnaryMethod_Optimize<Service > > StreamedService;
+  typedef WithStreamedUnaryMethod_SetGlobalParams<WithStreamedUnaryMethod_Optimize<WithStreamedUnaryMethod_Hamilton<Service > > > StreamedService;
 };
 
 }  // namespace adam_api

@@ -57,6 +57,20 @@ class TasksApiService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallParamSResponse>> PrepareAsyncCallParamS(::grpc::ClientContext* context, const ::tasks_api::CallParamSRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallParamSResponse>>(PrepareAsyncCallParamSRaw(context, request, cq));
     }
+    virtual ::grpc::Status CallTask(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest& request, ::tasks_api::CallTaskResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallTaskResponse>> AsyncCallTask(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallTaskResponse>>(AsyncCallTaskRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallTaskResponse>> PrepareAsyncCallTask(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallTaskResponse>>(PrepareAsyncCallTaskRaw(context, request, cq));
+    }
+    virtual ::grpc::Status CallFunctional(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest& request, ::tasks_api::CallFunctionalResponse* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallFunctionalResponse>> AsyncCallFunctional(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallFunctionalResponse>>(AsyncCallFunctionalRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallFunctionalResponse>> PrepareAsyncCallFunctional(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallFunctionalResponse>>(PrepareAsyncCallFunctionalRaw(context, request, cq));
+    }
     class async_interface {
      public:
       virtual ~async_interface() {}
@@ -66,6 +80,10 @@ class TasksApiService final {
       virtual void CallLinked(::grpc::ClientContext* context, const ::tasks_api::CallLinkedRequest* request, ::tasks_api::CallLinkedResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
       virtual void CallParamS(::grpc::ClientContext* context, const ::tasks_api::CallParamSRequest* request, ::tasks_api::CallParamSResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void CallParamS(::grpc::ClientContext* context, const ::tasks_api::CallParamSRequest* request, ::tasks_api::CallParamSResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void CallTask(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest* request, ::tasks_api::CallTaskResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void CallTask(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest* request, ::tasks_api::CallTaskResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void CallFunctional(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest* request, ::tasks_api::CallFunctionalResponse* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void CallFunctional(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest* request, ::tasks_api::CallFunctionalResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
@@ -77,6 +95,10 @@ class TasksApiService final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallLinkedResponse>* PrepareAsyncCallLinkedRaw(::grpc::ClientContext* context, const ::tasks_api::CallLinkedRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallParamSResponse>* AsyncCallParamSRaw(::grpc::ClientContext* context, const ::tasks_api::CallParamSRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallParamSResponse>* PrepareAsyncCallParamSRaw(::grpc::ClientContext* context, const ::tasks_api::CallParamSRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallTaskResponse>* AsyncCallTaskRaw(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallTaskResponse>* PrepareAsyncCallTaskRaw(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallFunctionalResponse>* AsyncCallFunctionalRaw(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::tasks_api::CallFunctionalResponse>* PrepareAsyncCallFunctionalRaw(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -102,6 +124,20 @@ class TasksApiService final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tasks_api::CallParamSResponse>> PrepareAsyncCallParamS(::grpc::ClientContext* context, const ::tasks_api::CallParamSRequest& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tasks_api::CallParamSResponse>>(PrepareAsyncCallParamSRaw(context, request, cq));
     }
+    ::grpc::Status CallTask(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest& request, ::tasks_api::CallTaskResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tasks_api::CallTaskResponse>> AsyncCallTask(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tasks_api::CallTaskResponse>>(AsyncCallTaskRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tasks_api::CallTaskResponse>> PrepareAsyncCallTask(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tasks_api::CallTaskResponse>>(PrepareAsyncCallTaskRaw(context, request, cq));
+    }
+    ::grpc::Status CallFunctional(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest& request, ::tasks_api::CallFunctionalResponse* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tasks_api::CallFunctionalResponse>> AsyncCallFunctional(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tasks_api::CallFunctionalResponse>>(AsyncCallFunctionalRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tasks_api::CallFunctionalResponse>> PrepareAsyncCallFunctional(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tasks_api::CallFunctionalResponse>>(PrepareAsyncCallFunctionalRaw(context, request, cq));
+    }
     class async final :
       public StubInterface::async_interface {
      public:
@@ -111,6 +147,10 @@ class TasksApiService final {
       void CallLinked(::grpc::ClientContext* context, const ::tasks_api::CallLinkedRequest* request, ::tasks_api::CallLinkedResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void CallParamS(::grpc::ClientContext* context, const ::tasks_api::CallParamSRequest* request, ::tasks_api::CallParamSResponse* response, std::function<void(::grpc::Status)>) override;
       void CallParamS(::grpc::ClientContext* context, const ::tasks_api::CallParamSRequest* request, ::tasks_api::CallParamSResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void CallTask(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest* request, ::tasks_api::CallTaskResponse* response, std::function<void(::grpc::Status)>) override;
+      void CallTask(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest* request, ::tasks_api::CallTaskResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void CallFunctional(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest* request, ::tasks_api::CallFunctionalResponse* response, std::function<void(::grpc::Status)>) override;
+      void CallFunctional(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest* request, ::tasks_api::CallFunctionalResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -128,9 +168,15 @@ class TasksApiService final {
     ::grpc::ClientAsyncResponseReader< ::tasks_api::CallLinkedResponse>* PrepareAsyncCallLinkedRaw(::grpc::ClientContext* context, const ::tasks_api::CallLinkedRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::tasks_api::CallParamSResponse>* AsyncCallParamSRaw(::grpc::ClientContext* context, const ::tasks_api::CallParamSRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::tasks_api::CallParamSResponse>* PrepareAsyncCallParamSRaw(::grpc::ClientContext* context, const ::tasks_api::CallParamSRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::tasks_api::CallTaskResponse>* AsyncCallTaskRaw(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::tasks_api::CallTaskResponse>* PrepareAsyncCallTaskRaw(::grpc::ClientContext* context, const ::tasks_api::CallTaskRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::tasks_api::CallFunctionalResponse>* AsyncCallFunctionalRaw(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::tasks_api::CallFunctionalResponse>* PrepareAsyncCallFunctionalRaw(::grpc::ClientContext* context, const ::tasks_api::CallFunctionalRequest& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_CallEquation_;
     const ::grpc::internal::RpcMethod rpcmethod_CallLinked_;
     const ::grpc::internal::RpcMethod rpcmethod_CallParamS_;
+    const ::grpc::internal::RpcMethod rpcmethod_CallTask_;
+    const ::grpc::internal::RpcMethod rpcmethod_CallFunctional_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -141,6 +187,8 @@ class TasksApiService final {
     virtual ::grpc::Status CallEquation(::grpc::ServerContext* context, const ::tasks_api::CallEquationRequest* request, ::tasks_api::CallEquationResponse* response);
     virtual ::grpc::Status CallLinked(::grpc::ServerContext* context, const ::tasks_api::CallLinkedRequest* request, ::tasks_api::CallLinkedResponse* response);
     virtual ::grpc::Status CallParamS(::grpc::ServerContext* context, const ::tasks_api::CallParamSRequest* request, ::tasks_api::CallParamSResponse* response);
+    virtual ::grpc::Status CallTask(::grpc::ServerContext* context, const ::tasks_api::CallTaskRequest* request, ::tasks_api::CallTaskResponse* response);
+    virtual ::grpc::Status CallFunctional(::grpc::ServerContext* context, const ::tasks_api::CallFunctionalRequest* request, ::tasks_api::CallFunctionalResponse* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_CallEquation : public BaseClass {
@@ -202,7 +250,47 @@ class TasksApiService final {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_CallEquation<WithAsyncMethod_CallLinked<WithAsyncMethod_CallParamS<Service > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_CallTask : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_CallTask() {
+      ::grpc::Service::MarkMethodAsync(3);
+    }
+    ~WithAsyncMethod_CallTask() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CallTask(::grpc::ServerContext* /*context*/, const ::tasks_api::CallTaskRequest* /*request*/, ::tasks_api::CallTaskResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestCallTask(::grpc::ServerContext* context, ::tasks_api::CallTaskRequest* request, ::grpc::ServerAsyncResponseWriter< ::tasks_api::CallTaskResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_CallFunctional : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_CallFunctional() {
+      ::grpc::Service::MarkMethodAsync(4);
+    }
+    ~WithAsyncMethod_CallFunctional() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CallFunctional(::grpc::ServerContext* /*context*/, const ::tasks_api::CallFunctionalRequest* /*request*/, ::tasks_api::CallFunctionalResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestCallFunctional(::grpc::ServerContext* context, ::tasks_api::CallFunctionalRequest* request, ::grpc::ServerAsyncResponseWriter< ::tasks_api::CallFunctionalResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_CallEquation<WithAsyncMethod_CallLinked<WithAsyncMethod_CallParamS<WithAsyncMethod_CallTask<WithAsyncMethod_CallFunctional<Service > > > > > AsyncService;
   template <class BaseClass>
   class WithCallbackMethod_CallEquation : public BaseClass {
    private:
@@ -284,7 +372,61 @@ class TasksApiService final {
     virtual ::grpc::ServerUnaryReactor* CallParamS(
       ::grpc::CallbackServerContext* /*context*/, const ::tasks_api::CallParamSRequest* /*request*/, ::tasks_api::CallParamSResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_CallEquation<WithCallbackMethod_CallLinked<WithCallbackMethod_CallParamS<Service > > > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_CallTask : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_CallTask() {
+      ::grpc::Service::MarkMethodCallback(3,
+          new ::grpc::internal::CallbackUnaryHandler< ::tasks_api::CallTaskRequest, ::tasks_api::CallTaskResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::tasks_api::CallTaskRequest* request, ::tasks_api::CallTaskResponse* response) { return this->CallTask(context, request, response); }));}
+    void SetMessageAllocatorFor_CallTask(
+        ::grpc::MessageAllocator< ::tasks_api::CallTaskRequest, ::tasks_api::CallTaskResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::tasks_api::CallTaskRequest, ::tasks_api::CallTaskResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_CallTask() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CallTask(::grpc::ServerContext* /*context*/, const ::tasks_api::CallTaskRequest* /*request*/, ::tasks_api::CallTaskResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* CallTask(
+      ::grpc::CallbackServerContext* /*context*/, const ::tasks_api::CallTaskRequest* /*request*/, ::tasks_api::CallTaskResponse* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_CallFunctional : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_CallFunctional() {
+      ::grpc::Service::MarkMethodCallback(4,
+          new ::grpc::internal::CallbackUnaryHandler< ::tasks_api::CallFunctionalRequest, ::tasks_api::CallFunctionalResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::tasks_api::CallFunctionalRequest* request, ::tasks_api::CallFunctionalResponse* response) { return this->CallFunctional(context, request, response); }));}
+    void SetMessageAllocatorFor_CallFunctional(
+        ::grpc::MessageAllocator< ::tasks_api::CallFunctionalRequest, ::tasks_api::CallFunctionalResponse>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::tasks_api::CallFunctionalRequest, ::tasks_api::CallFunctionalResponse>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_CallFunctional() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CallFunctional(::grpc::ServerContext* /*context*/, const ::tasks_api::CallFunctionalRequest* /*request*/, ::tasks_api::CallFunctionalResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* CallFunctional(
+      ::grpc::CallbackServerContext* /*context*/, const ::tasks_api::CallFunctionalRequest* /*request*/, ::tasks_api::CallFunctionalResponse* /*response*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_CallEquation<WithCallbackMethod_CallLinked<WithCallbackMethod_CallParamS<WithCallbackMethod_CallTask<WithCallbackMethod_CallFunctional<Service > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_CallEquation : public BaseClass {
@@ -333,6 +475,40 @@ class TasksApiService final {
     }
     // disable synchronous version of this method
     ::grpc::Status CallParamS(::grpc::ServerContext* /*context*/, const ::tasks_api::CallParamSRequest* /*request*/, ::tasks_api::CallParamSResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_CallTask : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_CallTask() {
+      ::grpc::Service::MarkMethodGeneric(3);
+    }
+    ~WithGenericMethod_CallTask() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CallTask(::grpc::ServerContext* /*context*/, const ::tasks_api::CallTaskRequest* /*request*/, ::tasks_api::CallTaskResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_CallFunctional : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_CallFunctional() {
+      ::grpc::Service::MarkMethodGeneric(4);
+    }
+    ~WithGenericMethod_CallFunctional() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CallFunctional(::grpc::ServerContext* /*context*/, const ::tasks_api::CallFunctionalRequest* /*request*/, ::tasks_api::CallFunctionalResponse* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -395,6 +571,46 @@ class TasksApiService final {
     }
     void RequestCallParamS(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_CallTask : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_CallTask() {
+      ::grpc::Service::MarkMethodRaw(3);
+    }
+    ~WithRawMethod_CallTask() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CallTask(::grpc::ServerContext* /*context*/, const ::tasks_api::CallTaskRequest* /*request*/, ::tasks_api::CallTaskResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestCallTask(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_CallFunctional : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_CallFunctional() {
+      ::grpc::Service::MarkMethodRaw(4);
+    }
+    ~WithRawMethod_CallFunctional() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CallFunctional(::grpc::ServerContext* /*context*/, const ::tasks_api::CallFunctionalRequest* /*request*/, ::tasks_api::CallFunctionalResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestCallFunctional(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -461,6 +677,50 @@ class TasksApiService final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     virtual ::grpc::ServerUnaryReactor* CallParamS(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_CallTask : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_CallTask() {
+      ::grpc::Service::MarkMethodRawCallback(3,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->CallTask(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_CallTask() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CallTask(::grpc::ServerContext* /*context*/, const ::tasks_api::CallTaskRequest* /*request*/, ::tasks_api::CallTaskResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* CallTask(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_CallFunctional : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_CallFunctional() {
+      ::grpc::Service::MarkMethodRawCallback(4,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->CallFunctional(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_CallFunctional() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status CallFunctional(::grpc::ServerContext* /*context*/, const ::tasks_api::CallFunctionalRequest* /*request*/, ::tasks_api::CallFunctionalResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* CallFunctional(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
@@ -544,9 +804,63 @@ class TasksApiService final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedCallParamS(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::tasks_api::CallParamSRequest,::tasks_api::CallParamSResponse>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_CallEquation<WithStreamedUnaryMethod_CallLinked<WithStreamedUnaryMethod_CallParamS<Service > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_CallTask : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_CallTask() {
+      ::grpc::Service::MarkMethodStreamed(3,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::tasks_api::CallTaskRequest, ::tasks_api::CallTaskResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::tasks_api::CallTaskRequest, ::tasks_api::CallTaskResponse>* streamer) {
+                       return this->StreamedCallTask(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_CallTask() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status CallTask(::grpc::ServerContext* /*context*/, const ::tasks_api::CallTaskRequest* /*request*/, ::tasks_api::CallTaskResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedCallTask(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::tasks_api::CallTaskRequest,::tasks_api::CallTaskResponse>* server_unary_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_CallFunctional : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_CallFunctional() {
+      ::grpc::Service::MarkMethodStreamed(4,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::tasks_api::CallFunctionalRequest, ::tasks_api::CallFunctionalResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::tasks_api::CallFunctionalRequest, ::tasks_api::CallFunctionalResponse>* streamer) {
+                       return this->StreamedCallFunctional(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_CallFunctional() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status CallFunctional(::grpc::ServerContext* /*context*/, const ::tasks_api::CallFunctionalRequest* /*request*/, ::tasks_api::CallFunctionalResponse* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedCallFunctional(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::tasks_api::CallFunctionalRequest,::tasks_api::CallFunctionalResponse>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_CallEquation<WithStreamedUnaryMethod_CallLinked<WithStreamedUnaryMethod_CallParamS<WithStreamedUnaryMethod_CallTask<WithStreamedUnaryMethod_CallFunctional<Service > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_CallEquation<WithStreamedUnaryMethod_CallLinked<WithStreamedUnaryMethod_CallParamS<Service > > > StreamedService;
+  typedef WithStreamedUnaryMethod_CallEquation<WithStreamedUnaryMethod_CallLinked<WithStreamedUnaryMethod_CallParamS<WithStreamedUnaryMethod_CallTask<WithStreamedUnaryMethod_CallFunctional<Service > > > > > StreamedService;
 };
 
 }  // namespace tasks_api

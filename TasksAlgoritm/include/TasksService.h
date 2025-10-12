@@ -49,6 +49,26 @@ class TasksService final
 				tasks_api::CallParamSResponse response;
 				grpc::ServerAsyncResponseWriter<tasks_api::CallParamSResponse> writer;
 		};
+		class TaskCallData : public CallData
+		{
+			public:
+				TaskCallData(tasks_api::TasksApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<Tasks> api);
+				void proceed(bool ok) override;
+			private:
+				tasks_api::CallTaskRequest request;
+				tasks_api::CallTaskResponse response;
+				grpc::ServerAsyncResponseWriter<tasks_api::CallTaskResponse> writer;
+		};
+		class FunctionalCallData: public CallData 
+		{
+			public:
+				FunctionalCallData(tasks_api::TasksApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<Tasks>api);
+				void proceed(bool ok) override;
+			private:
+				tasks_api::CallFunctionalRequest request;
+				tasks_api::CallFunctionalResponse response;
+				grpc::ServerAsyncResponseWriter<tasks_api::CallFunctionalResponse> writer;
+		};
 		void handle_rpcs();
 		std::unique_ptr<grpc::Server> server;
 		std::unique_ptr<grpc::ServerCompletionQueue> cq;
@@ -62,8 +82,5 @@ class TasksService final
 		~TasksService();
 		void run();
 		void close();
-		void add_equation(Equation value);
-		void add_linked(Equation value);
-		void set_param_s(ParamS value);
 };
 #endif
