@@ -133,4 +133,20 @@ void HttpServer::init_routes()
 			beast::ostream(resp.body()) << "{\"result\" : \"" << e.what() << "\"}";
 		}
 	});
+	this->router.add_route(http::verb::post, "/set_task",
+	[this](Request& req, Response& resp, urls::url_view url) {
+		try {
+			json req_json = json::parse(req.body());
+			auto equations = req_json["equations"].get<std::vector<std::string>>();
+			auto linked = req_json["linked"].get<std::vector<std::string>>();
+			auto functional = req_json["functional"].get<std::string>();
+			auto hamilton = req_json["hamilton"].get<std::string>();
+			this->optimal_control_api->task(std::move(equations), std::move(linked), std::move(functional));
+			this->optimal_control_api->set_hamilton(std::move(hamilton), static_cast<int>(equations.size()));
+			beast::ostream(resp.body()) << "{\"result\" : \"ok\"}";
+		}
+		catch(const std::exception& e) {
+			beast::ostream(resp.body()) << "{\"result\" : \"" << e.what() << "\"}";
+		}
+	});
 }

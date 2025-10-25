@@ -36,6 +36,5 @@ class HttpServer
 		HttpServer(std::string& config_file);
 		~HttpServer() = default;
 		void run();
-		void set_hamilton_function(Hamilton value);
 };
 #endif

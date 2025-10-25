@@ -6,29 +6,21 @@ bool EquationBuilder::is_number(std::string& token) {
 	}
 	return true;
 }
-EquationBuilder::EquationBuilder() {
-	store.insert_or_assign("x1", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(0,0); }});
-	store.insert_or_assign("x2", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(1,0); }});
-	store.insert_or_assign("x3", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(2,0); }});
-	store.insert_or_assign("x4", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(3,0); }});
-	store.insert_or_assign("x5", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(4,0); }});
-	store.insert_or_assign("x6", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(5,0); }});
-	store.insert_or_assign("u1", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(0,1); }});
-	store.insert_or_assign("u2", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(1,1); }});
-	store.insert_or_assign("u3", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(2,1); }});
-	store.insert_or_assign("u4", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(3,1); }});
-	store.insert_or_assign("u5", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(4,1); }});
-	store.insert_or_assign("u6", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(5,1); }});
-	store.insert_or_assign("psi1", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(0,2); }});
-	store.insert_or_assign("psi2", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(1,2); }});
-	store.insert_or_assign("psi3", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(2,2); }});
-	store.insert_or_assign("psi4", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(3,2); }});
-	store.insert_or_assign("psi5", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(4,2); }});
-	store.insert_or_assign("psi6", FunctionWrapper<EquationSignature>{[](auto, auto params) { return params(5,2); }});
+void EquationBuilder::make_store_table(int dim) {
+	store.clear();
+	for (int i = 0; i < dim; i++) {
+		std::string num = std::to_string(i + 1);
+		std::string xkey = absl::StrCat("x", num);
+		std::string ukey = absl::StrCat("u", num);
+		std::string psikey = absl::StrCat("psi", num);
+		store.insert_or_assign(std::move(xkey), FunctionWrapper<EquationSignature>{[i](auto, auto params) { return params(i,0); }});
+		store.insert_or_assign(std::move(ukey), FunctionWrapper<EquationSignature>{[i](auto, auto params) { return params(i,1); }});
+		store.insert_or_assign(std::move(psikey), FunctionWrapper<EquationSignature>{[i](auto, auto params) { return params(i,2); }});
+	}
 	store.insert_or_assign("t", FunctionWrapper<EquationSignature>{[](auto t, auto) { return t; }});
 }
 FunctionWrapper<EquationBuilder::EquationSignature> EquationBuilder::build(std::string& input) {
-	std::string tr_input = transform_expression(input);
+	std::string tr_input = transform_expression(input, *transformer);
 	tokenizer.set_input_ptr(tr_input.c_str());
 	auto tokens = tokenizer.tokenize();
 	std::stack<std::string> operators;

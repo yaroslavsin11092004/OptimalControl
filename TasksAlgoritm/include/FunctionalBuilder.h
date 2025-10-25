@@ -8,8 +8,10 @@ class FunctionalBuilder {
 		tokenizer tokenizer;
 		absl::flat_hash_map<std::string, FunctionWrapper<FunctionalSignature>> store;
 		bool is_number(std::string& token);
+		std::unique_ptr<Transformer<std::string::const_iterator>> transformer;
 	public:
-		FunctionalBuilder();
+		FunctionalBuilder() { transformer = std::make_unique<Transformer<std::string::const_iterator>>(); }
+		void make_store_table(int dim);
 		FunctionWrapper<FunctionalSignature> build(std::string& input);
 };
 #endif

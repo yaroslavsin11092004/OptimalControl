@@ -1,5 +1,6 @@
 #include "AdamService.h"
-AdamService::SetParamsCallData::SetParamsCallData(adam_api::AdamApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<AdamApi> api): AdamService::CallData(service, cq, api, SET_PARAMS), writer(&context)
+#include "adam_api.grpc.pb.h"
+AdamService::SetParamsCallData::SetParamsCallData(adam_api::AdamApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<AdamApi> api): AdamService::CallData(service, cq, api), writer(&context)
 {
 	proceed(true);
 }
@@ -46,7 +47,42 @@ void AdamService::SetParamsCallData::proceed(bool ok)
 		delete this;
 	}
 }
-AdamService::OptimizeCallData::OptimizeCallData(adam_api::AdamApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<AdamApi>api): AdamService::CallData(service, cq,api, OPTIMIZE), writer(&context)
+AdamService::HamiltonCallData::HamiltonCallData(adam_api::AdamApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<AdamApi> api) : AdamService::CallData(service, cq, api), writer(&context) { proceed(true); }
+void AdamService::HamiltonCallData::proceed(bool ok) {
+	if (!ok) {
+		delete this;
+		return;
+	}
+	try {
+		switch(status) {
+			case CREATE: {
+										 status = PROCESS;
+										 service->RequestHamilton(&context, &request,&writer, cq,cq,this);
+										 break;
+									 }
+			case PROCESS: {
+											status = FINISH;
+											std::string func(request.hamilton().begin(), request.hamilton().end());
+											api->set_hamilton(std::move(func), request.dimension());
+											writer.Finish(response, grpc::Status::OK, this);
+											break;
+										}
+			case FINISH: {
+										 new HamiltonCallData(service, cq, api);
+										 delete this;
+										 break;
+									 }
+		}
+	}
+	catch(const std::exception& e) {
+		status = FINISH;
+		std::cerr << "Set hamilton call failed with error::" << e.what() << std::endl;
+		writer.FinishWithError(grpc::Status(grpc::INTERNAL, e.what()), this);
+		new HamiltonCallData(service, cq, api);
+		delete this;
+	}
+}
+AdamService::OptimizeCallData::OptimizeCallData(adam_api::AdamApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<AdamApi>api): AdamService::CallData(service, cq,api), writer(&context)
 {
 	proceed(true);
 }
@@ -111,6 +147,7 @@ void AdamService::run()
 	{
 		new SetParamsCallData(&service, cq.get(), api);
 		new OptimizeCallData(&service, cq.get(), api);
+		new HamiltonCallData(&service, cq.get(), api);
 	}
 	for (int i = 0; i < num_thread; i++)
 		worker_thread.emplace_back(std::thread([this]{handle_rpcs();}));

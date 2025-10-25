@@ -1,4 +1,5 @@
 #include "AdamApi.h"
+#include <boost/asio/this_coro.hpp>
 AdamApi::AdamApi(std::string& config_file)
 {
 	std::ifstream file(config_file);
@@ -136,6 +137,46 @@ std::vector<double> AdamApi::adam(std::vector<double> params)
 	}
 	catch(const std::exception& e)
 	{
+		throw std::runtime_error(e.what());
+	}
+}
+net::awaitable<void> AdamApi::call_set_hamilton_async(std::string hamilton, int dim) {
+	try {
+		json req_json;
+		req_json["hamilton"] = std::move(hamilton);
+		req_json["dim"] = dim;
+		auto resolver = tcp::resolver(co_await net::this_coro::executor);
+		auto socket = tcp::socket(co_await net::this_coro::executor);
+		auto endpoint = co_await resolver.async_resolve(this->host, this->port, net::use_awaitable);
+		co_await net::async_connect(socket, endpoint, net::use_awaitable);
+		Request req{http::verb::post, "/set_hamilton", 11};
+		req.body() = req_json.dump();
+		req.set(http::field::content_type, "application/json");
+		req.prepare_payload();
+		co_await http::async_write(socket, req, net::use_awaitable);
+		co_return;
+	}
+	catch(const std::exception& e) {
+		throw std::runtime_error(e.what());
+	}
+}
+void AdamApi::set_hamilton(std::string hamilton, int dim) {
+	try {
+		std::promise<void> result_promise;
+		auto result_future = result_promise.get_future();
+		net::co_spawn(*ioc,
+		[self = shared_from_this(), result_promise = std::move(result_promise), hamilton = std::move(hamilton), dim]()mutable -> net::awaitable<void> {
+			try {
+				co_await self->call_set_hamilton_async(std::move(hamilton), dim);
+				result_promise.set_value();
+			}
+			catch(...) {
+			result_promise.set_exception(std::current_exception());
+			}
+		},net::detached);
+		return result_future.get();
+	}
+	catch(const std::exception& e) {
 		throw std::runtime_error(e.what());
 	}
 }

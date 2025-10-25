@@ -81,7 +81,8 @@ inline constexpr HamiltonRequest::Impl_::Impl_(
       : _cached_size_{0},
         hamilton_(
             &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()) {}
+            ::_pbi::ConstantInitialized()),
+        dimension_{0} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR HamiltonRequest::HamiltonRequest(::_pbi::ConstantInitialized)
@@ -180,9 +181,11 @@ const ::uint32_t
         0x000, // bitmap
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::adam_api::HamiltonRequest, _impl_._has_bits_),
-        4, // hasbit index offset
+        5, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::adam_api::HamiltonRequest, _impl_.hamilton_),
+        PROTOBUF_FIELD_OFFSET(::adam_api::HamiltonRequest, _impl_.dimension_),
         0,
+        1,
 };
 
 static const ::_pbi::MigrationSchema
@@ -207,20 +210,20 @@ const char descriptor_table_protodef_adam_5fapi_2eproto[] ABSL_ATTRIBUTE_SECTION
     "_edge\030\002 \003(\001\022\022\n\nright_edge\030\003 \003(\001\022\016\n\006epoch"
     "s\030\004 \001(\005\"!\n\017OptimizeRequest\022\016\n\006params\030\001 \003"
     "(\001\"\"\n\020OptimizeResponse\022\016\n\006result\030\001 \003(\001\"\017"
-    "\n\rEmptyResponse\"#\n\017HamiltonRequest\022\020\n\010ha"
-    "milton\030\001 \001(\t2\336\001\n\016AdamApiService\022I\n\017SetGl"
-    "obalParams\022\035.adam_api.GlobalParamsReques"
-    "t\032\027.adam_api.EmptyResponse\022A\n\010Optimize\022\031"
-    ".adam_api.OptimizeRequest\032\032.adam_api.Opt"
-    "imizeResponse\022>\n\010Hamilton\022\031.adam_api.Ham"
-    "iltonRequest\032\027.adam_api.EmptyResponseb\006p"
-    "roto3"
+    "\n\rEmptyResponse\"6\n\017HamiltonRequest\022\020\n\010ha"
+    "milton\030\001 \001(\t\022\021\n\tdimension\030\002 \001(\0052\336\001\n\016Adam"
+    "ApiService\022I\n\017SetGlobalParams\022\035.adam_api"
+    ".GlobalParamsRequest\032\027.adam_api.EmptyRes"
+    "ponse\022A\n\010Optimize\022\031.adam_api.OptimizeReq"
+    "uest\032\032.adam_api.OptimizeResponse\022>\n\010Hami"
+    "lton\022\031.adam_api.HamiltonRequest\032\027.adam_a"
+    "pi.EmptyResponseb\006proto3"
 };
 static ::absl::once_flag descriptor_table_adam_5fapi_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_adam_5fapi_2eproto = {
     false,
     false,
-    485,
+    504,
     descriptor_table_protodef_adam_5fapi_2eproto,
     "adam_api.proto",
     &descriptor_table_adam_5fapi_2eproto_once,
@@ -1328,6 +1331,7 @@ HamiltonRequest::HamiltonRequest(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.dimension_ = from._impl_.dimension_;
 
   // @@protoc_insertion_point(copy_constructor:adam_api.HamiltonRequest)
 }
@@ -1339,6 +1343,7 @@ PROTOBUF_NDEBUG_INLINE HamiltonRequest::Impl_::Impl_(
 
 inline void HamiltonRequest::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.dimension_ = {};
 }
 HamiltonRequest::~HamiltonRequest() {
   // @@protoc_insertion_point(destructor:adam_api.HamiltonRequest)
@@ -1398,16 +1403,16 @@ HamiltonRequest::GetClassData() const {
   return HamiltonRequest_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 0, 41, 2>
+const ::_pbi::TcParseTable<1, 2, 0, 41, 2>
 HamiltonRequest::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(HamiltonRequest, _impl_._has_bits_),
     0, // no _extensions_
-    1, 0,  // max_field_number, fast_idx_mask
+    2, 8,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967294,  // skipmap
+    4294967292,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    1,  // num_field_entries
+    2,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     HamiltonRequest_class_data_.base(),
@@ -1417,6 +1422,10 @@ HamiltonRequest::_table_ = {
     ::_pbi::TcParser::GetTable<::adam_api::HamiltonRequest>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
+    // int32 dimension = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(HamiltonRequest, _impl_.dimension_), 1>(),
+     {16, 1, 0,
+      PROTOBUF_FIELD_OFFSET(HamiltonRequest, _impl_.dimension_)}},
     // string hamilton = 1;
     {::_pbi::TcParser::FastUS1,
      {10, 0, 0,
@@ -1426,6 +1435,8 @@ HamiltonRequest::_table_ = {
   }}, {{
     // string hamilton = 1;
     {PROTOBUF_FIELD_OFFSET(HamiltonRequest, _impl_.hamilton_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 dimension = 2;
+    {PROTOBUF_FIELD_OFFSET(HamiltonRequest, _impl_.dimension_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
   }},
   // no aux_entries
   {{
@@ -1445,6 +1456,7 @@ PROTOBUF_NOINLINE void HamiltonRequest::Clear() {
   if (CheckHasBit(cached_has_bits, 0x00000001U)) {
     _impl_.hamilton_.ClearNonDefaultToEmpty();
   }
+  _impl_.dimension_ = 0;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -1478,6 +1490,15 @@ PROTOBUF_NOINLINE void HamiltonRequest::Clear() {
     }
   }
 
+  // int32 dimension = 2;
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (this_._internal_dimension() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
+              stream, this_._internal_dimension(), target);
+    }
+  }
+
   if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
     target =
         ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -1501,13 +1522,21 @@ PROTOBUF_NOINLINE void HamiltonRequest::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void)cached_has_bits;
 
-   {
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
     // string hamilton = 1;
-    cached_has_bits = this_._impl_._has_bits_[0];
     if (CheckHasBit(cached_has_bits, 0x00000001U)) {
       if (!this_._internal_hamilton().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_hamilton());
+      }
+    }
+    // int32 dimension = 2;
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (this_._internal_dimension() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_dimension());
       }
     }
   }
@@ -1529,12 +1558,19 @@ void HamiltonRequest::MergeImpl(::google::protobuf::MessageLite& to_msg,
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
-    if (!from._internal_hamilton().empty()) {
-      _this->_internal_set_hamilton(from._internal_hamilton());
-    } else {
-      if (_this->_impl_.hamilton_.IsDefault()) {
-        _this->_internal_set_hamilton("");
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!from._internal_hamilton().empty()) {
+        _this->_internal_set_hamilton(from._internal_hamilton());
+      } else {
+        if (_this->_impl_.hamilton_.IsDefault()) {
+          _this->_internal_set_hamilton("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (from._internal_dimension() != 0) {
+        _this->_impl_.dimension_ = from._impl_.dimension_;
       }
     }
   }
@@ -1558,6 +1594,7 @@ void HamiltonRequest::InternalSwap(HamiltonRequest* PROTOBUF_RESTRICT PROTOBUF_N
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.hamilton_, &other->_impl_.hamilton_, arena);
+  swap(_impl_.dimension_, other->_impl_.dimension_);
 }
 
 ::google::protobuf::Metadata HamiltonRequest::GetMetadata() const {

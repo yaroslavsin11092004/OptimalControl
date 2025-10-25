@@ -9,8 +9,10 @@ class FuncCalcBuilder {
 		tokenizer tokenizer;
 		absl::flat_hash_map<std::string, FunctionWrapper<FuncCalcSignature>> store;
 		bool is_number(std::string& token);
+		std::unique_ptr<Transformer<std::string::const_iterator>> transformer;
 	public:
-		FuncCalcBuilder();
+		FuncCalcBuilder() { transformer = std::make_unique<Transformer<std::string::const_iterator>>(); }
+		void make_store_table(int dim);
 		FunctionWrapper<FuncCalcSignature> build(std::string& input);
 };
 #endif

@@ -99,6 +99,23 @@ net::awaitable<std::vector<double>> AdamApiRpc::adam_async(std::vector<double> p
 	result_future.wait();
 	co_return result_future.get();
 }
+net::awaitable<void> AdamApiRpc::set_hamilton_async(std::string hamilton, int dim) {
+	auto state = std::make_shared<AsyncCallStateHamilton>();
+	state->request.set_hamilton(std::move(hamilton));
+	state->request.set_dimension(dim);
+	auto result_future = state->promise.get_future();
+	auto* callback = new std::function<void(bool)>([state](bool ok) mutable {
+			if (state->status.ok() && ok)
+				state->promise.set_value();
+			else 
+				state->promise.set_exception(std::make_exception_ptr(std::runtime_error(state->status.error_message())));
+	});
+	state->reader = stub->AsyncHamilton(&state->context, state->request, cq.get());
+	state->reader->Finish(&state->response, &state->status, callback);
+	co_await net::dispatch(net::make_strand(*ioc), net::use_awaitable);
+	result_future.wait();
+	co_return;
+}
 void AdamApiRpc::set_global_params(double learning_rate, std::vector<double> u_left, std::vector<double> u_right, int epochs)
 {
 	try 
@@ -150,6 +167,26 @@ std::vector<double> AdamApiRpc::adam(std::vector<double> params)
 	}
 	catch(const std::exception& e)
 	{
+		throw std::runtime_error(e.what());
+	}
+}
+void AdamApiRpc::set_hamilton(std::string hamilton, int dim) {
+	try {
+		std::promise<void> result_promise;
+		auto result_future = result_promise.get_future();
+		net::co_spawn(*ioc,
+		[self = shared_from_this(), result_promise = std::move(result_promise), hamilton = std::move(hamilton), dim]() mutable -> net::awaitable<void> {
+			try {
+				co_await self->set_hamilton_async(std::move(hamilton), dim);
+				result_promise.set_value();
+			}
+			catch(...) {
+				result_promise.set_exception(std::current_exception());
+			}
+		},net::detached);
+		return result_future.get();
+	}
+	catch(const std::exception& e) {
 		throw std::runtime_error(e.what());
 	}
 }

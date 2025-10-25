@@ -60,6 +60,7 @@ void TasksService::TaskCallData::proceed(bool ok) {
 											std::vector<std::string> linked(request.linked().begin(), request.linked().end());
 											std::string functional(request.functional().begin(), request.functional().end());
 											api->clear_task();
+											api->make_builders_table(static_cast<int>(equations.size()));
 											api->add_equations(std::move(equations));
 											api->add_linked(std::move(linked));
 											api->set_param_s(functional);

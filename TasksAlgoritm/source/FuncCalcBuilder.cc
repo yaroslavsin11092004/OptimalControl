@@ -6,38 +6,21 @@ bool FuncCalcBuilder::is_number(std::string& input) {
 	}
 	return true;
 }
-FuncCalcBuilder::FuncCalcBuilder() {
-	store.insert_or_assign("x1", FunctionWrapper<FuncCalcSignature>{
-	[](auto idx, auto x, auto) { return x(idx,1); }});
-	store.insert_or_assign("x2", FunctionWrapper<FuncCalcSignature>{
-	[](auto idx, auto x, auto) { return x(idx,2); }});
-	store.insert_or_assign("x3", FunctionWrapper<FuncCalcSignature>{
-	[](auto idx, auto x, auto) { return x(idx,3); }});
-	store.insert_or_assign("x4", FunctionWrapper<FuncCalcSignature>{
-	[](auto idx, auto x, auto) { return x(idx,4); }});
-	store.insert_or_assign("x5", FunctionWrapper<FuncCalcSignature>{
-	[](auto idx, auto x, auto) { return x(idx,5); }});
-	store.insert_or_assign("x6", FunctionWrapper<FuncCalcSignature>{
-	[](auto idx, auto x, auto) { return x(idx,6); }});
-	store.insert_or_assign("u1", FunctionWrapper<FuncCalcSignature>{
-	[](auto idx, auto, auto u) { return u(idx,1); }});
-	store.insert_or_assign("u2", FunctionWrapper<FuncCalcSignature>{
-	[](auto idx, auto, auto u) { return u(idx,2); }});
-	store.insert_or_assign("u3", FunctionWrapper<FuncCalcSignature>{
-	[](auto idx, auto, auto u) { return u(idx,3); }});
-	store.insert_or_assign("u4", FunctionWrapper<FuncCalcSignature>{
-	[](auto idx, auto, auto u) { return u(idx,4); }});
-	store.insert_or_assign("u5", FunctionWrapper<FuncCalcSignature>{
-	[](auto idx, auto, auto u) { return u(idx,5); }});
-	store.insert_or_assign("u6", FunctionWrapper<FuncCalcSignature>{
-	[](auto idx, auto, auto u) { return u(idx,6); }});
-	store.insert_or_assign("t", FunctionWrapper<FuncCalcSignature>{
-	[](auto idx, auto x, auto) { return x(idx,0); }});
+void FuncCalcBuilder::make_store_table(int dim) {
+	store.clear();
+	for (int i = 0; i < dim; i++) {
+		std::string num = std::to_string(i + 1);
+		std::string xkey = absl::StrCat("x", num);
+		std::string ukey = absl::StrCat("u", num);
+		store.insert_or_assign(std::move(xkey), FunctionWrapper<FuncCalcSignature>{[ind = i + 1](auto idx, auto x, auto) { return x(idx, ind); }});
+		store.insert_or_assign(std::move(ukey), FunctionWrapper<FuncCalcSignature>{[ind = i + 1](auto idx, auto, auto u) { return u(idx, ind); }});
+	}
+	store.insert_or_assign("t", FunctionWrapper<FuncCalcSignature>{[](auto idx, auto x, auto) { return x(idx, 0); }});
 }
 FunctionWrapper<FuncCalcBuilder::FuncCalcSignature> FuncCalcBuilder::build(std::string& input) {
 	std::stack<std::string> operators;
 	std::stack<FunctionWrapper<FuncCalcSignature>> operands;
-	std::string tr_string = transform_expression(input);
+	std::string tr_string = transform_expression(input, *transformer);
 	tokenizer.set_input_ptr(tr_string.c_str());
 	auto tokens = tokenizer.tokenize();
 	for (auto& t : tokens) {

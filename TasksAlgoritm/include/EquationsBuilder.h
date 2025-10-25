@@ -8,8 +8,10 @@ class EquationBuilder {
 		tokenizer tokenizer;
 		absl::flat_hash_map<std::string, FunctionWrapper<EquationSignature>> store;
 		bool is_number(std::string& token);
+		std::unique_ptr<Transformer<std::string::const_iterator>> transformer;
 	public:
-		EquationBuilder();
+		EquationBuilder() { transformer = std::make_unique<Transformer<std::string::const_iterator>>(); };
+		void make_store_table(int dim);
 		FunctionWrapper<EquationSignature> build(std::string& input);
 };
 #endif

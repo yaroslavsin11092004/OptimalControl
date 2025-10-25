@@ -111,7 +111,7 @@ net::awaitable<double> TasksApiRpc::call_param_s_async(matrix<double>& x, matrix
 	state->request.set_optim_u_size_row(optim_u.size_row());
 	state->request.set_optim_u_size_col(optim_u.size_col());
 	auto result_future = state->promise.get_future();
-	auto* callback = new std::function<void(bool)>([state](bool ok)
+	auto* callback = new std::function<void(bool)>([state](bool ok) mutable
 	{
 		if (state->status.ok() && ok)
 			state->promise.set_value(state->response.result());
@@ -119,6 +119,43 @@ net::awaitable<double> TasksApiRpc::call_param_s_async(matrix<double>& x, matrix
 			state->promise.set_exception(std::make_exception_ptr(std::runtime_error(state->status.error_message())));
 	});
 	state->reader = stub->AsyncCallParamS(&state->context, state->request, cq.get());
+	state->reader->Finish(&state->response, &state->status, callback);
+	co_await net::dispatch(net::make_strand(*ioc), net::use_awaitable);
+	result_future.wait();
+	co_return result_future.get();
+}
+net::awaitable<void> TasksApiRpc::call_task_async(std::vector<std::string> equations, std::vector<std::string> linked, std::string functional) {
+	auto state = std::make_shared<AsyncCallStateTask>();
+	for (auto& eq : equations) state->request.add_equation(std::move(eq));
+	for (auto& ld : linked) state->request.add_linked(std::move(ld));
+	state->request.set_functional(std::move(functional));
+	auto result_future = state->promise.get_future();
+	auto* callback = new std::function<void(bool)>([state](bool ok) mutable{
+			if (state->status.ok() && ok)
+				state->promise.set_value();
+			else state->promise.set_exception(std::make_exception_ptr(std::runtime_error(state->status.error_message())));
+	});
+	state->reader = stub->AsyncCallTask(&state->context, state->request, cq.get());
+	state->reader->Finish(&state->response, &state->status, callback);
+	co_await net::dispatch(net::make_strand(*ioc), net::use_awaitable);
+	result_future.wait();
+	co_return result_future.get();
+}
+net::awaitable<double> TasksApiRpc::call_functional_async(matrix<double> x, matrix<double> u) {
+	auto state = std::make_shared<AsyncCallStateFunctional>();
+	for (auto& val : *x.store_handle()) state->request.add_x(val);
+	for (auto& val : *u.store_handle()) state->request.add_u(val);
+	state->request.set_u_size_row(static_cast<int32_t>(u.size_row()));
+	state->request.set_u_size_col(static_cast<int32_t>(u.size_col()));
+	state->request.set_x_size_row(static_cast<int32_t>(x.size_row()));
+	state->request.set_x_size_col(static_cast<int32_t>(x.size_col()));
+	auto result_future = state->promise.get_future();
+	auto* callback = new std::function<void(bool)>([state](bool ok)mutable {
+			if (state->status.ok() && ok)
+				state->promise.set_value(state->response.result());
+			else state->promise.set_exception(std::make_exception_ptr(std::runtime_error(state->status.error_message())));
+	});
+	state->reader = stub->AsyncCallFunctional(&state->context, state->request, cq.get());
 	state->reader->Finish(&state->response, &state->status, callback);
 	co_await net::dispatch(net::make_strand(*ioc), net::use_awaitable);
 	result_future.wait();
@@ -220,6 +257,46 @@ double TasksApiRpc::param_s(matrix<double>& x, matrix<double>& u, matrix<double>
 	}
 	catch(const std::exception& e)
 	{
+		throw std::runtime_error(e.what());
+	}
+}
+void TasksApiRpc::call_task(std::vector<std::string> equations, std::vector<std::string> linked, std::string functional) {
+	try {
+		std::promise<void> result_promise;
+		auto result_future = result_promise.get_future();
+		net::co_spawn(*ioc,
+		[self = shared_from_this(), result_promise = std::move(result_promise), equations = std::move(equations), linked = std::move(linked), functional = std::move(functional)]() mutable -> net::awaitable<void> {
+			try {
+				co_await self->call_task_async(std::move(equations), std::move(linked), std::move(functional));
+				result_promise.set_value();
+			}
+			catch(...) {
+			result_promise.set_exception(std::current_exception());
+			}
+		}, net::detached);
+		return result_future.get();
+	}
+	catch(const std::exception& e) {
+		throw std::runtime_error(e.what());
+	}
+}
+double TasksApiRpc::call_functional(matrix<double> x, matrix<double> u) {
+	try {
+		std::promise<double> result_promise;
+		auto result_future = result_promise.get_future();
+		net::co_spawn(*ioc,
+		[self = shared_from_this(), result_promise = std::move(result_promise), x = std::move(x), u = std::move(u)]()mutable -> net::awaitable<void> {
+			try {
+				double result = co_await self->call_functional_async(std::move(x), std::move(u));
+				result_promise.set_value(result);
+			}
+			catch(...) {
+				result_promise.set_exception(std::current_exception());
+			}
+		},net::detached);
+		return result_future.get();
+	}
+	catch(const std::exception& e) {
 		throw std::runtime_error(e.what());
 	}
 }

@@ -1,6 +1,7 @@
 #ifndef OPTIMIZE_H
 #define OPTIMIZE_H
 #include "IncludeFiles.h"
+#include "HamiltonBuilder.h"
 using Hamilton = FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params)>;
 class Adam
 {
@@ -15,13 +16,14 @@ class Adam
 		double beta1 = 0.9;
 		double beta2 = 0.999;
 		double epsilon = 1.0e-8;
+		std::unique_ptr<HamiltonBuilder> builder;
 	public:
-		Adam() = default;
+		Adam();
 		~Adam() = default;
 		std::vector<double> optimize();
 		void set_learning_rate(double value) { learning_rate = value; }
 		void set_epochs(int value) { epochs = value; }
-		void set_hamilton(Hamilton value) { hamilton = value; }
+		void set_hamilton(std::string func, int dim);
 		void set_params(std::vector<double> value) { params = std::move(value); }
 		void set_edges(matrix<double> value) { edges = std::move(value); }
 };

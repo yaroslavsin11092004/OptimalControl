@@ -1,5 +1,4 @@
 #include "OptContrAlg.h"
-#include <cmath>
 OptimalControl::OptimalControl(std::string& conf_file)
 {
 	this->tasks_api = std::make_shared<TasksApiRpc>(conf_file);
@@ -8,6 +7,15 @@ OptimalControl::OptimalControl(std::string& conf_file)
 void OptimalControl::adam_params(double learning_rate, std::vector<double> u_left, std::vector<double> u_right, int epochs)
 {
 	this->adam_api->set_global_params(learning_rate,std::move(u_left), std::move(u_right), epochs);
+}
+void OptimalControl::task(std::vector<std::string> equations, std::vector<std::string> linked, std::string functional) {
+	this->tasks_api->call_task(std::move(equations), std::move(linked), std::move(functional));
+}
+double OptimalControl::functional_value(matrix<double> x, matrix<double> u) {
+	return this->tasks_api->call_functional(x, u);
+}
+void OptimalControl::set_hamilton(std::string hamilton, int dim) {
+	this->adam_api->set_hamilton(std::move(hamilton), dim);
 }
 double OptimalControl::matrix_metrics(matrix<double>& val1, matrix<double>& val2)
 {

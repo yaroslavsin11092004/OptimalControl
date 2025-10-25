@@ -24,6 +24,7 @@ message EmptyResponse {}
 message HamiltonRequest
 {
   string hamilton = 1;
+  int32 dimension = 2;
 }
 service AdamApiService
 {

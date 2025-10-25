@@ -6,60 +6,35 @@ bool HamiltonBuilder::is_number(std::string& token) {
 	}
 	return true;
 }
-HamiltonBuilder::HamiltonBuilder(int dim) {
-	store.insert_or_assign("x1", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return params[1]; }});
-	store.insert_or_assign("x2", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return params[2]; }});
-	store.insert_or_assign("x3", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return params[3]; }});
-	store.insert_or_assign("x4", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return params[4]; }});
-	store.insert_or_assign("x5", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return params[5]; }});
-	store.insert_or_assign("x6", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return params[6]; }});
-	store.insert_or_assign("u1", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return args[0]; }});
-	store.insert_or_assign("u2", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return args[1]; }});
-	store.insert_or_assign("u3", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return args[2]; }});
-	store.insert_or_assign("u4", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return args[3]; }});
-	store.insert_or_assign("u5", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return args[4]; }});
-	store.insert_or_assign("u6", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return args[5]; }});
-	store.insert_or_assign("psi1", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[dim](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return params[1 + dim]; }});
-	store.insert_or_assign("psi2", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[dim](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return params[2 + dim]; }});
-	store.insert_or_assign("psi3", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[dim](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return params[3 + dim]; }});
-	store.insert_or_assign("psi4", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[dim](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return params[4 + dim]; }});
-	store.insert_or_assign("psi5", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[dim](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return params[5 + dim]; }});
-	store.insert_or_assign("psi6", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[dim](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return params[6 + dim]; }});
-	store.insert_or_assign("t", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
-	[](std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params) { return params[0]; }});
+void HamiltonBuilder::make_store_table(int dim) {
+	store.clear();
+	for (int i = 0; i < dim; i++) {
+		std::string num = std::to_string(i + 1);
+		std::string xkey = absl::StrCat("x", num);
+		std::string ukey = absl::StrCat("u", num);
+		std::string psikey = absl::StrCat("psi", num);
+		store.insert_or_assign(std::move(xkey), FunctionWrapper<HamiltonSignature>{[ind = i + 1](auto, auto params) { return params[ind]; }});
+		store.insert_or_assign(std::move(ukey), FunctionWrapper<HamiltonSignature>{[i](auto args, auto) { return args[i]; }});
+		store.insert_or_assign(std::move(psikey), FunctionWrapper<HamiltonSignature>{[ind = i + 1, dim](auto, auto params) { return params[ind + dim]; }});
+	}
+	store.insert_or_assign("t", FunctionWrapper<HamiltonSignature>{[](auto, auto params) { return params[0]; }});
 }
-FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)> HamiltonBuilder::build(const char* input) {
-	tokenizer.set_input_ptr(input);
+FunctionWrapper<HamiltonBuilder::HamiltonSignature> HamiltonBuilder::build(std::string& input) {
+	auto tr_input = transform_expression(input, *transformer);
+	tokenizer.set_input_ptr(tr_input.c_str());
 	auto tokens = tokenizer.tokenize();
 	std::stack<std::string> operators;
-	std::stack<FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>> operands;
+	std::stack<FunctionWrapper<HamiltonSignature>> operands;
 	for (auto& t : tokens) {
 		if (t == "(") continue;
 		else if (t == "+" || t == "-" || t == "/" || t == "*" || t == "sin" || t == "cos" || t == "^")
 			operators.push(t);
 		else if (is_number(t)){
 			double val = std::stod(t.c_str());
-			operands.push(FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{[val](std::vector<torch::Tensor>&, std::vector<torch::Tensor>&){return torch::tensor(val); }});
+			operands.push(FunctionWrapper<HamiltonSignature>{[val](auto, auto){return torch::tensor(val); }});
 		}
 		else if (t == ")") {
+			if (operators.empty() || operands.empty()) continue;
 			auto op = operators.top();
 			operators.pop();
 			if (op == "+") {

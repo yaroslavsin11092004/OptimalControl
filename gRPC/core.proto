@@ -1,0 +1,33 @@
+syntax = "proto3";
+package core_api;
+message OptimalRequest {
+  repeated string equations = 1;
+  repeated string linked = 2;
+  string hamilton = 3;
+  repeated double u0 = 4;
+  repeated double x0 = 5;
+  double t0 = 6;
+  double t1 = 7;
+  double tstep = 8;
+  double delta = 9;
+}
+message OptimalResponse {
+  repeated double optim_path = 1;
+  repeated double optim_control = 2;
+  int32 optim_path_size_row = 3;
+  int32 optim_path_size_col = 4;
+  int32 optim_control_size_row = 5;
+  int32 optim_control_size_col = 6;
+  double functional_value = 7;
+}
+message OptimizeParamsRequest {
+  double learning_rate = 1;
+  repeated double left_edge = 2;
+  repeated double right_edge = 3;
+  int32 epochs = 4;
+}
+message OptimizeParamsResponse {}
+service CoreOptimalControlService {
+  rpc CalcOptimalTask(OptimalRequest) returns (OptimalResponse);
+  rpc SetOptimizerParams(OptimizeParamsRequest) returns (OptimizeParamsResponse);
+}

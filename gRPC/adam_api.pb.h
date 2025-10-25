@@ -626,6 +626,7 @@ class HamiltonRequest final : public ::google::protobuf::Message
   // accessors -------------------------------------------------------
   enum : int {
     kHamiltonFieldNumber = 1,
+    kDimensionFieldNumber = 2,
   };
   // string hamilton = 1;
   void clear_hamilton() ;
@@ -642,11 +643,21 @@ class HamiltonRequest final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_hamilton();
 
   public:
+  // int32 dimension = 2;
+  void clear_dimension() ;
+  ::int32_t dimension() const;
+  void set_dimension(::int32_t value);
+
+  private:
+  ::int32_t _internal_dimension() const;
+  void _internal_set_dimension(::int32_t value);
+
+  public:
   // @@protoc_insertion_point(class_scope:adam_api.HamiltonRequest)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<0, 1,
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
                                    0, 41,
                                    2>
       _table_;
@@ -669,6 +680,7 @@ class HamiltonRequest final : public ::google::protobuf::Message
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::internal::ArenaStringPtr hamilton_;
+    ::int32_t dimension_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -1398,6 +1410,31 @@ inline void HamiltonRequest::set_allocated_hamilton(::std::string* PROTOBUF_NULL
     _impl_.hamilton_.Set("", GetArena());
   }
   // @@protoc_insertion_point(field_set_allocated:adam_api.HamiltonRequest.hamilton)
+}
+
+// int32 dimension = 2;
+inline void HamiltonRequest::clear_dimension() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.dimension_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline ::int32_t HamiltonRequest::dimension() const {
+  // @@protoc_insertion_point(field_get:adam_api.HamiltonRequest.dimension)
+  return _internal_dimension();
+}
+inline void HamiltonRequest::set_dimension(::int32_t value) {
+  _internal_set_dimension(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:adam_api.HamiltonRequest.dimension)
+}
+inline ::int32_t HamiltonRequest::_internal_dimension() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.dimension_;
+}
+inline void HamiltonRequest::_internal_set_dimension(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.dimension_ = value;
 }
 
 #ifdef __GNUC__

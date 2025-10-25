@@ -4,6 +4,11 @@ Tasks::Tasks() {
 	eq_builder = std::make_unique<EquationBuilder>();
 	f_builder = std::make_unique<FunctionalBuilder>();
 }
+void Tasks::make_builders_table(int dim) {
+	fc_builder->make_store_table(dim);
+	eq_builder->make_store_table(dim);
+	f_builder->make_store_table(dim);
+}
 void Tasks::add_equations(std::vector<std::string> input) {
 	for (auto& eq : input) {
 		auto val = eq_builder->build(eq);

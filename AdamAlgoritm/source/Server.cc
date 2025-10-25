@@ -97,6 +97,22 @@ void HttpServer::init_routes()
 			beast::ostream(resp.body()) << "{\"result\" : \"" << e.what() << "\"}";
 		}
 	});
+	router.add_route(http::verb::post, "/set_hamilton",
+	[this](Request& req, Response& resp, urls::url_view url) {
+		try {
+			resp.set(http::field::content_type, "application/json");
+			json req_json = json::parse(req.body());
+			auto value = req_json["hamilton"].get<std::string>();
+			auto dim = req_json["dim"].get<int>();
+			adam->set_hamilton(std::move(value), dim);
+			beast::ostream(resp.body()) << "{\"result\" : \"success\"}";
+			resp.result(http::status::ok);
+		} catch(const std::exception& e) {
+			std::cerr << "Error of set hamilton request::" << e.what() << std::endl;
+			resp.result(http::status::bad_request);
+			beast::ostream(resp.body()) << "{\"result\" : \"" << e.what() << "\"}";
+		}
+	});
 }
 HttpServer::HttpServer(std::string& conf_file)
 {
@@ -146,8 +162,4 @@ void HttpServer::run()
 		pool->stop();
 	});
 	pool->join();
-}
-void HttpServer::set_hamilton_function(Hamilton value)
-{
-	adam->set_hamilton(value);
 }

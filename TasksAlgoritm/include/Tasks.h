@@ -18,6 +18,7 @@ class Tasks
 	public:
 		Tasks();
 		~Tasks() = default;
+		void make_builders_table(int dim);
 		void add_equations(std::vector<std::string> input);
 		void add_linked(std::vector<std::string> input);
 		void set_param_s(std::string& input);

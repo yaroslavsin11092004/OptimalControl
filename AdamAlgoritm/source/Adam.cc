@@ -1,4 +1,11 @@
 #include "Adam.h"
+Adam::Adam() {
+	builder = std::make_unique<HamiltonBuilder>();
+}
+void Adam::set_hamilton(std::string func, int dim) {
+	builder->make_store_table(dim);
+	hamilton = std::move(builder->build(func));
+}
 std::vector<double> Adam::optimize()
 {
 	size_t dim_theta = edges.size_row();

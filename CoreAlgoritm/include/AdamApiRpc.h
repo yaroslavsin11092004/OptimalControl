@@ -25,6 +25,15 @@ class AdamApiRpc : public std::enable_shared_from_this<AdamApiRpc>
 			std::promise<std::vector<double>> promise;
 			std::unique_ptr<grpc::ClientAsyncResponseReader<adam_api::OptimizeResponse>> reader;
 		};
+		struct AsyncCallStateHamilton 
+		{
+			grpc::ClientContext context;
+			adam_api::HamiltonRequest request;
+			adam_api::EmptyResponse response;
+			grpc::Status status;
+			std::promise<void> promise;
+			std::unique_ptr<grpc::ClientAsyncResponseReader<adam_api::EmptyResponse>> reader;
+		};
 	private:
 		std::unique_ptr<adam_api::AdamApiService::Stub> stub;
 		std::unique_ptr<net::thread_pool> pool;
@@ -38,11 +47,12 @@ class AdamApiRpc : public std::enable_shared_from_this<AdamApiRpc>
 
 		net::awaitable<void> set_global_param_async(double learning_rate, std::vector<double> u_left, std::vector<double> u_right, int epochs);
 		net::awaitable<std::vector<double>> adam_async(std::vector<double> params);
+		net::awaitable<void> set_hamilton_async(std::string hamilton, int dim);
 	public:
 		AdamApiRpc(std::string& conf_file);
 		~AdamApiRpc();
 		void set_global_params(double learning_rate, std::vector<double> u_left, std::vector<double> u_right, int epochs);
 		std::vector<double> adam(std::vector<double> params);
-
+		void set_hamilton(std::string hamilton, int dim);
 };
 #endif

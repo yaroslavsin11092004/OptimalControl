@@ -6,29 +6,21 @@ bool FunctionalBuilder::is_number(std::string& token) {
 	}
 	return true;
 }
-FunctionalBuilder::FunctionalBuilder() {
-	store.insert_or_assign("x1", FunctionWrapper<FunctionalSignature>{ [](auto idx, auto, auto x, auto, auto) { return x(idx,1); }});
-	store.insert_or_assign("x2", FunctionWrapper<FunctionalSignature>{ [](auto idx, auto, auto x, auto, auto) { return x(idx,2); }});
-	store.insert_or_assign("x3", FunctionWrapper<FunctionalSignature>{ [](auto idx, auto, auto x, auto, auto) { return x(idx,3); }});
-	store.insert_or_assign("x4", FunctionWrapper<FunctionalSignature>{ [](auto idx, auto, auto x, auto, auto) { return x(idx,4); }});
-	store.insert_or_assign("x5", FunctionWrapper<FunctionalSignature>{ [](auto idx, auto, auto x, auto, auto) { return x(idx,5); }});
-	store.insert_or_assign("x6", FunctionWrapper<FunctionalSignature>{ [](auto idx, auto, auto x, auto, auto) { return x(idx,6); }});
-	store.insert_or_assign("u1", FunctionWrapper<FunctionalSignature>{ 
-	[](auto idx, auto s, auto, auto u, auto optim_u) { return s * (optim_u(idx,1) - u(idx,1)) + u(idx,1); }});
-	store.insert_or_assign("u2", FunctionWrapper<FunctionalSignature>{
-	[](auto idx, auto s, auto, auto u, auto optim_u) { return s * (optim_u(idx,2) - u(idx,2)) + u(idx,2); }});
-	store.insert_or_assign("u3", FunctionWrapper<FunctionalSignature>{
-	[](auto idx, auto s, auto, auto u, auto optim_u) { return s * (optim_u(idx,3) - u(idx,3)) + u(idx,3); }});
-	store.insert_or_assign("u4", FunctionWrapper<FunctionalSignature>{
-	[](auto idx, auto s, auto, auto u, auto optim_u) { return s * (optim_u(idx,4) - u(idx,4)) + u(idx,4); }});
-	store.insert_or_assign("u5", FunctionWrapper<FunctionalSignature>{
-	[](auto idx, auto s, auto, auto u, auto optim_u) { return s * (optim_u(idx,5) - u(idx,5)) + u(idx,5); }});
-	store.insert_or_assign("u6", FunctionWrapper<FunctionalSignature>{
-	[](auto idx, auto s, auto, auto u, auto optim_u) { return s * (optim_u(idx,6) - u(idx,6)) + u(idx,6); }});
-	store.insert_or_assign("t", FunctionWrapper<FunctionalSignature>{ [](auto idx, auto, auto x, auto, auto) { return x(idx, 0); }});
+void FunctionalBuilder::make_store_table(int dim) {
+	store.clear();
+	for (int i = 0; i < dim; i++) {
+		std::string num = std::to_string(i + 1);
+		std::string xkey = absl::StrCat("x", num);
+		std::string ukey = absl::StrCat("u", num);
+		store.insert_or_assign(std::move(xkey), FunctionWrapper<FunctionalSignature>{ 
+		[ind = i + 1](auto idx, auto, auto x, auto, auto) { return x(idx, ind); }});
+		store.insert_or_assign(std::move(ukey), FunctionWrapper<FunctionalSignature>{ 
+		[ind = i + 1](auto idx, auto s, auto, auto u, auto optim_u) { return s * (optim_u(idx, ind) - u(idx, ind)) + u(idx, ind); }});
+	}
+	store.insert_or_assign("t", FunctionWrapper<FunctionalSignature>{[](auto idx, auto, auto x, auto, auto) { return x(idx,0);}});
 }
 FunctionWrapper<FunctionalBuilder::FunctionalSignature> FunctionalBuilder::build(std::string& input) {
-	std::string tr_input = transform_expression(input);
+	std::string tr_input = transform_expression(input, *transformer);
 	tokenizer.set_input_ptr(tr_input.c_str());
 	auto tokens = tokenizer.tokenize();
 	std::stack<std::string> operators;

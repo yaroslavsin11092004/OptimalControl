@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../store.dart';
+import '../shared/ui/input.dart';
+import '../shared/ui/menu_button.dart';
+import '../shared/ui/text.dart';
 class HomePage extends StatefulWidget 
 {
   const HomePage({super.key, required this.title});
@@ -20,77 +24,46 @@ class _HomePageState extends State<HomePage>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton.icon( 
-              onPressed: (){ Navigator.pushNamed(context, '/optimize_params'); },
-              label: Text('Параметры оптимизатора'),
-              icon: Icon(Icons.flash_on),
-              style: ElevatedButton.styleFrom( 
-                minimumSize: Size(250,50),
-                shape: RoundedRectangleBorder( 
-                  borderRadius: BorderRadius.only( 
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(5),
-                    bottomLeft: Radius.circular(5),
-                    bottomRight: Radius.circular(30)
-                  )
+            Row( 
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Inscription( 
+                  text: 'Размерность задачи:'
                 ),
-                side: BorderSide(color: Colors.lightBlue, width: 2)
-              )
+                SizedBox(width: 10),
+                InputFieldCast( 
+                  width: 80,
+                  height: 40,
+                  label: 'dim',
+                  hintLabel: 'dim',
+                  changeCallback: (value) { AppStore().dim = value; }
+                )
+              ]
             ),
             SizedBox(height: 30),
-            ElevatedButton.icon( 
-              onPressed: (){  Navigator.pushNamed(context, '/tasks_params'); },
-              label: Text('Параметры задачи'),
-              icon: Icon(Icons.calculate),
-              style: ElevatedButton.styleFrom( 
-                minimumSize: Size(250,50),
-                shape: RoundedRectangleBorder( 
-                  borderRadius: BorderRadius.only( 
-                    topLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
-                    topRight: Radius.circular(5),
-                    bottomLeft: Radius.circular(5)
-                  )
-                ),
-                side: BorderSide(color: Colors.lightBlue, width: 2)
-              )
+            CastMenuButton( 
+              text: 'Параметры оптимизатора',
+              icon: Icons.flash_on,
+              callback: ()=>{Navigator.pushNamed(context, '/optimize_params') },
             ),
             SizedBox(height: 30),
-            ElevatedButton.icon( 
-              onPressed: (){ Navigator.pushNamed(context, '/opt_path'); },
-              label: Text('Оптимальный путь'),
-              icon: Icon(Icons.route),
-              style: ElevatedButton.styleFrom( 
-                minimumSize: Size(250,50),
-                shape: RoundedRectangleBorder( 
-                  borderRadius: BorderRadius.only( 
-                    topLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
-                    topRight: Radius.circular(5),
-                    bottomLeft: Radius.circular(5)
-                  )
-                ),
-                side: BorderSide(color: Colors.lightBlue, width: 2)
-              )
+            CastMenuButton( 
+              text: 'Уравнения задачи',
+              icon: Icons.task,
+              callback: () => { Navigator.pushNamed(context, '/tasks_equations') }
             ),
             SizedBox(height: 30),
-            ElevatedButton.icon( 
-              onPressed: (){Navigator.pushNamed(context, '/opt_control');},
-              label: Text('Оптимальное управление'),
-              icon: Icon(Icons.tune),
-              style: ElevatedButton.styleFrom( 
-                minimumSize: Size(250,50),
-                shape: RoundedRectangleBorder( 
-                  borderRadius: BorderRadius.only( 
-                    topLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
-                    topRight: Radius.circular(5),
-                    bottomLeft: Radius.circular(5)
-                  )
-                ),
-                side: BorderSide(color: Colors.lightBlue, width: 2)
-              )
-            )
+            CastMenuButton( 
+              text: 'Параметры задачи',
+              icon: Icons.air,
+              callback: () => { Navigator.pushNamed(context, '/tasks_params') }
+            ),
+            SizedBox(height: 30),
+            CastMenuButton( 
+              text: 'Результаты расчетов',
+              icon: Icons.calculate,
+              callback: () => { Navigator.pushNamed(context, '/result_pages') }
+            ),
           ]
         )
       )

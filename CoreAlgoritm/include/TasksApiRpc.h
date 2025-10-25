@@ -34,6 +34,24 @@ class TasksApiRpc : public std::enable_shared_from_this<TasksApiRpc>
 			std::promise<double> promise;
 			std::unique_ptr<grpc::ClientAsyncResponseReader<tasks_api::CallParamSResponse>> reader;
 		};
+		struct AsyncCallStateTask 
+		{
+			grpc::ClientContext context;
+			tasks_api::CallTaskRequest request;
+			tasks_api::CallTaskResponse response;
+			grpc::Status status;
+			std::promise<void> promise;
+			std::unique_ptr<grpc::ClientAsyncResponseReader<tasks_api::CallTaskResponse>> reader;
+		};
+		struct AsyncCallStateFunctional
+		{
+			grpc::ClientContext context;
+			tasks_api::CallFunctionalRequest request;
+			tasks_api::CallFunctionalResponse response;
+			grpc::Status status;
+			std::promise<double> promise;
+			std::unique_ptr<grpc::ClientAsyncResponseReader<tasks_api::CallFunctionalResponse>> reader;
+		};
 	private:
 		std::unique_ptr<tasks_api::TasksApiService::Stub> stub;
 		std::unique_ptr<net::thread_pool> pool;
@@ -48,11 +66,15 @@ class TasksApiRpc : public std::enable_shared_from_this<TasksApiRpc>
 		net::awaitable<double> call_equation_async(int id, double arg, matrix<double> params);
 		net::awaitable<double> call_linked_async(int id, double arg, matrix<double> params);
 		net::awaitable<double> call_param_s_async(matrix<double>& x, matrix<double>& u, matrix<double>& optim_u);
+		net::awaitable<void> call_task_async(std::vector<std::string> equations, std::vector<std::string> linked, std::string functional);
+		net::awaitable<double> call_functional_async(matrix<double> x, matrix<double> u);
 	public:
 		TasksApiRpc(std::string& conf_file);
 		~TasksApiRpc();
 		std::shared_ptr<std::vector<Equation>> generate_equations(int dim);
 		std::shared_ptr<std::vector<Equation>> generate_linked(int dim);
 		double param_s(matrix<double>& x, matrix<double>& u, matrix<double>& optim_u);
+		void call_task(std::vector<std::string> equations, std::vector<std::string> linked, std::string functional);
+		double call_functional(matrix<double> x, matrix<double> u);
 };
 #endif

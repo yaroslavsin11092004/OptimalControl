@@ -15,5 +15,8 @@ class OptimalControl
 
 		std::pair<matrix<double>, matrix<double>> successive_approximation(std::vector<double> x0, double t0, double t1,double t_step, double delta, std::vector<double> u0);
 		void adam_params(double learning_rate, std::vector<double> u_left, std::vector<double> u_right, int epochs);
+		void task(std::vector<std::string> equations, std::vector<std::string> linked, std::string functional);
+		double functional_value(matrix<double> x, matrix<double> u);
+		void set_hamilton(std::string hamilton, int dim);
 };
 #endif

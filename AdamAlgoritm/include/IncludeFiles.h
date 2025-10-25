@@ -9,6 +9,7 @@
 #include <MathPlot/matrix.h>
 #include <MathPlot/function_wrapper.h>
 #include <absl/container/flat_hash_map.h>
+#include <absl/strings/str_cat.h>
 #include <fstream>
 #include <regex>
 #include <nlohmann/json.hpp>

@@ -9,19 +9,16 @@ class AdamService final
 		{
 			public:
 				enum CallStatus  {CREATE, PROCESS, FINISH};
-				enum CallType {SET_PARAMS, OPTIMIZE};
-				CallData(adam_api::AdamApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<AdamApi> api, CallType type):
-					service(service), cq(cq), api(api),status(CREATE),call_type(type){}
+				CallData(adam_api::AdamApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<AdamApi> api):
+					service(service), cq(cq), api(api),status(CREATE) {}
 				virtual void proceed(bool ok) = 0;
 				virtual ~CallData() = default;
-				CallType get_type() const { return call_type; }
 			protected:
 				adam_api::AdamApiService::AsyncService* service;
 				grpc::ServerCompletionQueue* cq;
 				grpc::ServerContext context;
 				std::shared_ptr<AdamApi> api;
 				CallStatus status;
-				CallType call_type;
 		};
 		class SetParamsCallData : public CallData 
 		{
@@ -42,6 +39,15 @@ class AdamService final
 				adam_api::OptimizeRequest request;
 				adam_api::OptimizeResponse response;
 				grpc::ServerAsyncResponseWriter<adam_api::OptimizeResponse> writer;
+		};
+		class HamiltonCallData : public CallData {
+			private:
+				adam_api::HamiltonRequest request;
+				adam_api::EmptyResponse response;
+				grpc::ServerAsyncResponseWriter<adam_api::EmptyResponse> writer;
+			public:
+				HamiltonCallData(adam_api::AdamApiService::AsyncService* service, grpc::ServerCompletionQueue* cq, std::shared_ptr<AdamApi> api);
+				void proceed(bool ok) override;
 		};
 		void handle_rpcs();
 		std::unique_ptr<grpc::Server> server;
