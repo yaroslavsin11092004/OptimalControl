@@ -34,10 +34,6 @@ set(SOURCE_EXE
   ../gRPC/tasks_api.pb.cc
   ../gRPC/tasks_api.grpc.pb.cc
   ./source/GoldenRatio.cc
-  ./source/Tokenizer.cc
-  ./source/EquationsBuilder.cc
-  ./source/FunctionalBuilder.cc
-  ./source/FuncCalcBuilder.cc
 )
 
 add_executable(TasksServer.rl ${SOURCE_EXE})

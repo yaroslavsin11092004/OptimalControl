@@ -21,21 +21,23 @@ const OptimalRequest$json = {
     {'1': 'equations', '3': 1, '4': 3, '5': 9, '10': 'equations'},
     {'1': 'linked', '3': 2, '4': 3, '5': 9, '10': 'linked'},
     {'1': 'hamilton', '3': 3, '4': 1, '5': 9, '10': 'hamilton'},
-    {'1': 'u0', '3': 4, '4': 3, '5': 1, '10': 'u0'},
-    {'1': 'x0', '3': 5, '4': 3, '5': 1, '10': 'x0'},
-    {'1': 't0', '3': 6, '4': 1, '5': 1, '10': 't0'},
-    {'1': 't1', '3': 7, '4': 1, '5': 1, '10': 't1'},
-    {'1': 'tstep', '3': 8, '4': 1, '5': 1, '10': 'tstep'},
-    {'1': 'delta', '3': 9, '4': 1, '5': 1, '10': 'delta'},
+    {'1': 'functional', '3': 4, '4': 1, '5': 9, '10': 'functional'},
+    {'1': 'u0', '3': 5, '4': 3, '5': 1, '10': 'u0'},
+    {'1': 'x0', '3': 6, '4': 3, '5': 1, '10': 'x0'},
+    {'1': 't0', '3': 7, '4': 1, '5': 1, '10': 't0'},
+    {'1': 't1', '3': 8, '4': 1, '5': 1, '10': 't1'},
+    {'1': 'tstep', '3': 9, '4': 1, '5': 1, '10': 'tstep'},
+    {'1': 'delta', '3': 10, '4': 1, '5': 1, '10': 'delta'},
   ],
 };
 
 /// Descriptor for `OptimalRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List optimalRequestDescriptor = $convert.base64Decode(
     'Cg5PcHRpbWFsUmVxdWVzdBIcCgllcXVhdGlvbnMYASADKAlSCWVxdWF0aW9ucxIWCgZsaW5rZW'
-    'QYAiADKAlSBmxpbmtlZBIaCghoYW1pbHRvbhgDIAEoCVIIaGFtaWx0b24SDgoCdTAYBCADKAFS'
-    'AnUwEg4KAngwGAUgAygBUgJ4MBIOCgJ0MBgGIAEoAVICdDASDgoCdDEYByABKAFSAnQxEhQKBX'
-    'RzdGVwGAggASgBUgV0c3RlcBIUCgVkZWx0YRgJIAEoAVIFZGVsdGE=');
+    'QYAiADKAlSBmxpbmtlZBIaCghoYW1pbHRvbhgDIAEoCVIIaGFtaWx0b24SHgoKZnVuY3Rpb25h'
+    'bBgEIAEoCVIKZnVuY3Rpb25hbBIOCgJ1MBgFIAMoAVICdTASDgoCeDAYBiADKAFSAngwEg4KAn'
+    'QwGAcgASgBUgJ0MBIOCgJ0MRgIIAEoAVICdDESFAoFdHN0ZXAYCSABKAFSBXRzdGVwEhQKBWRl'
+    'bHRhGAogASgBUgVkZWx0YQ==');
 
 @$core.Deprecated('Use optimalResponseDescriptor instead')
 const OptimalResponse$json = {

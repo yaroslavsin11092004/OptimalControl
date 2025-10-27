@@ -1,9 +1,32 @@
 #include "Adam.h"
 Adam::Adam() {
-	builder = std::make_unique<HamiltonBuilder>();
+	builder = std::make_unique<ExpressionBuilder<torch::Tensor, std::vector<torch::Tensor>&, std::vector<torch::Tensor>&>>();
+	builder->set_to_free_member([](const char* c) { return torch::tensor(std::stod(c)); });
+	builder->set_is_free_member([](const char c) { return std::isdigit(c); });
+	builder->add_first_prior_bin_oper('+', FunctionWrapper<torch::Tensor(torch::Tensor, torch::Tensor)>{[](auto x, auto y) { return x + y; }});
+	builder->add_first_prior_bin_oper('-', FunctionWrapper<torch::Tensor(torch::Tensor, torch::Tensor)>{[](auto x, auto y) { return x - y; }});
+	builder->add_second_prior_bin_oper('*', FunctionWrapper<torch::Tensor(torch::Tensor, torch::Tensor)>{[](auto x, auto y) { return x * y; }});
+	builder->add_second_prior_bin_oper('/', FunctionWrapper<torch::Tensor(torch::Tensor, torch::Tensor)>{[](auto x, auto y) { return x / y; }});
+	builder->add_third_prior_bin_oper('^', FunctionWrapper<torch::Tensor(torch::Tensor, torch::Tensor)>{[](auto x, auto y) { return torch::pow(x,y); }});
+	builder->add_unary_oper('-', FunctionWrapper<torch::Tensor(torch::Tensor)>{[](auto x) { return -x; }});
+	builder->add_function('s', "sin", FunctionWrapper<torch::Tensor(torch::Tensor)>{[](auto x) { return torch::sin(x); }});
+	builder->add_function('c', "cos", FunctionWrapper<torch::Tensor(torch::Tensor)>{[](auto x) { return torch::cos(x); }});
 }
 void Adam::set_hamilton(std::string func, int dim) {
-	builder->make_store_table(dim);
+	builder->clear_variables();
+	for (int i = 0; i < dim; i++) {
+		std::string xkey = std::move(absl::StrCat("x", i + 1));
+		std::string ukey = std::move(absl::StrCat("u", i + 1));
+		std::string psikey = std::move(absl::StrCat("psi", i + 1));
+		builder->add_variable(std::move(xkey), FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
+		[idx = i + 1](auto, auto params) { return params[idx]; }});
+		builder->add_variable(std::move(ukey), FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
+		[idx = i](auto args, auto) { return args[idx]; }});
+		builder->add_variable(std::move(psikey), FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
+		[idx = i + 1, dim](auto, auto params) { return params[idx + dim]; }});
+	}
+	builder->add_variable("t", FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>&, std::vector<torch::Tensor>&)>{
+	[](auto, auto params) { return params[0]; }});
 	hamilton = std::move(builder->build(func));
 }
 std::vector<double> Adam::optimize()

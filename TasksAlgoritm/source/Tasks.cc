@@ -1,13 +1,70 @@
 #include "Tasks.h"
 Tasks::Tasks() {
-	fc_builder = std::make_unique<FuncCalcBuilder>();
-	eq_builder = std::make_unique<EquationBuilder>();
-	f_builder = std::make_unique<FunctionalBuilder>();
+	f_builder = std::make_unique<ExpressionBuilder<double, int, double, matrix<double>&, matrix<double>&, matrix<double>&>>();
+	fc_builder = std::make_unique<ExpressionBuilder<double, int, matrix<double>&, matrix<double>&>>();
+	eq_builder = std::make_unique<ExpressionBuilder<double, double, matrix<double>>>();
+	auto oper_plus = FunctionWrapper<double(double, double)>{[](auto x, auto y) { return x + y; }};
+	auto oper_minus = FunctionWrapper<double(double, double)>{[](auto x, auto y) { return x - y; }};
+	auto oper_mult = FunctionWrapper<double(double, double)>{[](auto x, auto y) { return x * y; }};
+	auto oper_divide = FunctionWrapper<double(double, double)>{[](auto x, auto y) { return x / y; }};
+	auto oper_pow = FunctionWrapper<double(double, double)>{[](auto x, auto y) { return std::pow(x,y); }};
+	auto func_sin = FunctionWrapper<double(double)>{[](auto x) { return std::sin(x); }};
+	auto func_cos = FunctionWrapper<double(double)>{[](auto x) { return std::cos(x); }};
+	auto unary_minus = FunctionWrapper<double(double)> {[](auto x) { return -x; }};
+	auto is_free_member = [](char c) { return std::isdigit(c); };
+	auto to_free_member = [](const char* c) { return std::stod(c); };
+	f_builder->set_is_free_member(is_free_member);
+	f_builder->set_to_free_member(to_free_member);
+	f_builder->add_first_prior_bin_oper('+', oper_plus);
+	f_builder->add_first_prior_bin_oper('-', oper_minus);
+	f_builder->add_second_prior_bin_oper('*', oper_mult);
+	f_builder->add_second_prior_bin_oper('/', oper_divide);
+	f_builder->add_third_prior_bin_oper('^', oper_pow);
+	f_builder->add_unary_oper('-', unary_minus);
+	f_builder->add_function('s',"sin",func_sin);
+	f_builder->add_function('c', "cos", func_cos);
+	fc_builder->set_is_free_member(is_free_member);
+	fc_builder->set_to_free_member(to_free_member);
+	fc_builder->add_first_prior_bin_oper('+', oper_plus);
+	fc_builder->add_first_prior_bin_oper('-', oper_minus);
+	fc_builder->add_second_prior_bin_oper('*', oper_mult);
+	fc_builder->add_second_prior_bin_oper('/', oper_divide);
+	fc_builder->add_third_prior_bin_oper('^', oper_pow);
+	fc_builder->add_unary_oper('-', unary_minus);
+	fc_builder->add_function('s', "sin", func_sin);
+	fc_builder->add_function('c', "cos", func_cos);
+	eq_builder->set_is_free_member(is_free_member);
+	eq_builder->set_to_free_member(to_free_member);
+	eq_builder->add_first_prior_bin_oper('+', oper_plus);
+	eq_builder->add_first_prior_bin_oper('-', oper_minus);
+	eq_builder->add_second_prior_bin_oper('*', oper_mult);
+	eq_builder->add_second_prior_bin_oper('/', oper_divide);
+	eq_builder->add_third_prior_bin_oper('^', oper_pow);
+	eq_builder->add_function('s', "sin", func_sin);
+	eq_builder->add_function('c', "cos", func_cos);
 }
 void Tasks::make_builders_table(int dim) {
-	fc_builder->make_store_table(dim);
-	eq_builder->make_store_table(dim);
-	f_builder->make_store_table(dim);
+	fc_builder->clear_variables();
+	eq_builder->clear_variables();
+	f_builder->clear_variables();
+	for (int i = 0; i < dim; i++) {
+		std::string xkey = std::move(absl::StrCat("x", i + 1));
+		std::string ukey = std::move(absl::StrCat("u", i + 1));
+		std::string psikey = std::move(absl::StrCat("psi", i + 1));
+		eq_builder->add_variable(xkey, FunctionWrapper<double(double, matrix<double>)>{[idx = i](auto, auto params) { return params(idx,0); }});
+		eq_builder->add_variable(ukey, FunctionWrapper<double(double, matrix<double>)>{[idx = i](auto, auto params) { return params(idx,1); }});
+		eq_builder->add_variable(psikey, FunctionWrapper<double(double, matrix<double>)>{[idx= i](auto, auto params) { return params(idx,2); }});
+		fc_builder->add_variable(xkey, FunctionWrapper<double(int, matrix<double>&, matrix<double>&)>{[idx = i](auto index, auto x, auto) { return x(index, idx); }});
+		fc_builder->add_variable(ukey, FunctionWrapper<double(int, matrix<double>&, matrix<double>&)>{[idx = i](auto index, auto, auto u) { return u(index, idx); }});
+		f_builder->add_variable(xkey, FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
+		[idx = i](auto index, auto, auto x, auto, auto) { return x(index, idx); }});
+		f_builder->add_variable(ukey, FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
+		[idx = i](auto index, auto s, auto, auto u, auto optim_u) { return s * (optim_u(index, idx) - u(index, idx)) + u(index, idx); }});
+	}
+	eq_builder->add_variable("t", FunctionWrapper<double(double, matrix<double>)>{[](auto t, auto) { return t; }});
+	fc_builder->add_variable("t", FunctionWrapper<double(int, matrix<double>&, matrix<double>&)>{[](auto index, auto x, auto) { return x(index, 0); }});
+	f_builder->add_variable("t", FunctionWrapper<double(int, double, matrix<double>&, matrix<double>&, matrix<double>&)>{
+	[](auto index, auto, auto x, auto, auto) { return x(index, 0); }});
 }
 void Tasks::add_equations(std::vector<std::string> input) {
 	for (auto& eq : input) {

@@ -21,6 +21,7 @@ class OptimalRequest extends $pb.GeneratedMessage {
     $core.Iterable<$core.String>? equations,
     $core.Iterable<$core.String>? linked,
     $core.String? hamilton,
+    $core.String? functional,
     $core.Iterable<$core.double>? u0,
     $core.Iterable<$core.double>? x0,
     $core.double? t0,
@@ -32,6 +33,7 @@ class OptimalRequest extends $pb.GeneratedMessage {
     if (equations != null) result.equations.addAll(equations);
     if (linked != null) result.linked.addAll(linked);
     if (hamilton != null) result.hamilton = hamilton;
+    if (functional != null) result.functional = functional;
     if (u0 != null) result.u0.addAll(u0);
     if (x0 != null) result.x0.addAll(x0);
     if (t0 != null) result.t0 = t0;
@@ -57,16 +59,17 @@ class OptimalRequest extends $pb.GeneratedMessage {
     ..pPS(1, _omitFieldNames ? '' : 'equations')
     ..pPS(2, _omitFieldNames ? '' : 'linked')
     ..aOS(3, _omitFieldNames ? '' : 'hamilton')
-    ..p<$core.double>(4, _omitFieldNames ? '' : 'u0', $pb.PbFieldType.KD)
-    ..p<$core.double>(5, _omitFieldNames ? '' : 'x0', $pb.PbFieldType.KD)
-    ..aD(6, _omitFieldNames ? '' : 't0')
-    ..aD(7, _omitFieldNames ? '' : 't1')
-    ..aD(8, _omitFieldNames ? '' : 'tstep')
-    ..aD(9, _omitFieldNames ? '' : 'delta')
+    ..aOS(4, _omitFieldNames ? '' : 'functional')
+    ..p<$core.double>(5, _omitFieldNames ? '' : 'u0', $pb.PbFieldType.KD)
+    ..p<$core.double>(6, _omitFieldNames ? '' : 'x0', $pb.PbFieldType.KD)
+    ..a<$core.double>(7, _omitFieldNames ? '' : 't0', $pb.PbFieldType.OD)
+    ..a<$core.double>(8, _omitFieldNames ? '' : 't1', $pb.PbFieldType.OD)
+    ..a<$core.double>(9, _omitFieldNames ? '' : 'tstep', $pb.PbFieldType.OD)
+    ..a<$core.double>(10, _omitFieldNames ? '' : 'delta', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OptimalRequest clone() => deepCopy();
+  OptimalRequest clone() => OptimalRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   OptimalRequest copyWith(void Function(OptimalRequest) updates) =>
       super.copyWith((message) => updates(message as OptimalRequest))
@@ -102,46 +105,55 @@ class OptimalRequest extends $pb.GeneratedMessage {
   void clearHamilton() => $_clearField(3);
 
   @$pb.TagNumber(4)
-  $pb.PbList<$core.double> get u0 => $_getList(3);
+  $core.String get functional => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set functional($core.String value) => $_setString(3, value);
+  @$pb.TagNumber(4)
+  $core.bool hasFunctional() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearFunctional() => $_clearField(4);
 
   @$pb.TagNumber(5)
-  $pb.PbList<$core.double> get x0 => $_getList(4);
+  $pb.PbList<$core.double> get u0 => $_getList(4);
 
   @$pb.TagNumber(6)
-  $core.double get t0 => $_getN(5);
-  @$pb.TagNumber(6)
-  set t0($core.double value) => $_setDouble(5, value);
-  @$pb.TagNumber(6)
-  $core.bool hasT0() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearT0() => $_clearField(6);
+  $pb.PbList<$core.double> get x0 => $_getList(5);
 
   @$pb.TagNumber(7)
-  $core.double get t1 => $_getN(6);
+  $core.double get t0 => $_getN(6);
   @$pb.TagNumber(7)
-  set t1($core.double value) => $_setDouble(6, value);
+  set t0($core.double value) => $_setDouble(6, value);
   @$pb.TagNumber(7)
-  $core.bool hasT1() => $_has(6);
+  $core.bool hasT0() => $_has(6);
   @$pb.TagNumber(7)
-  void clearT1() => $_clearField(7);
+  void clearT0() => $_clearField(7);
 
   @$pb.TagNumber(8)
-  $core.double get tstep => $_getN(7);
+  $core.double get t1 => $_getN(7);
   @$pb.TagNumber(8)
-  set tstep($core.double value) => $_setDouble(7, value);
+  set t1($core.double value) => $_setDouble(7, value);
   @$pb.TagNumber(8)
-  $core.bool hasTstep() => $_has(7);
+  $core.bool hasT1() => $_has(7);
   @$pb.TagNumber(8)
-  void clearTstep() => $_clearField(8);
+  void clearT1() => $_clearField(8);
 
   @$pb.TagNumber(9)
-  $core.double get delta => $_getN(8);
+  $core.double get tstep => $_getN(8);
   @$pb.TagNumber(9)
-  set delta($core.double value) => $_setDouble(8, value);
+  set tstep($core.double value) => $_setDouble(8, value);
   @$pb.TagNumber(9)
-  $core.bool hasDelta() => $_has(8);
+  $core.bool hasTstep() => $_has(8);
   @$pb.TagNumber(9)
-  void clearDelta() => $_clearField(9);
+  void clearTstep() => $_clearField(9);
+
+  @$pb.TagNumber(10)
+  $core.double get delta => $_getN(9);
+  @$pb.TagNumber(10)
+  set delta($core.double value) => $_setDouble(9, value);
+  @$pb.TagNumber(10)
+  $core.bool hasDelta() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearDelta() => $_clearField(10);
 }
 
 class OptimalResponse extends $pb.GeneratedMessage {
@@ -183,15 +195,20 @@ class OptimalResponse extends $pb.GeneratedMessage {
     ..p<$core.double>(1, _omitFieldNames ? '' : 'optimPath', $pb.PbFieldType.KD)
     ..p<$core.double>(
         2, _omitFieldNames ? '' : 'optimControl', $pb.PbFieldType.KD)
-    ..aI(3, _omitFieldNames ? '' : 'optimPathSizeRow')
-    ..aI(4, _omitFieldNames ? '' : 'optimPathSizeCol')
-    ..aI(5, _omitFieldNames ? '' : 'optimControlSizeRow')
-    ..aI(6, _omitFieldNames ? '' : 'optimControlSizeCol')
-    ..aD(7, _omitFieldNames ? '' : 'functionalValue')
+    ..a<$core.int>(
+        3, _omitFieldNames ? '' : 'optimPathSizeRow', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        4, _omitFieldNames ? '' : 'optimPathSizeCol', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        5, _omitFieldNames ? '' : 'optimControlSizeRow', $pb.PbFieldType.O3)
+    ..a<$core.int>(
+        6, _omitFieldNames ? '' : 'optimControlSizeCol', $pb.PbFieldType.O3)
+    ..a<$core.double>(
+        7, _omitFieldNames ? '' : 'functionalValue', $pb.PbFieldType.OD)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OptimalResponse clone() => deepCopy();
+  OptimalResponse clone() => OptimalResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   OptimalResponse copyWith(void Function(OptimalResponse) updates) =>
       super.copyWith((message) => updates(message as OptimalResponse))
@@ -291,14 +308,16 @@ class OptimizeParamsRequest extends $pb.GeneratedMessage {
       _omitMessageNames ? '' : 'OptimizeParamsRequest',
       package: const $pb.PackageName(_omitMessageNames ? '' : 'core_api'),
       createEmptyInstance: create)
-    ..aD(1, _omitFieldNames ? '' : 'learningRate')
+    ..a<$core.double>(
+        1, _omitFieldNames ? '' : 'learningRate', $pb.PbFieldType.OD)
     ..p<$core.double>(2, _omitFieldNames ? '' : 'leftEdge', $pb.PbFieldType.KD)
     ..p<$core.double>(3, _omitFieldNames ? '' : 'rightEdge', $pb.PbFieldType.KD)
-    ..aI(4, _omitFieldNames ? '' : 'epochs')
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'epochs', $pb.PbFieldType.O3)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OptimizeParamsRequest clone() => deepCopy();
+  OptimizeParamsRequest clone() =>
+      OptimizeParamsRequest()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   OptimizeParamsRequest copyWith(
           void Function(OptimizeParamsRequest) updates) =>
@@ -363,7 +382,8 @@ class OptimizeParamsResponse extends $pb.GeneratedMessage {
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
-  OptimizeParamsResponse clone() => deepCopy();
+  OptimizeParamsResponse clone() =>
+      OptimizeParamsResponse()..mergeFromMessage(this);
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
   OptimizeParamsResponse copyWith(
           void Function(OptimizeParamsResponse) updates) =>

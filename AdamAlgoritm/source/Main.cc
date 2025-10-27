@@ -1,5 +1,4 @@
 #include "Server.h"
-#include "HamiltonBuilder.h"
 using namespace std;
 int main()
 {
@@ -14,9 +13,7 @@ int main()
 			json task_json = json::parse(buffer);
 			int dim = task_json["MoveEquations"].get<vector<string>>().size();
 			string func_str = task_json["HamiltonFunction"].get<string>();
-			HamiltonBuilder builder(dim);
 			HttpServer server(conf_path);
-			server.set_hamilton_function(builder.build(func_str.c_str()));
 			server.run();
 		}
 		else task_file.close();

@@ -881,13 +881,14 @@ class OptimalRequest final : public ::google::protobuf::Message
   enum : int {
     kEquationsFieldNumber = 1,
     kLinkedFieldNumber = 2,
-    kU0FieldNumber = 4,
-    kX0FieldNumber = 5,
+    kU0FieldNumber = 5,
+    kX0FieldNumber = 6,
     kHamiltonFieldNumber = 3,
-    kT0FieldNumber = 6,
-    kT1FieldNumber = 7,
-    kTstepFieldNumber = 8,
-    kDeltaFieldNumber = 9,
+    kFunctionalFieldNumber = 4,
+    kT0FieldNumber = 7,
+    kT1FieldNumber = 8,
+    kTstepFieldNumber = 9,
+    kDeltaFieldNumber = 10,
   };
   // repeated string equations = 1;
   int equations_size() const;
@@ -933,7 +934,7 @@ class OptimalRequest final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedPtrField<::std::string>* PROTOBUF_NONNULL _internal_mutable_linked();
 
   public:
-  // repeated double u0 = 4;
+  // repeated double u0 = 5;
   int u0_size() const;
   private:
   int _internal_u0_size() const;
@@ -951,7 +952,7 @@ class OptimalRequest final : public ::google::protobuf::Message
   ::google::protobuf::RepeatedField<double>* PROTOBUF_NONNULL _internal_mutable_u0();
 
   public:
-  // repeated double x0 = 5;
+  // repeated double x0 = 6;
   int x0_size() const;
   private:
   int _internal_x0_size() const;
@@ -984,7 +985,22 @@ class OptimalRequest final : public ::google::protobuf::Message
   ::std::string* PROTOBUF_NONNULL _internal_mutable_hamilton();
 
   public:
-  // double t0 = 6;
+  // string functional = 4;
+  void clear_functional() ;
+  const ::std::string& functional() const;
+  template <typename Arg_ = const ::std::string&, typename... Args_>
+  void set_functional(Arg_&& arg, Args_... args);
+  ::std::string* PROTOBUF_NONNULL mutable_functional();
+  [[nodiscard]] ::std::string* PROTOBUF_NULLABLE release_functional();
+  void set_allocated_functional(::std::string* PROTOBUF_NULLABLE value);
+
+  private:
+  const ::std::string& _internal_functional() const;
+  PROTOBUF_ALWAYS_INLINE void _internal_set_functional(const ::std::string& value);
+  ::std::string* PROTOBUF_NONNULL _internal_mutable_functional();
+
+  public:
+  // double t0 = 7;
   void clear_t0() ;
   double t0() const;
   void set_t0(double value);
@@ -994,7 +1010,7 @@ class OptimalRequest final : public ::google::protobuf::Message
   void _internal_set_t0(double value);
 
   public:
-  // double t1 = 7;
+  // double t1 = 8;
   void clear_t1() ;
   double t1() const;
   void set_t1(double value);
@@ -1004,7 +1020,7 @@ class OptimalRequest final : public ::google::protobuf::Message
   void _internal_set_t1(double value);
 
   public:
-  // double tstep = 8;
+  // double tstep = 9;
   void clear_tstep() ;
   double tstep() const;
   void set_tstep(double value);
@@ -1014,7 +1030,7 @@ class OptimalRequest final : public ::google::protobuf::Message
   void _internal_set_tstep(double value);
 
   public:
-  // double delta = 9;
+  // double delta = 10;
   void clear_delta() ;
   double delta() const;
   void set_delta(double value);
@@ -1028,8 +1044,8 @@ class OptimalRequest final : public ::google::protobuf::Message
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
-  static const ::google::protobuf::internal::TcParseTable<4, 9,
-                                   0, 63,
+  static const ::google::protobuf::internal::TcParseTable<4, 10,
+                                   0, 73,
                                    2>
       _table_;
 
@@ -1055,6 +1071,7 @@ class OptimalRequest final : public ::google::protobuf::Message
     ::google::protobuf::RepeatedField<double> u0_;
     ::google::protobuf::RepeatedField<double> x0_;
     ::google::protobuf::internal::ArenaStringPtr hamilton_;
+    ::google::protobuf::internal::ArenaStringPtr functional_;
     double t0_;
     double t1_;
     double tstep_;
@@ -1286,7 +1303,72 @@ inline void OptimalRequest::set_allocated_hamilton(::std::string* PROTOBUF_NULLA
   // @@protoc_insertion_point(field_set_allocated:core_api.OptimalRequest.hamilton)
 }
 
-// repeated double u0 = 4;
+// string functional = 4;
+inline void OptimalRequest::clear_functional() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.functional_.ClearToEmpty();
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000020U);
+}
+inline const ::std::string& OptimalRequest::functional() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:core_api.OptimalRequest.functional)
+  return _internal_functional();
+}
+template <typename Arg_, typename... Args_>
+PROTOBUF_ALWAYS_INLINE void OptimalRequest::set_functional(Arg_&& arg, Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  _impl_.functional_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:core_api.OptimalRequest.functional)
+}
+inline ::std::string* PROTOBUF_NONNULL OptimalRequest::mutable_functional()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  ::std::string* _s = _internal_mutable_functional();
+  // @@protoc_insertion_point(field_mutable:core_api.OptimalRequest.functional)
+  return _s;
+}
+inline const ::std::string& OptimalRequest::_internal_functional() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.functional_.Get();
+}
+inline void OptimalRequest::_internal_set_functional(const ::std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.functional_.Set(value, GetArena());
+}
+inline ::std::string* PROTOBUF_NONNULL OptimalRequest::_internal_mutable_functional() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.functional_.Mutable( GetArena());
+}
+inline ::std::string* PROTOBUF_NULLABLE OptimalRequest::release_functional() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:core_api.OptimalRequest.functional)
+  if (!CheckHasBit(_impl_._has_bits_[0], 0x00000020U)) {
+    return nullptr;
+  }
+  ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  auto* released = _impl_.functional_.Release();
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString()) {
+    _impl_.functional_.Set("", GetArena());
+  }
+  return released;
+}
+inline void OptimalRequest::set_allocated_functional(::std::string* PROTOBUF_NULLABLE value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  } else {
+    ClearHasBit(_impl_._has_bits_[0], 0x00000020U);
+  }
+  _impl_.functional_.SetAllocated(value, GetArena());
+  if (::google::protobuf::internal::DebugHardenForceCopyDefaultString() && _impl_.functional_.IsDefault()) {
+    _impl_.functional_.Set("", GetArena());
+  }
+  // @@protoc_insertion_point(field_set_allocated:core_api.OptimalRequest.functional)
+}
+
+// repeated double u0 = 5;
 inline int OptimalRequest::_internal_u0_size() const {
   return _internal_u0().size();
 }
@@ -1336,7 +1418,7 @@ OptimalRequest::_internal_mutable_u0() {
   return &_impl_.u0_;
 }
 
-// repeated double x0 = 5;
+// repeated double x0 = 6;
 inline int OptimalRequest::_internal_x0_size() const {
   return _internal_x0().size();
 }
@@ -1386,12 +1468,12 @@ OptimalRequest::_internal_mutable_x0() {
   return &_impl_.x0_;
 }
 
-// double t0 = 6;
+// double t0 = 7;
 inline void OptimalRequest::clear_t0() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.t0_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000020U);
+                  0x00000040U);
 }
 inline double OptimalRequest::t0() const {
   // @@protoc_insertion_point(field_get:core_api.OptimalRequest.t0)
@@ -1399,7 +1481,7 @@ inline double OptimalRequest::t0() const {
 }
 inline void OptimalRequest::set_t0(double value) {
   _internal_set_t0(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000020U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
   // @@protoc_insertion_point(field_set:core_api.OptimalRequest.t0)
 }
 inline double OptimalRequest::_internal_t0() const {
@@ -1411,12 +1493,12 @@ inline void OptimalRequest::_internal_set_t0(double value) {
   _impl_.t0_ = value;
 }
 
-// double t1 = 7;
+// double t1 = 8;
 inline void OptimalRequest::clear_t1() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.t1_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000040U);
+                  0x00000080U);
 }
 inline double OptimalRequest::t1() const {
   // @@protoc_insertion_point(field_get:core_api.OptimalRequest.t1)
@@ -1424,7 +1506,7 @@ inline double OptimalRequest::t1() const {
 }
 inline void OptimalRequest::set_t1(double value) {
   _internal_set_t1(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000040U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
   // @@protoc_insertion_point(field_set:core_api.OptimalRequest.t1)
 }
 inline double OptimalRequest::_internal_t1() const {
@@ -1436,12 +1518,12 @@ inline void OptimalRequest::_internal_set_t1(double value) {
   _impl_.t1_ = value;
 }
 
-// double tstep = 8;
+// double tstep = 9;
 inline void OptimalRequest::clear_tstep() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.tstep_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000080U);
+                  0x00000100U);
 }
 inline double OptimalRequest::tstep() const {
   // @@protoc_insertion_point(field_get:core_api.OptimalRequest.tstep)
@@ -1449,7 +1531,7 @@ inline double OptimalRequest::tstep() const {
 }
 inline void OptimalRequest::set_tstep(double value) {
   _internal_set_tstep(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000080U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
   // @@protoc_insertion_point(field_set:core_api.OptimalRequest.tstep)
 }
 inline double OptimalRequest::_internal_tstep() const {
@@ -1461,12 +1543,12 @@ inline void OptimalRequest::_internal_set_tstep(double value) {
   _impl_.tstep_ = value;
 }
 
-// double delta = 9;
+// double delta = 10;
 inline void OptimalRequest::clear_delta() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
   _impl_.delta_ = 0;
   ClearHasBit(_impl_._has_bits_[0],
-                  0x00000100U);
+                  0x00000200U);
 }
 inline double OptimalRequest::delta() const {
   // @@protoc_insertion_point(field_get:core_api.OptimalRequest.delta)
@@ -1474,7 +1556,7 @@ inline double OptimalRequest::delta() const {
 }
 inline void OptimalRequest::set_delta(double value) {
   _internal_set_delta(value);
-  SetHasBit(_impl_._has_bits_[0], 0x00000100U);
+  SetHasBit(_impl_._has_bits_[0], 0x00000200U);
   // @@protoc_insertion_point(field_set:core_api.OptimalRequest.delta)
 }
 inline double OptimalRequest::_internal_delta() const {

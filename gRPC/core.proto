@@ -4,12 +4,13 @@ message OptimalRequest {
   repeated string equations = 1;
   repeated string linked = 2;
   string hamilton = 3;
-  repeated double u0 = 4;
-  repeated double x0 = 5;
-  double t0 = 6;
-  double t1 = 7;
-  double tstep = 8;
-  double delta = 9;
+  string functional = 4;
+  repeated double u0 = 5;
+  repeated double x0 = 6;
+  double t0 = 7;
+  double t1 = 8;
+  double tstep = 9;
+  double delta = 10;
 }
 message OptimalResponse {
   repeated double optim_path = 1;

@@ -32,8 +32,6 @@ set(SOURCE_EXE
 	${CMAKE_SOURCE_DIR}/source/Adam.cc 
 	${CMAKE_SOURCE_DIR}/source/Router.cc 
 	${CMAKE_SOURCE_DIR}/source/Server.cc
-	${CMAKE_SOURCE_DIR}/source/Tokenizer.cc 
-	${CMAKE_SOURCE_DIR}/source/HamiltonBuilder.cc
 )
 
 add_executable(AdamServer.rl ${SOURCE_EXE})
@@ -49,5 +47,6 @@ target_link_libraries(AdamServer.rl PRIVATE
 	Boost::boost
 	Boost::url
 	absl::flat_hash_map
+	absl::strings
 	${TORCH_LIBRARIES}
 )

@@ -113,6 +113,9 @@ inline constexpr OptimalRequest::Impl_::Impl_(
         hamilton_(
             &::google::protobuf::internal::fixed_address_empty_string,
             ::_pbi::ConstantInitialized()),
+        functional_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
         t0_{0},
         t1_{0},
         tstep_{0},
@@ -147,10 +150,11 @@ const ::uint32_t
         protodesc_cold) = {
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::core_api::OptimalRequest, _impl_._has_bits_),
-        12, // hasbit index offset
+        13, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::core_api::OptimalRequest, _impl_.equations_),
         PROTOBUF_FIELD_OFFSET(::core_api::OptimalRequest, _impl_.linked_),
         PROTOBUF_FIELD_OFFSET(::core_api::OptimalRequest, _impl_.hamilton_),
+        PROTOBUF_FIELD_OFFSET(::core_api::OptimalRequest, _impl_.functional_),
         PROTOBUF_FIELD_OFFSET(::core_api::OptimalRequest, _impl_.u0_),
         PROTOBUF_FIELD_OFFSET(::core_api::OptimalRequest, _impl_.x0_),
         PROTOBUF_FIELD_OFFSET(::core_api::OptimalRequest, _impl_.t0_),
@@ -160,12 +164,13 @@ const ::uint32_t
         0,
         1,
         4,
+        5,
         2,
         3,
-        5,
         6,
         7,
         8,
+        9,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::core_api::OptimalResponse, _impl_._has_bits_),
         10, // hasbit index offset
@@ -200,9 +205,9 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::core_api::OptimalRequest)},
-        {21, sizeof(::core_api::OptimalResponse)},
-        {38, sizeof(::core_api::OptimizeParamsRequest)},
-        {49, sizeof(::core_api::OptimizeParamsResponse)},
+        {23, sizeof(::core_api::OptimalResponse)},
+        {40, sizeof(::core_api::OptimizeParamsRequest)},
+        {51, sizeof(::core_api::OptimizeParamsResponse)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::core_api::_OptimalRequest_default_instance_._instance,
@@ -212,30 +217,31 @@ static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
 };
 const char descriptor_table_protodef_core_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\ncore.proto\022\010core_api\"\223\001\n\016OptimalReques"
+    "\n\ncore.proto\022\010core_api\"\247\001\n\016OptimalReques"
     "t\022\021\n\tequations\030\001 \003(\t\022\016\n\006linked\030\002 \003(\t\022\020\n\010"
-    "hamilton\030\003 \001(\t\022\n\n\002u0\030\004 \003(\001\022\n\n\002x0\030\005 \003(\001\022\n"
-    "\n\002t0\030\006 \001(\001\022\n\n\002t1\030\007 \001(\001\022\r\n\005tstep\030\010 \001(\001\022\r\n"
-    "\005delta\030\t \001(\001\"\320\001\n\017OptimalResponse\022\022\n\nopti"
-    "m_path\030\001 \003(\001\022\025\n\roptim_control\030\002 \003(\001\022\033\n\023o"
-    "ptim_path_size_row\030\003 \001(\005\022\033\n\023optim_path_s"
-    "ize_col\030\004 \001(\005\022\036\n\026optim_control_size_row\030"
-    "\005 \001(\005\022\036\n\026optim_control_size_col\030\006 \001(\005\022\030\n"
-    "\020functional_value\030\007 \001(\001\"e\n\025OptimizeParam"
-    "sRequest\022\025\n\rlearning_rate\030\001 \001(\001\022\021\n\tleft_"
-    "edge\030\002 \003(\001\022\022\n\nright_edge\030\003 \003(\001\022\016\n\006epochs"
-    "\030\004 \001(\005\"\030\n\026OptimizeParamsResponse2\274\001\n\031Cor"
-    "eOptimalControlService\022F\n\017CalcOptimalTas"
-    "k\022\030.core_api.OptimalRequest\032\031.core_api.O"
-    "ptimalResponse\022W\n\022SetOptimizerParams\022\037.c"
-    "ore_api.OptimizeParamsRequest\032 .core_api"
-    ".OptimizeParamsResponseb\006proto3"
+    "hamilton\030\003 \001(\t\022\022\n\nfunctional\030\004 \001(\t\022\n\n\002u0"
+    "\030\005 \003(\001\022\n\n\002x0\030\006 \003(\001\022\n\n\002t0\030\007 \001(\001\022\n\n\002t1\030\010 \001"
+    "(\001\022\r\n\005tstep\030\t \001(\001\022\r\n\005delta\030\n \001(\001\"\320\001\n\017Opt"
+    "imalResponse\022\022\n\noptim_path\030\001 \003(\001\022\025\n\ropti"
+    "m_control\030\002 \003(\001\022\033\n\023optim_path_size_row\030\003"
+    " \001(\005\022\033\n\023optim_path_size_col\030\004 \001(\005\022\036\n\026opt"
+    "im_control_size_row\030\005 \001(\005\022\036\n\026optim_contr"
+    "ol_size_col\030\006 \001(\005\022\030\n\020functional_value\030\007 "
+    "\001(\001\"e\n\025OptimizeParamsRequest\022\025\n\rlearning"
+    "_rate\030\001 \001(\001\022\021\n\tleft_edge\030\002 \003(\001\022\022\n\nright_"
+    "edge\030\003 \003(\001\022\016\n\006epochs\030\004 \001(\005\"\030\n\026OptimizePa"
+    "ramsResponse2\274\001\n\031CoreOptimalControlServi"
+    "ce\022F\n\017CalcOptimalTask\022\030.core_api.Optimal"
+    "Request\032\031.core_api.OptimalResponse\022W\n\022Se"
+    "tOptimizerParams\022\037.core_api.OptimizePara"
+    "msRequest\032 .core_api.OptimizeParamsRespo"
+    "nseb\006proto3"
 };
 static ::absl::once_flag descriptor_table_core_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_core_2eproto = {
     false,
     false,
-    711,
+    731,
     descriptor_table_protodef_core_2eproto,
     "core.proto",
     &descriptor_table_core_2eproto_once,
@@ -278,7 +284,8 @@ PROTOBUF_NDEBUG_INLINE OptimalRequest::Impl_::Impl_(
         linked_{visibility, arena, from.linked_},
         u0_{visibility, arena, from.u0_},
         x0_{visibility, arena, from.x0_},
-        hamilton_(arena, from.hamilton_) {}
+        hamilton_(arena, from.hamilton_),
+        functional_(arena, from.functional_) {}
 
 OptimalRequest::OptimalRequest(
     ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
@@ -311,7 +318,8 @@ PROTOBUF_NDEBUG_INLINE OptimalRequest::Impl_::Impl_(
         linked_{visibility, arena},
         u0_{visibility, arena},
         x0_{visibility, arena},
-        hamilton_(arena) {}
+        hamilton_(arena),
+        functional_(arena) {}
 
 inline void OptimalRequest::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
@@ -334,6 +342,7 @@ inline void OptimalRequest::SharedDtor(MessageLite& self) {
   this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   ABSL_DCHECK(this_.GetArena() == nullptr);
   this_._impl_.hamilton_.Destroy();
+  this_._impl_.functional_.Destroy();
   this_._impl_.~Impl_();
 }
 
@@ -404,16 +413,16 @@ OptimalRequest::GetClassData() const {
   return OptimalRequest_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<4, 9, 0, 63, 2>
+const ::_pbi::TcParseTable<4, 10, 0, 73, 2>
 OptimalRequest::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_._has_bits_),
     0, // no _extensions_
-    9, 120,  // max_field_number, fast_idx_mask
+    10, 120,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294966784,  // skipmap
+    4294966272,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    9,  // num_field_entries
+    10,  // num_field_entries
     0,  // num_aux_entries
     offsetof(decltype(_table_), field_names),  // no aux_entries
     OptimalRequest_class_data_.base(),
@@ -436,31 +445,34 @@ OptimalRequest::_table_ = {
     {::_pbi::TcParser::FastUS1,
      {26, 4, 0,
       PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.hamilton_)}},
-    // repeated double u0 = 4;
+    // string functional = 4;
+    {::_pbi::TcParser::FastUS1,
+     {34, 5, 0,
+      PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.functional_)}},
+    // repeated double u0 = 5;
     {::_pbi::TcParser::FastF64P1,
-     {34, 2, 0,
+     {42, 2, 0,
       PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.u0_)}},
-    // repeated double x0 = 5;
+    // repeated double x0 = 6;
     {::_pbi::TcParser::FastF64P1,
-     {42, 3, 0,
+     {50, 3, 0,
       PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.x0_)}},
-    // double t0 = 6;
-    {::_pbi::TcParser::FastF64S1,
-     {49, 5, 0,
-      PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.t0_)}},
-    // double t1 = 7;
+    // double t0 = 7;
     {::_pbi::TcParser::FastF64S1,
      {57, 6, 0,
-      PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.t1_)}},
-    // double tstep = 8;
+      PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.t0_)}},
+    // double t1 = 8;
     {::_pbi::TcParser::FastF64S1,
      {65, 7, 0,
-      PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.tstep_)}},
-    // double delta = 9;
+      PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.t1_)}},
+    // double tstep = 9;
     {::_pbi::TcParser::FastF64S1,
      {73, 8, 0,
+      PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.tstep_)}},
+    // double delta = 10;
+    {::_pbi::TcParser::FastF64S1,
+     {81, 9, 0,
       PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.delta_)}},
-    {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
     {::_pbi::TcParser::MiniParse, {}},
@@ -475,26 +487,29 @@ OptimalRequest::_table_ = {
     {PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.linked_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcRepeated | ::_fl::kUtf8String | ::_fl::kRepSString)},
     // string hamilton = 3;
     {PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.hamilton_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
-    // repeated double u0 = 4;
+    // string functional = 4;
+    {PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.functional_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // repeated double u0 = 5;
     {PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.u0_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcRepeated | ::_fl::kPackedDouble)},
-    // repeated double x0 = 5;
+    // repeated double x0 = 6;
     {PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.x0_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcRepeated | ::_fl::kPackedDouble)},
-    // double t0 = 6;
-    {PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.t0_), _Internal::kHasBitsOffset + 5, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
-    // double t1 = 7;
-    {PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.t1_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
-    // double tstep = 8;
-    {PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.tstep_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
-    // double delta = 9;
-    {PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.delta_), _Internal::kHasBitsOffset + 8, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
+    // double t0 = 7;
+    {PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.t0_), _Internal::kHasBitsOffset + 6, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
+    // double t1 = 8;
+    {PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.t1_), _Internal::kHasBitsOffset + 7, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
+    // double tstep = 9;
+    {PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.tstep_), _Internal::kHasBitsOffset + 8, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
+    // double delta = 10;
+    {PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.delta_), _Internal::kHasBitsOffset + 9, 0, (0 | ::_fl::kFcOptional | ::_fl::kDouble)},
   }},
   // no aux_entries
   {{
-    "\27\11\6\10\0\0\0\0\0\0\0\0\0\0\0\0"
+    "\27\11\6\10\12\0\0\0\0\0\0\0\0\0\0\0"
     "core_api.OptimalRequest"
     "equations"
     "linked"
     "hamilton"
+    "functional"
   }},
 };
 PROTOBUF_NOINLINE void OptimalRequest::Clear() {
@@ -505,7 +520,7 @@ PROTOBUF_NOINLINE void OptimalRequest::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000003fU)) {
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
       _impl_.equations_.Clear();
     }
@@ -521,13 +536,20 @@ PROTOBUF_NOINLINE void OptimalRequest::Clear() {
     if (CheckHasBit(cached_has_bits, 0x00000010U)) {
       _impl_.hamilton_.ClearNonDefaultToEmpty();
     }
+    if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+      _impl_.functional_.ClearNonDefaultToEmpty();
+    }
   }
-  if (BatchCheckHasBit(cached_has_bits, 0x000000e0U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x000000c0U)) {
     ::memset(&_impl_.t0_, 0, static_cast<::size_t>(
-        reinterpret_cast<char*>(&_impl_.tstep_) -
-        reinterpret_cast<char*>(&_impl_.t0_)) + sizeof(_impl_.tstep_));
+        reinterpret_cast<char*>(&_impl_.t1_) -
+        reinterpret_cast<char*>(&_impl_.t0_)) + sizeof(_impl_.t1_));
   }
-  _impl_.delta_ = 0;
+  if (BatchCheckHasBit(cached_has_bits, 0x00000300U)) {
+    ::memset(&_impl_.tstep_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.delta_) -
+        reinterpret_cast<char*>(&_impl_.tstep_)) + sizeof(_impl_.delta_));
+  }
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
@@ -581,53 +603,63 @@ PROTOBUF_NOINLINE void OptimalRequest::Clear() {
     }
   }
 
-  // repeated double u0 = 4;
+  // string functional = 4;
+  if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+    if (!this_._internal_functional().empty()) {
+      const ::std::string& _s = this_._internal_functional();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "core_api.OptimalRequest.functional");
+      target = stream->WriteStringMaybeAliased(4, _s, target);
+    }
+  }
+
+  // repeated double u0 = 5;
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
     if (this_._internal_u0_size() > 0) {
-      target = stream->WriteFixedPacked(4, this_._internal_u0(), target);
+      target = stream->WriteFixedPacked(5, this_._internal_u0(), target);
     }
   }
 
-  // repeated double x0 = 5;
+  // repeated double x0 = 6;
   if (CheckHasBitForRepeated(cached_has_bits, 0x00000008U)) {
     if (this_._internal_x0_size() > 0) {
-      target = stream->WriteFixedPacked(5, this_._internal_x0(), target);
+      target = stream->WriteFixedPacked(6, this_._internal_x0(), target);
     }
   }
 
-  // double t0 = 6;
-  if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+  // double t0 = 7;
+  if (CheckHasBit(cached_has_bits, 0x00000040U)) {
     if (::absl::bit_cast<::uint64_t>(this_._internal_t0()) != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-          6, this_._internal_t0(), target);
+          7, this_._internal_t0(), target);
     }
   }
 
-  // double t1 = 7;
-  if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+  // double t1 = 8;
+  if (CheckHasBit(cached_has_bits, 0x00000080U)) {
     if (::absl::bit_cast<::uint64_t>(this_._internal_t1()) != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-          7, this_._internal_t1(), target);
+          8, this_._internal_t1(), target);
     }
   }
 
-  // double tstep = 8;
-  if (CheckHasBit(cached_has_bits, 0x00000080U)) {
+  // double tstep = 9;
+  if (CheckHasBit(cached_has_bits, 0x00000100U)) {
     if (::absl::bit_cast<::uint64_t>(this_._internal_tstep()) != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-          8, this_._internal_tstep(), target);
+          9, this_._internal_tstep(), target);
     }
   }
 
-  // double delta = 9;
-  if (CheckHasBit(cached_has_bits, 0x00000100U)) {
+  // double delta = 10;
+  if (CheckHasBit(cached_has_bits, 0x00000200U)) {
     if (::absl::bit_cast<::uint64_t>(this_._internal_delta()) != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteDoubleToArray(
-          9, this_._internal_delta(), target);
+          10, this_._internal_delta(), target);
     }
   }
 
@@ -675,7 +707,7 @@ PROTOBUF_NOINLINE void OptimalRequest::Clear() {
             this_._internal_linked().Get(i));
       }
     }
-    // repeated double u0 = 4;
+    // repeated double u0 = 5;
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000004U)) {
       ::size_t data_size = ::size_t{8} *
           ::_pbi::FromIntSize(this_._internal_u0_size());
@@ -685,7 +717,7 @@ PROTOBUF_NOINLINE void OptimalRequest::Clear() {
                               static_cast<::int32_t>(data_size));
       total_size += tag_size + data_size;
     }
-    // repeated double x0 = 5;
+    // repeated double x0 = 6;
     if (CheckHasBitForRepeated(cached_has_bits, 0x00000008U)) {
       ::size_t data_size = ::size_t{8} *
           ::_pbi::FromIntSize(this_._internal_x0_size());
@@ -702,28 +734,35 @@ PROTOBUF_NOINLINE void OptimalRequest::Clear() {
                                         this_._internal_hamilton());
       }
     }
-    // double t0 = 6;
+    // string functional = 4;
     if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+      if (!this_._internal_functional().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_functional());
+      }
+    }
+    // double t0 = 7;
+    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
       if (::absl::bit_cast<::uint64_t>(this_._internal_t0()) != 0) {
         total_size += 9;
       }
     }
-    // double t1 = 7;
-    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+    // double t1 = 8;
+    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
       if (::absl::bit_cast<::uint64_t>(this_._internal_t1()) != 0) {
         total_size += 9;
       }
     }
-    // double tstep = 8;
-    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x00000300U)) {
+    // double tstep = 9;
+    if (CheckHasBit(cached_has_bits, 0x00000100U)) {
       if (::absl::bit_cast<::uint64_t>(this_._internal_tstep()) != 0) {
         total_size += 9;
       }
     }
-  }
-   {
-    // double delta = 9;
-    if (CheckHasBit(cached_has_bits, 0x00000100U)) {
+    // double delta = 10;
+    if (CheckHasBit(cached_has_bits, 0x00000200U)) {
       if (::absl::bit_cast<::uint64_t>(this_._internal_delta()) != 0) {
         total_size += 9;
       }
@@ -770,24 +809,35 @@ void OptimalRequest::MergeImpl(::google::protobuf::MessageLite& to_msg,
       }
     }
     if (CheckHasBit(cached_has_bits, 0x00000020U)) {
+      if (!from._internal_functional().empty()) {
+        _this->_internal_set_functional(from._internal_functional());
+      } else {
+        if (_this->_impl_.functional_.IsDefault()) {
+          _this->_internal_set_functional("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
       if (::absl::bit_cast<::uint64_t>(from._internal_t0()) != 0) {
         _this->_impl_.t0_ = from._impl_.t0_;
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000040U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
       if (::absl::bit_cast<::uint64_t>(from._internal_t1()) != 0) {
         _this->_impl_.t1_ = from._impl_.t1_;
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000080U)) {
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x00000300U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000100U)) {
       if (::absl::bit_cast<::uint64_t>(from._internal_tstep()) != 0) {
         _this->_impl_.tstep_ = from._impl_.tstep_;
       }
     }
-  }
-  if (CheckHasBit(cached_has_bits, 0x00000100U)) {
-    if (::absl::bit_cast<::uint64_t>(from._internal_delta()) != 0) {
-      _this->_impl_.delta_ = from._impl_.delta_;
+    if (CheckHasBit(cached_has_bits, 0x00000200U)) {
+      if (::absl::bit_cast<::uint64_t>(from._internal_delta()) != 0) {
+        _this->_impl_.delta_ = from._impl_.delta_;
+      }
     }
   }
   _this->_impl_._has_bits_[0] |= cached_has_bits;
@@ -814,6 +864,7 @@ void OptimalRequest::InternalSwap(OptimalRequest* PROTOBUF_RESTRICT PROTOBUF_NON
   _impl_.u0_.InternalSwap(&other->_impl_.u0_);
   _impl_.x0_.InternalSwap(&other->_impl_.x0_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.hamilton_, &other->_impl_.hamilton_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.functional_, &other->_impl_.functional_, arena);
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(OptimalRequest, _impl_.delta_)
       + sizeof(OptimalRequest::_impl_.delta_)

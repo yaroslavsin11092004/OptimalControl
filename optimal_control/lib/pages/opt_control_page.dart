@@ -13,8 +13,8 @@ class _OptControlPageState extends State<OptControlPage>
   @override 
   Widget build(BuildContext context) 
   {
-    if (storeControl.length != 0)
-      return ChartApi(storeControl, sizeRowControl, sizeColControl, 'Оптимальное управление');
+    if (AppStore().storeControl.length != 0)
+      return ChartApi(AppStore().storeControl, AppStore().sizeRowControl, AppStore().sizeColControl, 'Оптимальное управление');
     else 
       return Scaffold( 
         appBar: AppBar( 

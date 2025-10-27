@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../store.dart';
 import '../shared/forms/calc_form.dart';
 import '../services/expr_parser.dart';
+import '../gRPC/core.pb.dart';
+import '../gRPC/core.pbgrpc.dart';
 class TasksResultPage extends StatefulWidget {
   final String title;
   const TasksResultPage({ 
@@ -12,8 +14,32 @@ class TasksResultPage extends StatefulWidget {
   State<TasksResultPage> createState() => _TasksResultPageState();
 }
 class _TasksResultPageState extends State<TasksResultPage> {
+  void _showErrorMessage(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
+  }
+  void _showSuccessMessage(BuildContext context, String message) 
+  {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar( 
+        content: Text(message),
+        backgroundColor: Colors.green,
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds:3),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+      )
+    );
+  }
   @override
   Widget build(BuildContext context) {
+    OptimalRequest request = OptimalRequest();
     try {
       ExprParser parser = ExprParser();
       List<String> eq = [];
@@ -36,7 +62,33 @@ class _TasksResultPageState extends State<TasksResultPage> {
           equations: eq,
           linked: lk,
           functional: func,
-          calculateCallback: () => {},
+          calculateCallback: () async {
+            try {
+              request.t0 = double.parse(AppStore().t0);
+              request.t1 = double.parse(AppStore().t1);
+              request.tstep = double.parse(AppStore().tStep);
+              request.delta = double.parse(AppStore().delta);
+              request.x0.addAll(AppStore().x0.split(',').map((value)=>double.parse(value)).toList());
+              request.u0.addAll(AppStore().u0.split(',').map((value)=>double.parse(value)).toList());
+              request.equations.addAll(AppStore().equations);
+              request.linked.addAll(AppStore().linked);
+              request.hamilton = AppStore().hamilton;
+              request.functional = AppStore().functional;
+              final resp =  await AppStore().service.calcOptimal(request);
+              AppStore().storePath.clear();
+              AppStore().storeControl.clear();
+              AppStore().storePath.addAll(resp.optimPath);
+              AppStore().storeControl.addAll(resp.optimControl);
+              AppStore().sizeRowPath = resp.optimPathSizeRow;
+              AppStore().sizeColPath = resp.optimPathSizeCol;
+              AppStore().sizeRowControl = resp.optimControlSizeRow;
+              AppStore().sizeColControl = resp.optimControlSizeCol;
+              AppStore().functionalValue = resp.functionalValue;
+              _showSuccessMessage(context, 'Рассчеты выполены успешно!');
+            } catch(e) {
+              _showErrorMessage(context, 'Некорректные данные::$e');
+            }
+          },
           optPathNavCallback: () => { Navigator.pushNamed(context, '/opt_path') },
           optContrNavCallback: () => { Navigator.pushNamed(context, '/opt_control') },
           t0: AppStore().t0,

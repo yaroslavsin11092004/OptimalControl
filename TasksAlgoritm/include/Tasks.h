@@ -1,10 +1,8 @@
 #ifndef TASKS_H
 #define TASKS_H
 #include "IncludeFiles.h"
-#include "EquationsBuilder.h"
-#include "FunctionalBuilder.h"
-#include "FuncCalcBuilder.h"
 #include "GoldenRatio.h"
+#include <MathPlot/function_builder.h>
 class Tasks 
 {
 	private:
@@ -12,9 +10,9 @@ class Tasks
 		std::vector<Equation> linked;
 		ParamS param_s;
 		std::function<double(matrix<double>, matrix<double>)> functional;
-		std::unique_ptr<FunctionalBuilder> f_builder;
-		std::unique_ptr<EquationBuilder> eq_builder;
-		std::unique_ptr<FuncCalcBuilder> fc_builder;
+		std::unique_ptr<ExpressionBuilder<double, int, double, matrix<double>&, matrix<double>&, matrix<double>&>> f_builder;
+		std::unique_ptr<ExpressionBuilder<double, double, matrix<double>>> eq_builder;
+		std::unique_ptr<ExpressionBuilder<double, int, matrix<double>&, matrix<double>&>> fc_builder;
 	public:
 		Tasks();
 		~Tasks() = default;

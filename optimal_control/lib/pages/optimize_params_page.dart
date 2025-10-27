@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:optimal_control/services/core_api.dart';
 import '../store.dart';
+import '../gRPC/core.pb.dart';
 class OptimizeParamsPage extends StatefulWidget 
 {
   const OptimizeParamsPage({super.key, required this.title});
@@ -14,8 +14,6 @@ class _StateOptimizeParamsPage extends State<OptimizeParamsPage>
   String leftEdge = '';
   String rightEdge = '';
   String epochs = '';
-  String delta = '';
-  CoreApi api = coreApi;
   void _showErrorMessage(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -42,6 +40,7 @@ class _StateOptimizeParamsPage extends State<OptimizeParamsPage>
   @override 
   Widget build(BuildContext context)
   {
+    OptimizeParamsRequest request = OptimizeParamsRequest();
     return Scaffold(
       appBar: AppBar( 
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -145,9 +144,11 @@ class _StateOptimizeParamsPage extends State<OptimizeParamsPage>
                 onPressed: () async { 
                   try 
                   {
-                    List<double> leftEdgeStore = api.parseStringArray(leftEdge);
-                    List<double> rightEdgeStore = api.parseStringArray(rightEdge);
-                    await api.fetchSetAdamParams(double.parse(learningRate), leftEdgeStore, rightEdgeStore, int.parse(epochs));
+                    request.epochs = int.parse(epochs);
+                    request.leftEdge.addAll(leftEdge.split(',').map((value)=>double.parse(value)).toList());
+                    request.rightEdge.addAll(rightEdge.split(',').map((value)=>double.parse(value)).toList());
+                    request.learningRate = double.parse(learningRate);
+                    await AppStore().service.setParams(request);
                     _showSuccessMessage(context, 'Параметры успешно применены');
                   }
                   catch(e)

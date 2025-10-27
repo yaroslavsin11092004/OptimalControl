@@ -1,7 +1,7 @@
 #ifndef OPTIMIZE_H
 #define OPTIMIZE_H
 #include "IncludeFiles.h"
-#include "HamiltonBuilder.h"
+#include <MathPlot/function_builder.h>
 using Hamilton = FunctionWrapper<torch::Tensor(std::vector<torch::Tensor>& args, std::vector<torch::Tensor>& params)>;
 class Adam
 {
@@ -16,7 +16,7 @@ class Adam
 		double beta1 = 0.9;
 		double beta2 = 0.999;
 		double epsilon = 1.0e-8;
-		std::unique_ptr<HamiltonBuilder> builder;
+		std::unique_ptr<ExpressionBuilder<torch::Tensor, std::vector<torch::Tensor>&, std::vector<torch::Tensor>&>> builder;
 	public:
 		Adam();
 		~Adam() = default;

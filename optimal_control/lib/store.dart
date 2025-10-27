@@ -1,11 +1,6 @@
 import './services/core_api.dart';
+import './services/core.dart';
 CoreApi coreApi = CoreApi('/home/yaroslavsinyakov/source/OptimalControl/release/config_system.json');
-List<double> storePath = [];
-List<double> storeControl = [];
-int sizeRowPath = 0;
-int sizeRowControl = 0;
-int sizeColPath = 0;
-int sizeColControl = 0;
 
 class AppStore {
   static final AppStore _instance = AppStore._internal();
@@ -13,11 +8,12 @@ class AppStore {
   AppStore._internal();
   String dim = "";
   List<double> storePath = [];
-  List<double> sotreControl = [];
+  List<double> storeControl = [];
   int sizeRowPath = 0;
   int sizeColPath = 0;
   int sizeRowControl = 0;
   int sizeColControl = 0;
+  double functionalValue = 0.0;
   List<String> equations = [];
   List<String> linked = [];
   String hamilton = '';
@@ -28,9 +24,5 @@ class AppStore {
   String x0 = '';
   String tStep = '';
   String delta = '';
-}
-class ParserStore {
-  static final ParserStore _instance = ParserStore._internal();
-  factory ParserStore() => _instance;
-  ParserStore._internal();
+  CoreService service = CoreService('127.0.0.1', 45000);
 }

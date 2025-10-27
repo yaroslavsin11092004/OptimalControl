@@ -13,9 +13,9 @@ class _OptPathPageStats extends State<OptPathPage>
   @override 
   Widget build(BuildContext context) 
   {
-    if (storePath.length != 0)
+    if (AppStore().storePath.length != 0)
     {
-      return ChartApi(storePath, sizeRowPath, sizeColPath, 'Оптимальные траектории');
+      return ChartApi(AppStore().storePath, AppStore().sizeRowPath, AppStore().sizeColPath, 'Оптимальные траектории');
     }
     else return Scaffold(
       appBar: AppBar( 
