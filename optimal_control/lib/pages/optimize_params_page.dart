@@ -153,7 +153,7 @@ class _StateOptimizeParamsPage extends State<OptimizeParamsPage>
                   }
                   catch(e)
                   {
-                    _showErrorMessage(context, 'Ошибка ввода');
+                    _showErrorMessage(context, '$e');
                   }
                 },
                 label: Text('Принять'),

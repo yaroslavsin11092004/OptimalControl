@@ -1,4 +1,5 @@
 #include "OptContrAlg.h"
+#include "MathPlot/DiffEvolution.h"
 OptimalControl::OptimalControl(std::string& conf_file)
 {
 	this->tasks_api = std::make_shared<TasksApiRpc>(conf_file);
@@ -6,6 +7,8 @@ OptimalControl::OptimalControl(std::string& conf_file)
 }
 void OptimalControl::adam_params(double learning_rate, std::vector<double> u_left, std::vector<double> u_right, int epochs)
 {
+	uLeft = u_left;
+	uRight = u_right;
 	this->adam_api->set_global_params(learning_rate,std::move(u_left), std::move(u_right), epochs);
 }
 void OptimalControl::task(std::vector<std::string> equations, std::vector<std::string> linked, std::string functional) {
@@ -190,4 +193,28 @@ std::pair<matrix<double>, matrix<double>> OptimalControl::successive_approximati
 			return std::make_pair(std::move(optim_x_task_resolve), std::move(cur_u));
 		}
 	} while(true);
+}
+double OptimalControl::optimize_func(absl::Span<const double> x) {
+	std::vector<double> ui(x.begin(), x.end());
+	auto cur_params = successive_approximation(X0, T0, T1, Tstep, Delta, std::move(ui));
+	return functional_value(std::move(cur_params.first), std::move(cur_params.second));
+}
+OptimalControl::Answer OptimalControl::evolution_approximation(std::vector<double> x0, double t0, double t1, double t_step, double delta) {
+	std::vector<std::pair<double, double>> bounds;
+	X0 = std::move(x0);
+	T0 = t0;
+	T1 = t1;
+	Tstep = t_step;
+	Delta = delta;
+	for (int i = 0; i < uLeft.size(); i++) 
+		bounds.push_back(std::make_pair(uLeft[i], uRight[i]));
+	DifferentialEvolution de(std::bind(&OptimalControl::optimize_func, this, std::placeholders::_1), bounds);
+	auto best_u0 = de.optimize(50);
+	auto best_params = successive_approximation(X0, T0, T1, Tstep, Delta, std::move(best_u0.best_solution));
+	double func_value = functional_value(best_params.first, best_params.second);
+	return {
+		std::move(best_params.second),
+		std::move(best_params.first),
+		func_value
+	};
 }

@@ -35,15 +35,16 @@ include_directories(
 
 set(SOURCE_EXE 
 	./source/Main.cc
-	./source/Router.cc
-	./source/Server.cc
 	./source/OptContrAlg.cc
   ../gRPC/adam_api.pb.cc
   ../gRPC/adam_api.grpc.pb.cc
   ../gRPC/tasks_api.pb.cc
   ../gRPC/tasks_api.grpc.pb.cc
+  ../gRPC/core.pb.cc
+  ../gRPC/core.grpc.pb.cc
   ./source/AdamApiRpc.cc
   ./source/TasksApiRps.cc
+  ./source/CoreService.cc
 )
 
 set(SOURCE_LIB ${CMAKE_CURRENT_SOURCE_DIR}/../release/libMathPlot.so)
@@ -58,6 +59,8 @@ target_link_libraries(CoreServer.rl
   absl::strings
   absl::base 
   absl::flags
+  absl::random_random
+  absl::span
   gRPC::grpc++
   gRPC::grpc++_reflection
   protobuf::libprotobuf

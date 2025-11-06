@@ -118,6 +118,8 @@ CoreService::CoreService(std::string& conf_file) {
 			grpc::ServerBuilder builder;
 			cq = builder.AddCompletionQueue();
 			api = std::make_shared<OptimalControl>(conf_file);
+			builder.AddChannelArgument(GRPC_ARG_HTTP2_MAX_PINGS_WITHOUT_DATA, 0);
+			builder.AddChannelArgument(GRPC_ARG_KEEPALIVE_PERMIT_WITHOUT_CALLS, 1);
 			builder.AddListeningPort(addr, grpc::InsecureServerCredentials());
 			builder.RegisterService(&service);
 			builder.AddChannelArgument(GRPC_ARG_USE_LOCAL_SUBCHANNEL_POOL, 0);

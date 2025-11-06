@@ -84,6 +84,7 @@ class _TasksResultPageState extends State<TasksResultPage> {
               AppStore().sizeRowControl = resp.optimControlSizeRow;
               AppStore().sizeColControl = resp.optimControlSizeCol;
               AppStore().functionalValue = resp.functionalValue;
+              print(AppStore().functionalValue);
               _showSuccessMessage(context, 'Рассчеты выполены успешно!');
             } catch(e) {
               _showErrorMessage(context, 'Некорректные данные::$e');
